@@ -1,0 +1,24 @@
+Copyright (c) 2012-2015 PHPost
+
+Se autoriza por la presente, de forma gratuita, a cualquier
+persona que haya obtenido una copia de este software y
+archivos asociados  (el "Software"), para tratar el
+Software sin restricción, incluyendo sin ninguna limitación 
+en lo que concierne los derechos para usar, copiar, modificar, y/o 
+fusionar este Software, sujeto a las siguientes condiciones:
+
+* El aviso de copyright anterior y este aviso de permiso tendrán 
+  que ser incluidos en todas las copias o partes sustanciales de este Software.
+  
+* Si en algún momento fuese violado el copyright de manera intencional 
+  de la parte pública del Software, autorizo a PHPost mediante el uso de 
+  una herramienta externa restaurar el copyright en mi sitio web y/o 
+  colocar un aviso sobre este hecho.
+  
+EL SOFTWARE SE ENTREGA "TAL CUAL", SIN GARANTÍA DE NINGÚN TIPO, EXPRESA O 
+IMPLÍCITA, INCLUYENDO PERO SIN LIMITARSE A GARANTÍAS DE MERCANTIBILIDAD,
+CAPACIDAD DE HACER Y DE NO INFRACCIÓN DE COPYRIGHT. EN NINGÚN CASO LOS AUTORES
+O TITULARES DEL COPYRIGHT SERÁN RESPONSABLES DE  NINGUNA RECLAMACIÓN, 
+DAÑOS U OTRAS RESPONSABILIDADES,  YA SEA EN UN LITIGIO, AGRAVIO O DE OTRO MODO,
+DERIVADAS DE, OCASIONADAS POR CULPA DE O EN CONEXION CON EL SOFTWARE O SU USO 
+U OTRO TIPO DE ACCIONES EN EL SOFTWARE.

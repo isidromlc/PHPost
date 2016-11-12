@@ -1,0 +1,325 @@
+.boxy a{
+    font-weight: normal;
+    color:#3B5998;
+}
+/*
+    MENU
+    ------------------------------
+*/
+#mp-menu li{
+    background-position: 2px center;
+    background-repeat: no-repeat;
+    padding-left: 22px;
+}
+#mp-menu li a{font-weight: bold;}
+#mp-menu li.active a {color:#FFF!important}
+
+li.mp_inbox {background-image: url(../images/icon-mensajes-recibido.png)!important;}
+li.mp_send {background-image: url(../images/icon-mensajes-enviado.png)!important;}
+li.mp_return {background-image: url(../images/icon-mensajes-respuesta.png)!important;}
+li.mp_search {background-image: url(../images/icons/find.png)!important;}
+li.mp_new {background-image: url(../images/icon-mensajes-nuevo.png)!important;}
+li.mp_avisos {background-image: url(../images/icons/exclamation.png)!important;}
+/*
+    SEARCH
+    -------------------------------
+*/
+input.search_mp {
+    background: url("../images/searchboxy.gif") no-repeat scroll 5px 5px #FFFFFF;
+    border-radius: 15px 15px 15px 15px;
+    padding-left: 23px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    width: 165px;
+    font-size: 11px;
+}
+/*
+    MENSAJE LIST
+    -------------------------------
+*/
+#mpList {
+    margin: 0 20px 5px;
+}
+#mpList li {
+    border-top:1px solid #E9E9E9;
+    display: block;
+    padding: 0;
+}
+#mpList li.unread {
+    background-color: #EBEEF4;
+    border-color: #DCE2EC;
+    margin: 0 -20px;
+    padding: 0 20px;
+}
+li.unread .mp_time, li.unread .mp_desc .preview {
+    color: #6D84B4;
+}
+table.uiGrid{
+    border: 0 none;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+.uiGrid td {
+    font-size: 11px;
+    text-align: left;
+}
+.uiGrid td.main_col {width: 700px;}
+.main_col a:hover .autor {text-decoration: underline;}
+.uiGrid td.plm {padding-left: 10px;}
+.uiGrid td.pls {padding-left: 5px;}
+
+.mpContent {padding: 5px 0;}
+.mpContent img {
+    float: left;
+    margin-right: 10px;
+    width: 50px;
+    height: 50px;
+}
+.mpContent .mp_time {
+    float: right;
+    margin-top: 18px;
+    color:#AAA;
+}
+.mpContent .mp_desc {
+    display: table-cell;
+    vertical-align: top;
+    width: 10000px;
+    line-height: 16px;
+    padding-top: 8px;
+}
+.mp_desc .autor {
+    max-width: 500px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.mp_desc .autor strong{
+    font-size: 13px;
+}
+.mp_desc .subject {
+    max-width: 300px;
+    color:#808080;
+    font-weight: bold;
+    line-height: 11px;
+}
+.mp_desc .preview {
+    color:#808080;
+    max-width: 430px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+.uiGrid i{
+    background-image: url("http://b.static.ak.fbcdn.net/rsrc.php/v1/zG/r/3aUCNXyvgB6.png");
+    background-repeat: no-repeat;
+    display: inline-block;
+    height: 12px;
+    width: 12px;
+}
+.uiGrid i.read {
+    background-position: -11px -85px;
+    height: 11px;
+    width: 11px;
+}
+.uiGrid i.read:hover {background-position: 0 -85px;}
+.uiGrid i.unread {
+    vertical-align: middle;
+    background-position: -11px -73px;
+    height: 11px;
+    width: 11px;
+}
+.uiGrid i.unread:hover {background-position: 0 -73px;}
+.uiGrid i.delete {
+    background-image: url("http://b.static.ak.fbcdn.net/rsrc.php/v1/za/r/1Be-brvKO2y.png");
+    height: 11px;
+    margin-top: 1px;
+    width: 11px;
+}
+.uiGrid i.delete:hover {background-position: left -22px;}
+.uiGrid i.return {
+    background-position: -8px -114px;
+    width: 8px;
+    margin-right: 5px;
+    vertical-align: middle;
+}
+.uiGrid i.pop {
+    background-position: -23px -64px;
+    height: 13px;
+    width: 9px;
+}
+/*
+    MP HISTORIAL
+    -----------------------------
+*/
+ul.mpHistory {
+    width: 500px;
+    margin: 0;
+}
+.mpHistory li{
+    border-bottom:1px solid #E9E9E9;
+}
+.mpHistory li .main {
+    padding: 8px 15px;
+}
+.mpHistory li .autor-image {
+    margin-right: 8px;
+    float:left;
+}
+.mpHistory li .mensaje {
+    display: table-cell;
+    vertical-align: top;
+    width: 1000px;
+	word-wrap: break-word; 
+}
+div.mensaje .autor-name {
+    font-weight: bold;
+} 
+div.mensaje .mp-date {
+    color:#808080;
+    float:right;
+    font-size: 11px;
+}
+/*
+    MP FORM
+    ----------------------------
+*/
+.mpForm {
+    background-color: #F2F2F2;
+    width: 500px;
+}
+.mpForm .form {
+    padding: 10px 15px;
+}
+.mpForm textarea {
+    min-height: 28px;
+    overflow: auto;
+    width: 466px;
+    background: #FFF;
+    margin-bottom: 5px;
+}
+.mpForm a.resp {
+    display: inline-block;
+    color:#333;
+    font-weight: bold;
+}
+/* 
+    ACTION HEADER
+    ----------------------------
+*/
+.mpHeader {
+    background:#F2F2F2; 
+    border-bottom:1px dashed #B3B3B3;
+    padding: 6px 8px 5px;
+}
+.mpHeader h2 {
+    background: url("../images/icons/comments.png") no-repeat scroll left center transparent;
+    display: block;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 5px 1em;
+    overflow: hidden;
+    padding-left: 30px;
+    width: auto;
+}
+.mpHeader .actions {
+    float: right;
+    width: 205px;
+    padding-top: 10px;
+    font-size: 18px;
+}
+.mpUser {
+    border-bottom: 1px solid #E9E9E9;
+    font-size: 18px;
+    width: 500px;
+}
+.mpUser .info {
+    padding: 10px 15px;
+    display: block;
+}
+/*
+    OPTIONS
+    -----------------------------
+*/
+.mpOptions {
+    float: right;
+    width: 227px;
+}
+.mpOptions .info{
+    background-color: #F2F2F2;
+    padding: 10px 15px;
+    border-bottom:1px dashed #B3B3B3;
+}
+.mpOptions .info h2{
+    background: url(../images/icons/actions.png) no-repeat left center;
+    padding-left: 30px;
+    font-size: 16px;
+    margin:0;
+    line-height: 25px;
+}
+.mpOptions ul {
+    padding: 5px 10px;
+}
+.mpOptions li {
+    padding: 0!important;
+}
+.mpOptions li.div {
+    border-bottom: 1px solid #DDDDDD;
+    margin: 5px 0 6px;
+    padding-top: 1px;
+}
+.mpOptions li a {
+    display: block;
+    line-height: 16px;
+    padding: 1px 10px;
+    border:1px solid #FFF;
+}
+.mpOptions li a:hover {
+    background-color: #6D84B4;
+    color:#FFF;
+    text-decoration: none;
+    border-color:#3B5998;
+}
+/*
+    ACTION FOOTER
+    -----------------------------
+*/
+.mpFooter {
+    background-color: #F2F2F2;
+    border-top:1px dashed #B3B3B3;
+    margin-top: 20px;
+    padding: 5px 20px;
+}
+.mpFooter .pages {
+    text-align: right;
+}
+.mpFooter .actions {
+    float: left;
+    width: 300px;
+    color:#808080;
+}
+.mpFooter .paginador{
+    float:right;
+    width: 170px;
+    padding: 0;
+    margin:0;
+    border:none;
+}
+.mpFooter .paginador div {
+    width: 85px;
+}
+/*
+    EXTRAS 
+    --------------------------------
+*/
+.emptyMensajes {
+    color: #CCCCCC;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 200px 0;
+    text-align: center;
+}
+
+.mpRContent {
+    border-right: 1px solid #E9E9E9;
+    float: left;
+    width: 500px;
+}

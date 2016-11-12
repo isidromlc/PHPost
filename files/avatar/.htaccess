@@ -1,0 +1,11 @@
+RewriteEngine on
+RewriteRule ^(.*)_(.*)x(.*).jpg$ $1_$2.jpg [L]
+# DEFAULTS
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteRule ^(.*)_16.jpg$ $1_50.jpg [L]
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteRule ^(.*)_32.jpg$ avatar_32.jpg [L]
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteRule ^(.*)_50.jpg$ avatar_50.jpg [L]
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteRule ^(.*)_120.jpg$ avatar.jpg [L]

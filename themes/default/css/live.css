@@ -1,0 +1,129 @@
+/* BEEPS */
+.UIBeep {
+    background: #E1E6EE;
+    clear: right;
+    overflow: hidden;
+    padding: 3px 0;
+}
+.UIBeep .blueName {
+    color:#3B5998;
+}
+.UIBeeper {
+    display: none;
+}
+.UIBeeper .UIBeeper_Full {
+    background-color: #E1E6EE;
+    border: 1px solid #99A8C7;
+    border-radius: 3px 3px 3px 3px;
+    margin: 3px 0;
+    display: none;
+}
+.UIBeeper .UIBeeper_Full:hover {
+    background-color: #CAD1DE;
+}
+.UIBeeper .UIBeep_Bottom {
+    padding-bottom: 0;
+}
+.UIBeeper .UIBeep_Top {
+    padding-top: 0;
+}
+.UIBeep .UIBeep_Title_Outgoing {
+    font-weight: bold;
+}
+.UIBeep .undo_link {
+    margin-left: 6px;
+}
+.UIBeeper .UIBeep .UIBeep_Intentional .beeper_x {
+    background: url("http://b.static.ak.fbcdn.net/rsrc.php/v1/zQ/r/HO_GBYmDiTm.gif") no-repeat scroll 0 0 transparent;
+    display: none;
+}
+.UIBeeper .UIBeep .UIBeep_NonIntentional .beeper_x {
+    background: url("http://b.static.ak.fbcdn.net/rsrc.php/v1/zQ/r/HO_GBYmDiTm.gif") no-repeat scroll 0 0 transparent;
+    float: right;
+    height: 16px;
+    margin-top: 6px;
+    visibility: hidden;
+    width: 16px;
+}
+.UIBeep .beeper_x:hover {
+    background: url("http://static.ak.fbcdn.net/rsrc.php/v1/zj/r/euPl6cXMZbg.gif") no-repeat scroll 0 0 transparent !important;
+}
+.UIBeep a.UIBeep_NonIntentional:hover, .UIBeep a.UIBeep_Intentional:hover {
+    text-decoration: none;
+}
+.UIBeep_Selected .beeper_x {
+    display: block !important;
+    margin-left: 4px;
+    visibility: visible !important;
+}
+.UIBeeper .UIBeep_Selected {
+    background: none repeat scroll 0 0 #CAD1DE;
+}
+.UIBeep_Selected .UIBeep_Icon {
+    margin-right: 2px;
+}
+.UIBeep_Selected .UIBeep_Intentional .UIBeep_Icon img.beeper_icon {
+    display: none;
+}
+.UIBeep_Fading .UIBeep_Title {
+    display: none;
+}
+.UIBeep .UIBeep_Title {
+    padding: 5px 0;
+}
+.UIBeep .UIBeep_Intentional .UIBeep_Title {
+    margin: 0 9px 0 51px;
+}
+.UIBeep .UIBeep_NonIntentional .UIBeep_Title {
+    margin: 0 20px 0 30px;
+}
+.UIBeeper .UIBeep_Intentional .UIBeep_Title {
+    color: #000000;
+    font-size: 11px;
+    line-height: 1.3;
+}
+.UIBeep .UIBeep_Intentional .UIBeep_Pic {
+    float: left;
+    font-size: 1px;
+    margin: 4px 8px;
+    text-align: center;
+}
+.UIBeep .UIBeep_NonIntentional .UIBeep_Icon {
+    float: left;
+    height: 20px;
+    margin: 5px;
+    text-align: center;
+    width: 20px;
+}
+.UIBeep .UIBeep_Intentional .UIBeep_Icon {
+    float: right;
+    height: 20px;
+    margin-right: 5px;
+    margin-top: 5px;
+    text-align: center;
+    width: 20px;
+}
+.UIBeep .UIBeep_Icon img{
+    float: left;
+}
+.UIBeep .UIBeep_Intentional .UIBeep_Pic img.beeper_thumb {
+    height: 35px;
+    width: 35px;
+}
+.UIBeep .UIBeep_Intentional .UIBeep_Pic img.beeper_icon {
+    height: 16px;
+    width: 16px;
+}
+.UIBeeper {
+    bottom: 30px;
+    left: 15px;
+    position: fixed;
+    width: 300px;
+    z-index: 99;
+}
+.UIBeeper .UIBeep_Bottom {
+    border-bottom: medium none;
+}
+.UIBeeper .UIBeep .extra_media {
+    margin-top: 4px;
+}

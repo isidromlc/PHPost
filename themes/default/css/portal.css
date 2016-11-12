@@ -1,0 +1,151 @@
+/* PERFIL */
+@import "perfil.css";
+/* HACKS PARA EL MURO */
+.Story_Content, .Story_Comments {width: 400px;}
+.ufiItem .newComment input[type="text"]{width: 384px;}
+.ufiItem .newComment textarea {width: 344px;}
+.ufiItem .newComment .btn_g {margin: 3px 2px 0 0;}
+.more-pubs {width: 440px;}
+#wall-content, #perfil-form .frameForm {width: 100%;}
+#attaContent input.itext {width: 82%;}
+/* HACKS PARA LA ACTGIVIDAD */
+.last-activity img {border: none;padding: 0;}
+.last-activity img.ac_avatar{float:left;padding:0;margin-right:5px}
+.ac_content {width: 470px!important;}
+/* PORTAL */
+.module {
+    margin-top: 10px;
+}
+.module .box_txt {
+    font-size: 14px;
+    margin: 5px 0 0 10px;
+    padding: 0 0 0 20px;
+    background-position: left center;
+    background-repeat: no-repeat;
+}
+.module .box_cuerpo {
+    background-color: #F9F9F9;
+}
+#left_box{
+    float:left;
+    padding: 2px;
+    padding-left: 4px;
+    width: 160px;
+}
+#user_box {
+    background-color: #F9F9F9;
+    padding: 8px;
+    border: 1px solid #CCC;
+    border-radius:5px;
+    margin-top:1em;
+}
+#left_box .tools a{
+    display: inline-block;
+    padding-left: 20px;
+    margin-bottom: 2px;
+    width: auto;
+}
+#left_box .tools a.salir{
+    background: url(../images/icons/power_off.png) no-repeat left center;
+}
+#center_box {
+    float:left;
+    padding: 2px;
+    width: 485px;
+}
+    /** => PORTAL CONTENT **/
+    #portal {
+        margin-top:1em;
+    }
+    #portal .tabs_menu {
+        background-color: #EEE;
+        border-radius:5px 5px 0 0;
+        padding: 0;
+    }
+    #portal .tabs_menu li {
+        float: left;
+        margin: 0 5px;
+        margin-bottom: -2px;
+    }  
+    #portal .tabs_menu li a {
+        background-repeat: no-repeat;
+        background-position: 5px center;
+        border:1px solid transparent;
+        color: #666666;
+        display: block;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 5px 10px 5px 25px;
+    }
+    #portal .tabs_menu li.selected a, #portal .tabs_menu li a:hover{
+        background-color: #F9F9F9;
+        border-color: transparent #CCC;
+        color:#333;
+    }
+    #portal .tabs_menu li.selected a.news {
+        background-color: #FFF;
+    }
+    #portal_content{
+        border:1px solid #CCC;
+        border-top:none;
+        border-radius:0 0 5px 5px;
+        padding: 10px;
+        clear: both;
+    }
+    /** => Config Cats **/
+    #config_posts .emptyData {
+        padding: 5px;
+        margin-top:5px;
+    }
+    #config_posts .next{
+        font-weight: bold;
+        font-size:14px;
+        margin:5px;
+        float:right;
+    }
+    #config_posts ul{
+        padding-bottom:5px;
+        border-bottom:1px solid #CCC;
+    }
+    #config_posts ul li{
+        float:left;
+        width: 154px;
+    }
+    #config_posts label {
+        display:block;
+        cursor:pointer;
+    }
+    #config_posts ul li span {
+        background-position: left center;
+        background-repeat: no-repeat;
+        display:inline-block;
+        padding-left:20px;
+        height: 16px;
+    }
+    /** => HACKS **/
+    .lastPosts {
+        border-radius:0;
+        -moz-border-radius:0;
+        border:none;
+        margin:0;
+        padding: 0;
+    }
+#right_box {
+    float:left;
+    padding: 2px;
+    padding-right: 0;
+    width: 299px;
+}
+    /** AFILIADOS **/
+    .afiliados li{
+        text-align: center;
+        margin-bottom: 5px;
+    }
+/******/
+.favs {background-image: url(../images/icons/heart.png);}
+.visited {background-image: url(../images/icons/clock-select.png);}
+.fotos {background-image: url(../images/icons/photo.png);}
+.afs {background-image: url(../images/icons/block-share.png);}
+.news {background-image: url(../images/icons/newspaper.png);}
+.posts {background-image: url(../images/icons/posts.png);}
+.activity {background-image: url(../images/icons/megaphone.png);}

@@ -1,0 +1,84 @@
+## Manejo de errores de Apache. Cuando se produzca uno de estos errores, redirigimos a una pagina especial desarrollada por nosotros.
+ErrorDocument 401 /error401.html
+ErrorDocument 403 /error403.html
+ErrorDocument 404 /error404.html
+  
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+ 
+Options +FollowSymLinks
+# Evitar escaneos y cualquier intento de manipulación malintencionada
+# de la URL. Con esta regla es imposible lanzar ataques de inyección (SQL, XSS, etc)
+RewriteCond %{HTTP_USER_AGENT} ^$ [OR]
+RewriteCond %{HTTP_USER_AGENT} ^(-|\.|') [OR]
+RewriteCond %{HTTP_USER_AGENT} ^(.*)(<|>|%3C|%3E)(.*) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^(java|curl|wget)(.*) [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^(.*)(libwww-perl|libwwwperl|snoopy|curl|wget|winhttp|python|nikto|scan|clshttp|archiver|loader|email|harvest|fetch|extract|grab|miner|suck|reaper|leach)(.*) [NC,OR]
+ 
+RewriteCond %{REQUEST_URI} ^(/,|/;|/<|/>|/'|/`|/%2C|/%3C|/%3E|/%27|/////) [NC,OR]
+RewriteCond %{HTTP_REFERER} ^(.*)(%00|%08|%09|%0A|%0B|%0C|%0D|%0E|%0F|%2C|<|>|'|%3C|%3E|%26%23|%27|%60)(.*) [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)(%00|%08|%09|%0A|%0B|%0C|%0D|%0E|%0F|%2C|%3C|%3E|%27|%26%23|%60)(.*) [NC,OR]
+RewriteCond %{QUERY_STRING} ^(.*)('|-|<|>|,|/|\\|\.a|\.c|\.t|\.d|\.p|\.i|\.e|\.j)(.*) [NC,OR]
+RewriteCond %{HTTP_COOKIE} ^(.*)(<|>|'|%3C|%3E|%27)(.*) [NC]
+ 
+## Evitar que se liste el contenido de los directorios
+Options All -Indexes
+## Lo mismo que lo anterior
+IndexIgnore *
+# Protegerse contra los ataques DOS limitando el tamaño de subida de archivos
+LimitRequestBody 10240000
+
+#-#-#-#- PHPost .htaccess -#-#-#-#
+# INDEX
+RewriteRule ^$ index.php?do=home [QSA,L]
+RewriteRule ^pagina([0-9]+)$ index.php?page=$1 [QSA,L]
+RewriteRule ^index.php$ index.php?do=home [QSA,L]
+RewriteRule ^cuenta.php$ inc/php/cuenta.php [QSA,L]
+RewriteRule ^agregar.php$ inc/php/agregar.php [QSA,L]
+#PERFIL
+RewriteRule ^perfil/([A-Za-z0-9_-]+)$ inc/php/perfil.php?user=$1 [QSA,L]
+RewriteRule ^perfil/([A-Za-z0-9_-]+)/$ inc/php/perfil.php?user=$1 [QSA,L]
+RewriteRule ^perfil/([A-Za-z0-9_-]+)/([0-9]+)$ inc/php/perfil.php?user=$1&pid=$2 [QSA,L]
+# POSTS
+#RewriteRule ^posts$ index.php?do=posts [QSA,L]
+RewriteRule ^posts/$ index.php?do=posts [QSA,L]
+RewriteRule ^mi/$ index.php?do=portal [QSA,L]
+RewriteRule ^posts/([a-z]+)$ index.php?do=posts&action=$1 [QSA,L]
+RewriteRule ^posts/pagina([0-9]+)$ index.php?do=posts&page=$1 [QSA,L]
+RewriteRule ^posts/([A-Za-z0-9_-]+)/$ index.php?do=posts&cat=$1 [QSA,L]
+RewriteRule ^posts/([A-Za-z0-9_-]+)/pagina([0-9]+)$ index.php?do=posts&cat=$1&page=$2 [QSA,L]
+RewriteRule ^posts/([A-Za-z0-9_-]+)/([0-9]+)/(.*).html$ index.php?do=posts&cat=$1&post_id=$2&title=$3 [QSA,L]
+RewriteRule ^posts/editar/([0-9]+)$ inc/php/agregar.php?action=editar&pid=$1 [QSA,L]
+# RECUPERAR PASS Y VALIDAR CUENTA
+RewriteRule ^password/(.+)/([0-9]+)/(.+)/?$ inc/php/password.php?hash=$1&type=$2&email=$3
+RewriteRule ^validar/(.+)/([0-9]+)/(.+)/?$ inc/php/password.php?hash=$1&type=$2&email=$3
+# FOTOS
+RewriteRule ^fotos/([A-Za-z0-9_-]+).php$ inc/php/fotos.php?action=$1 [QSA,L]
+RewriteRule ^fotos/([A-Za-z0-9_-]+)$ inc/php/fotos.php?action=album&user=$1 [QSA,L]
+RewriteRule ^fotos/([A-Za-z0-9_-]+)/([0-9]+)$ inc/php/fotos.php?action=album&user=$1&page=$2 [QSA,L]
+RewriteRule ^fotos/([A-Za-z0-9_-]+)/([0-9]+)/([A-Za-z0-9_-]+).html$ inc/php/fotos.php?action=ver&user=$1&fid=$2 [QSA,L]
+# ADMIN
+RewriteRule ^admin/afs/editar/([0-9]+)$ inc/php/admin.php?action=afs&act=editar&aid=$1 [QSA,L]
+RewriteRule ^admin/medals/editar/([0-9]+)$ inc/php/admin.php?action=medals&act=editar&mid=$1 [QSA,L]
+RewriteRule ^admin/medals/nueva inc/php/admin.php?action=medals&act=nueva [QSA,L]
+RewriteRule ^admin/news/editar/([0-9]+)$ inc/php/admin.php?action=news&act=editar&nid=$1 [QSA,L]
+RewriteRule ^admin/news/nueva inc/php/admin.php?action=news&act=nuevo [QSA,L]
+# MODERACIÓN
+RewriteRule ^moderacion/buscador/([0-2]+)/([0-2]+)/([A-Za-z0-90.9.:a_zA_z_+_%20_¿?¡!@,'-]+)$ inc/php/moderacion.php?action=buscador&act=search&m=$1&t=$2&texto=$3 [QSA,L]
+
+#HISTORIAL DE MODERACIÓN
+RewriteRule ^mod-history/([A-Za-z0-9_-]+)/ inc/php/mod-history.php?ver=$1 [QSA,L]
+
+#EXTRAS
+RewriteRule ^([A-Za-z0-9_-]+).php$ inc/php/ajax_files.php?action=$1 [QSA,L]
+RewriteRule ^([A-Za-z0-9_-]+)/$ inc/php/$1.php [QSA,L]
+RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$ inc/php/$1.php?action=$2 [QSA,L]
+RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/$ inc/php/$1.php?action=$2 [QSA,L]
+RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/([0-9]+)$ inc/php/$1.php?action=$2&id=$3 [QSA,L]
+
+#NO PERMITIR LA DESCARGA DE ARCHIVOS .TPL
+<FilesMatch "\.(htaccess|ini|log|cfg|tpl)$">
+Order Allow,Deny
+Deny from all
+</FilesMatch>

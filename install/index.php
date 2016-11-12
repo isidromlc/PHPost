@@ -3,17 +3,17 @@
 /**
  * @name install.php
  * @author PHPost Team
- * @copyright 2011-2015
+ * @copyright 2011-2016
  */
- 
+
 error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE);
 session_start();
 //
 $version_id = 2;
 $step = empty($_GET['step']) ? 0 : $_GET['step'];
-$step = htmlspecialchars(intval($step)); 
+$step = htmlspecialchars(intval($step));
 $next = true; // CONTINUAR
-	
+
 switch($step)
 {
     case 0:
@@ -40,7 +40,7 @@ switch($step)
                     $next = false;
                 }
             }
-            
+
             $_SESSION['licence'] = TRUE;
         }
         else
@@ -68,12 +68,12 @@ switch($step)
                 $next = false;
     		} else {
         		  @mysqli_query($db_link, "SET NAMES 'utf8'");
-		          
+
                   //COMPROBAMOS SI EXISTE UNA INSTALACIÓN ANTERIOR; si existe redirigimos al actualizador.
         		  if(mysqli_fetch_row(mysqli_query($db_link, 'SHOW TABLES LIKE \'w_configuracion\'')) == true) {
 				    header('Location: ./../upgrade/index.php');
 				  }else{
-				  
+
 				  // GUARDAR LOS DATOS DE CONEXION
                   $config = file_get_contents('../config.inc.php');
                   $config = str_replace(array('dbhost', 'dbuser', 'dbpass', 'dbname'), array($dbhost, $dbuser, $dbpass, $dbname), $config);
@@ -111,15 +111,15 @@ switch($step)
             $wname = htmlspecialchars($_POST['wname']);
             $wlema = htmlspecialchars($_POST['wslogan']);
             $wurl = htmlspecialchars($_POST['wurl']);
-            $wmail = htmlspecialchars($_POST['wmail']); 
+            $wmail = htmlspecialchars($_POST['wmail']);
             if(empty($wname) || empty($wlema) || empty($wurl) || empty($wmail)) $message = 'Todos los campos son requeridos';
             else{
                 define('TS_HEADER', TRUE);
                 // DATOS DE CONEXION
                 include("../config.inc.php");
                 $db_link = mysqli_connect($db['hostname'], $db['username'], $db['password'], $db['database']);
-                @mysqli_query($db_link, "SET NAMES 'utf8'");  
-                
+                @mysqli_query($db_link, "SET NAMES 'utf8'");
+
 				if($db['hostname'] != 'dbhost'){
 	                if(!mysqli_num_rows(mysqli_query($db_link, 'SELECT `user_id` FROM `u_miembros` WHERE user_id = \'1\' || user_rango = \'1\''))){
 				// Cambia el nombre de la categoría Taringa! por el del sitio web creado
@@ -192,7 +192,7 @@ switch($step)
           }
         }
       }
-                    
+
     break;
     case 5:
         // No saltar la licensia
@@ -229,7 +229,7 @@ switch($step)
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<meta name="author" content="PHPost" />
-	<title>Instalaci&oacute;n de PHPost Risus 1.2.5.500</title>
+	<title>Instalaci&oacute;n de PHPost Risus 1.2.7.000</title>
     <link href="estilo.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -237,7 +237,7 @@ switch($step)
     <div id="container">
         <div id="header">
             <h1 class="s32 left"><a href="http://www.phpost.net" target="_blank"><img src="./logo.png" /></a></h1>
-            <h3 class="s12 right">Programa de instalaci&oacute;n: PHPost Risus 1.2.5.500</h3>
+            <h3 class="s12 right">Programa de instalaci&oacute;n: PHPost Risus 1.2.7.000</h3>
         </div>
         <div id="content">
             <div class="col_left">

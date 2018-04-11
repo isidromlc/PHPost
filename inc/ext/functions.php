@@ -25,8 +25,12 @@ else
 /**
  * Ejecutar consulta
  */
-function db_exec($info = '', $type, $data)
+function db_exec()
 {
+	if(isset(func_get_args()[0])) $info = func_get_args()[0];
+	if(isset(func_get_args()[1])) $type = func_get_args()[1];
+	if(isset(func_get_args()[2])) $data = func_get_args()[2];
+	
 	global $db_link, $tsUser, $tsAjax, $display;
     
     // Si la primera variable contiene un string, se entiende que es la consulta que debe ejecutarse. Esto lo prepara para ello.

@@ -6,16 +6,6 @@
  * @author  PHPost Team
  */
 class tsTops {
-
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsTops();
-    	}
-		return $instance;
-	}
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								TOPS Y ESTADISTICAS

@@ -6,19 +6,10 @@
  * @author  PHPost Team
  */
 class tsMuro {
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsMuro();
-    	}
-		return $instance;
-	}
 	/*
         getPrivacity()
     */
-    public function getPrivacity($user_id, $username, $follow, $yfollow){
+    public function getPrivacity($user_id = NULL, $username = NULL, $follow = NULL, $yfollow = NULL){
         global $tsUser;
         $priv['m']['v'] = true;
         $priv['mf']['v'] = true;
@@ -178,7 +169,7 @@ class tsMuro {
         if(empty($exists)) return '0: El usuario al que intentas comentar no existe.';
         // VERIFICAR QUE PERMITA COMPARTIR EN SU MURO
 		include 'c.cuenta.php';
-		$tsCuenta =& tsCuenta::getInstance();
+		$tsCuenta = new tsCuenta();
 		$priv = $this->getPrivacity($pid, $exists, $tsCuenta->iFollow($pid), $tsCuenta->yFollow($pid));
 		// SE PERMITE FIRMAR EL MURO?
 		if($priv['mf']['v'] == false) return '0: '.$priv['mf']['m'];

@@ -57,7 +57,7 @@
 	
 	require('../class/c.registro.php');
 	
-	$tsReg =& tsRegistro::getInstance();
+	$tsReg = new tsRegistro();
 	
 	// CODIGO
 	

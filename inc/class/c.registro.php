@@ -7,15 +7,6 @@
  */
 class tsRegistro{
 
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsRegistro();
-    	}
-		return $instance;
-	}
     /**
      * @name checkUserEmail($pid)
      * @access public
@@ -60,8 +51,7 @@ class tsRegistro{
 			'user_pais' => strtoupper($_POST['pais']),
 			'user_estado' => $_POST['estado'],
 			'user_terminos' => $_POST['terminos'],
-			'user_captacha_challenge' => $_POST['recaptcha_challenge_field'],
-			'user_captacha_response' => $_POST['recaptcha_response_field'],
+			'user_captcha' => $_POST['g-recaptcha-response'],
 			'user_registro' => time(),
 		);
 		// ERRORS
@@ -71,7 +61,7 @@ class tsRegistro{
 			'password' => 'La contrase&ntilde;a tiene que ser distinta que el nick',
 			'email' => 'El formato es incorrecto',
 			'email_2' => 'El email ya est&aacute; en uso',
-			'captacha' => 'El c&oacute;digo es incorrecto'
+			'captcha' => 'Validaci&oacute;n incorrecta',
 		);
 		// COMPROBAR VACIOS
 		foreach($tsData as $key => $val){
@@ -80,10 +70,20 @@ class tsRegistro{
 				return $key_error.': '.$errors['default'];
 			}
 		}
-		// CAPTACHA
-		require(TS_EXTRA . 'recaptchalib.php');
-		$robot = recaptcha_check_answer(RC_PIK,$_SERVER["REMOTE_ADDR"],$tsData['user_captacha_challenge'],$tsData['user_captacha_response']);
-		if(!$robot->is_valid) return 'recaptcha: El c&oacute;digo es incorrecto.';
+
+		/** reCAPTCHA **/
+        $recaptcha = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $tsCore->settings['skey'] . '&response=' . $tsData['user_captcha'] . '&remoteip=' . $tsCore->getIP();
+        // Obtener respuesta
+        $response = file_get_contents($recaptcha);
+        // Extraer resultado
+        $ext1 = explode('"success":', $response);
+        $ext2 = explode(',', $ext1[1]);
+        // Comprobar resultado
+        $valid = trim($ext2[0]);
+        // Devolver respuesta si es incorrecta
+        if ($valid == 'false') {
+            return 'recaptcha: No hemos podido validar tu humanidad';
+        }
 		
         // COMPROBAR QUE EL NOMBRE DE USUARIO SEA VÁLIDO
         if( !preg_match("/^[a-zA-Z0-9_-]{4,16}$/", $tsData['user_nick']) ) {

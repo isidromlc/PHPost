@@ -56,14 +56,14 @@
 	if(is_numeric($action)){
 		//
 		include("../class/c.borradores.php");
-		$tsDrafts =& tsDrafts::getInstance();
+		$tsDrafts = new tsDrafts();
 		$tsBorrador = $tsDrafts->getDraft();
 		$smarty->assign("tsDraft",$tsBorrador);
 		//
 	} elseif($action == 'editar'){
 		// CLASE
 		include("../class/c.posts.php");
-		$tsPosts =& tsPosts::getInstance();
+		$tsPosts = new tsPosts();
 		// GUARDAR
 		if(!empty($_POST['titulo'])){
 		  $post_save = $tsPosts->savePost();
@@ -96,7 +96,7 @@
 	}elseif($_POST['titulo']){
 		// CLASE
 		include("../class/c.posts.php");
-		$tsPosts =& tsPosts::getInstance();
+		$tsPosts = new tsPosts();
 		//
 		$tsPost = $tsPosts->newPost();
 		//

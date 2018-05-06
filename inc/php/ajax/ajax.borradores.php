@@ -42,7 +42,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
 	// CLASE
 	require('../class/c.borradores.php');
-	$tsDrafts =& tsDrafts::getInstance();
+	$tsDrafts = new tsDrafts();
 	// CODIGO
 	switch($action){
 		case 'borradores':

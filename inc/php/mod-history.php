@@ -46,7 +46,7 @@
 \*********************************/
 
 		include("../class/c.moderacion.php");
-		$tsMod =& tsMod::getInstance();
+		$tsMod = new tsMod();
 
 /**********************************\
 

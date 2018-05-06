@@ -51,7 +51,7 @@
 \*********************************/
 	//
 	include("../class/c.fotos.php");
-	$tsFotos =& tsFotos::getInstance();
+	$tsFotos = new tsFotos();
 
 /**********************************\
 

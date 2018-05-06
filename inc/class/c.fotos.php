@@ -7,16 +7,6 @@
  */
 class tsFotos {
 
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsFotos();
-    	}
-		return $instance;
-	}
-	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								PUBLICAR FOTOS
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -53,7 +43,7 @@ class tsFotos {
         $tsCore->antiFlood(true, 'foto', 'Para el carro, chacho...');
         // UPLOAD
         require('c.upload.php');
-        $tsUpload =& tsUpload::getInstance();
+        $tsUpload = new tsUpload();
         $tsUpload->image_scale = true;
         // HACER        
         if($tsCore->settings['c_allow_upload'] == 1 && $fData['foto']['file']['name'] != '') $result = $tsUpload->newUpload(1);

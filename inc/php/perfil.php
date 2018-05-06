@@ -55,7 +55,7 @@
 	} else {
 	//
 	include("../class/c.cuenta.php");
-	$tsCuenta =& tsCuenta::getInstance();
+	$tsCuenta = new tsCuenta();
 
 /**********************************\
 
@@ -90,7 +90,7 @@
 	$smarty->assign("tsGeneral",$tsGeneral);
     // MURO
     include("../class/c.muro.php");
-    $tsMuro =& tsMuro::getInstance();
+    $tsMuro = new tsMuro();
     // PERMISOS
     $priv = $tsMuro->getPrivacity($usuario['user_id'], $username, $tsInfo['follow'], $tsInfo['yfollow'] );
     // SE PERMITE VER EL MURO?

@@ -8,19 +8,7 @@ if (!defined('TS_HEADER'))
  * @name    c.admin.php
  * @author  PHPost Team
  */
-class tsAdmin
-{
-    // INSTANCIA DE LA CLASE
-    public static function &getInstance()
-    {
-        static $instance;
-
-        if (is_null($instance))
-        {
-            $instance = new tsAdmin();
-        }
-        return $instance;
-    }
+class tsAdmin {
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     // ADMINISTRAR \\
@@ -30,7 +18,6 @@ class tsAdmin
     */
     function getAdmins()
     {
-
         //
         $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT `user_id`, `user_name` FROM `u_miembros` WHERE user_rango = \'1\' ORDER BY user_id');
         //
@@ -41,7 +28,6 @@ class tsAdmin
 
     function getInst()
     {
-
         //
         $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT `stats_time_foundation`, `stats_time_upgrade` FROM `w_stats` WHERE stats_no = \'1\'');
         //
@@ -109,7 +95,10 @@ class tsAdmin
             'max_posts' => $tsCore->setSecure($_POST['max_posts']),
             'max_com' => $tsCore->setSecure($_POST['max_com']),
             'sump' => empty($_POST['sump']) ? 0 : 1,
-            'newr' => empty($_POST['newr']) ? 0 : 1);
+            'newr' => empty($_POST['newr']) ? 0 : 1,
+            'pkey' => $tsCore->setSecure($_POST['pkey']),
+            'skey' => $tsCore->setSecure($_POST['skey']),
+        );
         // UPDATE
         if (db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE `w_configuracion` SET `titulo` = \'' . $c['titulo'] . '\', `slogan` = \'' .
             $c['slogan'] . '\', `url` = \'' . $c['url'] . '\', `chat_id` = \'' . $c['chat'] .
@@ -126,7 +115,7 @@ class tsAdmin
             $c['sump'] . '\', `c_newr_type` = \'' . $c['newr'] . '\', `c_allow_firma` = \'' .
             $c['firma'] . '\', `c_allow_upload` = \'' . $c['upload'] . '\', `c_allow_portal` = \'' .
             $c['portal'] . '\', `c_allow_live` = \'' . $c['live'] . '\', `offline` = \'' . $c['offline'] .
-            '\', `offline_message` = \'' . $c['offline_message'] . '\' WHERE `tscript_id` = \'1\''))
+            '\', `offline_message` = \'' . $c['offline_message'] . '\', `pkey` = \'' . $c['pkey'] . '\', `skey` = \'' . $c['skey'] . '\' WHERE `tscript_id` = \'1\''))
             return true;
         else
             exit( show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db') );
@@ -138,7 +127,7 @@ class tsAdmin
     {
 
         //
-        $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT u.user_id, u.user_name, n.* FROM w_noticias AS n LEFT JOIN u_miembros AS u ON n.not_autor = u.user_id	WHERE n.not_id > \'0\' ORDER BY n.not_id DESC');
+        $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT u.user_id, u.user_name, n.* FROM w_noticias AS n LEFT JOIN u_miembros AS u ON n.not_autor = u.user_id  WHERE n.not_id > \'0\' ORDER BY n.not_id DESC');
         $data = result_array($query);
 
         //
@@ -541,10 +530,10 @@ class tsAdmin
         if (!empty($data['post']))
         {
             $query = db_exec(array(__FILE__, __LINE__), 'query', "
-				SELECT user_rango AS ID_GROUP, COUNT(user_id) AS num_members
-				FROM u_miembros
-				WHERE user_rango IN (" . implode(', ', array_keys($data['post'])) . ")
-				GROUP BY user_rango");
+                SELECT user_rango AS ID_GROUP, COUNT(user_id) AS num_members
+                FROM u_miembros
+                WHERE user_rango IN (" . implode(', ', array_keys($data['post'])) . ")
+                GROUP BY user_rango");
             while ($row = db_exec('fetch_assoc', $query))
                 $data['post'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
             db_exec('free_result', $query);
@@ -553,10 +542,10 @@ class tsAdmin
         if (!empty($data['regular']))
         {
             $query = db_exec(array(__FILE__, __LINE__), 'query', "
-				SELECT user_rango AS ID_GROUP, COUNT(*) AS num_members
-				FROM u_miembros
-				WHERE user_rango IN (" . implode(', ', array_keys($data['regular'])) . ")
-				GROUP BY user_rango");
+                SELECT user_rango AS ID_GROUP, COUNT(*) AS num_members
+                FROM u_miembros
+                WHERE user_rango IN (" . implode(', ', array_keys($data['regular'])) . ")
+                GROUP BY user_rango");
             while ($row = db_exec('fetch_assoc', $query))
                 $data['regular'][$row['ID_GROUP']]['num_members'] += $row['num_members'];
             db_exec('free_result', $query);
@@ -1246,10 +1235,10 @@ class tsAdmin
             //ENVIAMOS CORREO
             $subject = $datos['name_1'] . ', su petici&oacute;n de cambio ha sido aceptada';
             $body = 'Hola ' . $datos['name_1'] . ':<br />
-	        Le enviamos este email para informarle que su petici&oacute;n de cambio de nick ha sido aceptada.
-			Desde este momento, podr&aacute; acceder en ' . $tsCore->settings['titulo'] .
+            Le enviamos este email para informarle que su petici&oacute;n de cambio de nick ha sido aceptada.
+            Desde este momento, podr&aacute; acceder en ' . $tsCore->settings['titulo'] .
                 ' con el nombre de usuario ' . $datos['name_2'] . '. <br /><br />
-			El staff de <strong>' . $tsCore->settings['titulo'] . '</strong>';
+            El staff de <strong>' . $tsCore->settings['titulo'] . '</strong>';
         } elseif ($_POST['accion'] == 'denegar')
         {
             db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_name_changes = user_name_changes - 1 WHERE user_id = \'' .
@@ -1263,8 +1252,8 @@ class tsAdmin
             //ENVIAMOS CORREO
             $subject = $datos['name_1'] . ', su petici&oacute;n de cambio ha sido denegada';
             $body = 'Hola ' . $datos['name_1'] . ':<br />
-	        Le enviamos este email para informarle que su petici&oacute;n de cambio de nick ha sido denegada. <br /><br />
-			El staff de <strong>' . $tsCore->settings['titulo'] . '</strong>';
+            Le enviamos este email para informarle que su petici&oacute;n de cambio de nick ha sido denegada. <br /><br />
+            El staff de <strong>' . $tsCore->settings['titulo'] . '</strong>';
         } else
             return '0: Mijo, ve de paseo';
 
@@ -1276,7 +1265,7 @@ class tsAdmin
         $tsEmail->emailSubject = $subject;
         $tsEmail->emailBody = $body;
         $tsEmail->emailHeaders = $tsEmail->setEmailHeaders();
-        $tsEmail->sendEmail($from, $to, $subject, $body) or die('0: Hubo un error al intentar procesar lo solicitado');
+        $tsEmail->sendEmail($from, $to, $subject, $body) or die('0: Hubo un error al enviar el correo.');
         die('1: <div class="box_cuerpo" style="padding: 12px 20px; border-top:1px solid #CCC">Hemos enviado un correo a <b>' .
             $datos['user_email'] .
             '</b> con la decisi&oacute;n tomada. Tambi&eacute;n le hemos enviado un aviso al usuario.</div>');

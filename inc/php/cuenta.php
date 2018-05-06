@@ -48,7 +48,7 @@
 	$action = $_GET['action'];
 	//
 	include("../class/c.cuenta.php");
-	$tsCuenta =& tsCuenta::getInstance();
+	$tsCuenta = new tsCuenta();
 
 /**********************************\
 

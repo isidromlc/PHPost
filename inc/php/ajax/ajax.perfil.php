@@ -44,7 +44,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
     // CLASS
     include("../class/c.cuenta.php");
-    $tsCuenta =& tsCuenta::getInstance();
+    $tsCuenta = new tsCuenta();
     // USER ID
     $user_id = (int) $tsCore->setSecure($_POST['pid']);
     if(empty($user_id)) die('0: El campo <b>user_id</b> es obligatorio.');
@@ -54,7 +54,7 @@
 	switch($action){
         case 'perfil-wall':
             include("../class/c.muro.php");
-            $tsMuro =& tsMuro::getInstance();
+            $tsMuro = new tsMuro();
             // GENERAL
         	$tsGeneral = $tsCuenta->loadGeneral($user_id);
         	$smarty->assign("tsGeneral",$tsGeneral);

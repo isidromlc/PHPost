@@ -112,7 +112,7 @@ var comentario = {
         $('#btnsComment').attr({'disabled':'disabled'});
         //
     	var textarea = $('#body_comm');
-    	var text = textarea.val();
+    	var text = textarea.bbcode();
         // VACIO o DEFAULT
     	if(text == '' || text == textarea.attr('title')){
     		textarea.focus();
@@ -165,7 +165,7 @@ var comentario = {
     // VISTA PREVIA DEL COMENTARIO
     preview: function(id, type){
     	var textarea = (type == 'new') ? $('#' + id) : $('#edit-comment-' + id);
-    	var text = textarea.val();
+    	var text = textarea.bbcode();
         var btn_text = (type == 'new') ? 'Enviar comentario' : 'Guardar';
         var btn_fn = (type == 'new') ? "comentario.nuevo('true')" : 'comentario.editar(' + id + ', \'send\')';
     

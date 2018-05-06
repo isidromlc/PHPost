@@ -43,7 +43,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
     // CLASS
     include("../class/c.afiliado.php");
-    $tsAfiliado =& tsAfiliado::getInstance();
+    $tsAfiliado = new tsAfiliado();
     //
 	// CODIGO
 	switch($action){

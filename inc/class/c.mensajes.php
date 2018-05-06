@@ -10,7 +10,7 @@ class tsMensajes {
     var $mensajes = 0; // SIN LEER
 
 	// INSTANCIA DE LA CLASE
-	function tsMensajes(){
+	function __construct(){
 		global $tsUser;
 		// VISITANTE?
 		if(empty($tsUser->is_member)) return false;

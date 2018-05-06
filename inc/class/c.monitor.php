@@ -30,18 +30,7 @@ class tsMonitor {
      * @info COMO MOSTRAREMOS LAS NOTIFICACIONES -> AJAX/NORMAL
      **/
      public $show_type = 1;
-    /**
-     * @name getInstanse
-     * @access public
-     * @info CREAR INSTANCIA DE LA CLASE
-     */
-    public static function &getInstance(){
-		static $instance;
-		if( is_null($instance) ){
-			$instance = new tsMonitor();
-    	}
-		return $instance;
-	}
+
 	/*
 		constructor()
 	*/
@@ -98,7 +87,7 @@ class tsMonitor {
      * @return bool
      * @info ENVIA UN AVISO/ALERTA
     */
-    function setAviso($user_id, $subject = '(sin asunto)', $body, $type = 0){
+    function setAviso($user_id = NULL, $subject = '(sin asunto)', $body = NULL, $type = 0){
 	global $tsCore;
         # VERIFICAMOS QUE SE PUEDA ENVIAR EL AVISO
 		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_baneado FROM u_miembros WHERE user_id = \''.(int)$user_id.'\' LIMIT 1');
@@ -219,7 +208,7 @@ public function setNotificacion($type, $user_id, $obj_user, $obj_uno = 0, $obj_d
      * @return void
      * @info Envia notificaciones a los usuarios que siguen a un post o usuario.
 	*/
-	function setFollowNotificacion($notType, $f_type, $user_id, $obj_uno, $obj_dos = 0, $excluir){
+	function setFollowNotificacion($notType = null, $f_type = null, $user_id = null, $obj_uno = null, $obj_dos = 0, $excluir = null){
 		global $tsCore;
 		# TIPO DE FOLLOW USER o POST
         if($f_type == 1) $f_id = $user_id;

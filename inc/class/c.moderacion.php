@@ -5,19 +5,7 @@
  * @name    c.moderacion.php
  * @author  PHPost Team
  */
-class tsMod
-{
-    // INSTANCIA DE LA CLASE
-    public static function &getInstance()
-    {
-        static $instance;
-
-        if (is_null($instance))
-        {
-            $instance = new tsMod();
-        }
-        return $instance;
-    }
+class tsMod {
 
     /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
     // ADMINISTRAR \\

@@ -49,14 +49,14 @@
  */
     // Afiliados
     include(TS_CLASS."c.afiliado.php");
-    $tsAfiliado =& tsAfiliado::getInstance();
+    $tsAfiliado = new tsAfiliado();
         
     // Referido?
     if(!empty($_GET['ref'])) $tsAfiliado->urlIn();
     
 	// Posts Class
 	include(TS_CLASS."c.posts.php");
-	$tsPosts =& tsPosts::getInstance();
+	$tsPosts = new tsPosts();
     
     // Category
 	$category = $_GET['cat'];
@@ -127,7 +127,7 @@
         
     	// CLASE TOPS
     	include(TS_CLASS."c.tops.php");
-    	$tsTops =& tsTops::getInstance();
+    	$tsTops = new tsTops();
 
     	// ULTIMOS POSTS
     	$tsLastPosts = $tsPosts->getLastPosts($category, $subcateg);
@@ -156,7 +156,7 @@
         // IMAGENES
         // FOTOS
     	include(TS_CLASS."c.fotos.php");
-    	$tsFotos =& tsFotos::getInstance();
+    	$tsFotos = new tsFotos();
         $tsImages = $tsFotos->getLastFotos();
     	$smarty->assign("tsImages",$tsImages);
         $smarty->assign("tsImTotal",count($tsImages));

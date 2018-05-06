@@ -43,7 +43,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
 	// CLASE
 	require('../class/c.posts.php');
-	$tsPosts =& tsPosts::getInstance();
+	$tsPosts = new tsPosts();
 	// CODIGO
 	switch($action){
 		case 'posts-genbus':

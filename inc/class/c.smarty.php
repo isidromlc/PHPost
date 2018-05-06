@@ -17,7 +17,7 @@ class tsSmarty extends Smarty
   
   
   
-  function tsSmarty()
+  function __construct()
   {
     global $tsCore;
     //
@@ -27,20 +27,6 @@ class tsSmarty extends Smarty
     //
     $this->_tpl_hooks = array();
   }
-  
-  
-  
-  public static function &getInstance()
-  {
-    static $instance;
-    
-    if( is_null($instance) )
-    {
-      $instance = new tsSmarty();
-    }
-    
-    return $instance;
-  }  
   
   function assign_hook($hook, $include)
   {

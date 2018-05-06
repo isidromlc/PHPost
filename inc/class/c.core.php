@@ -9,18 +9,8 @@ class tsCore {
     
 	var $settings;		// CONFIGURACIONES DEL SITIO
 	var $querys = 0;	// CONSULTAS
-    
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsCore();
-    	}
-		return $instance;
-	}
 
-	function tsCore()
+	function __construct()
     {
 		// CARGANDO CONFIGURACIONES
 		$this->settings = $this->getSettings();
@@ -411,7 +401,7 @@ class tsCore {
 	function parseBBCode($bbcode, $type = 'normal') {
         // Class BBCode
         include_once(TS_EXTRA . 'bbcode.inc.php');
-        $parser =& BBCode::getInstance();
+        $parser = new BBCode();
         
         // Seleccionar texto
         $parser->setText($bbcode);

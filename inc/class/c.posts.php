@@ -7,17 +7,6 @@
  */
 
 class tsPosts {
-
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsPosts();
-    	}
-		return $instance;
-	}
-	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								PUBLICAR POSTS
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -201,7 +190,7 @@ class tsPosts {
 			     // GUARDAR EN EL HISTORIAL	DE MODERACION		 
 			     if(($tsUser->is_admod || $tsUser->permisos['moedpo']) && $tsUser->uid != $data['post_user'] && $_POST['razon']){
 					 include("c.moderacion.php");
-                     $tsMod =& tsMod::getInstance();
+                     $tsMod = new tsMod();
 					 return $tsMod->setHistory('editar', 'post', array('post_id' => $post_id, 'title' => $postData['title'], 'autor' => $data['post_user'], 'razon' => $_POST['razon']));
 			     } else return 1;
 			}

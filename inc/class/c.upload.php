@@ -17,15 +17,6 @@ class tsUpload {
     var $servers = array();
     var $server = 'imgur';  // DEFAULT IMGUR
 
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsUpload();
-    	}
-		return $instance;
-	}
     // CONSTRUCTOR
 	public function __construct(){
 	   $this->servers = array(

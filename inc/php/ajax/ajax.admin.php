@@ -51,9 +51,9 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
     // CLASES
     include("../class/c.medals.php");
-    $tsMedal =& tsMedal::getInstance();
+    $tsMedal = new tsMedal();
 	include("../class/c.admin.php");
-    $tsAdmin =& tsAdmin::getInstance();
+    $tsAdmin = new tsAdmin();
     //
 	// CODIGO
 	switch($action){

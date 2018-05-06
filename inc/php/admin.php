@@ -52,7 +52,7 @@
 	$act = htmlspecialchars($_GET['act']);
 	// CLASE POSTS
 	include("../class/c.admin.php");
-	$tsAdmin =& tsAdmin::getInstance();
+	$tsAdmin = new tsAdmin();
 
 /**********************************\
 
@@ -185,7 +185,7 @@
     } elseif($action == 'medals'){
     	// CLASE MEDAL
     	include("../class/c.medals.php");
-    	$tsMedal =& tsMedal::getInstance();
+    	$tsMedal = new tsMedal();
         if(empty($act)){
             $smarty->assign("tsMedals",$tsMedal->adGetMedals());
         } elseif($act == 'nueva'){
@@ -212,11 +212,11 @@
 				//RANGOS DISPONIBLES
 				$smarty->assign("tsRangos",$tsAdmin->getAllRangos());
                 
-        }					/* } elseif($action == 'afs'){		// CLASS			include("../class/c.afiliado.php");		$tsAfiliado =& tsAfiliado::getInstance();		// QUE HACER			if($act == ''){		// AFILIADOS		$smarty->assign("tsAfiliados",$tsAfiliado->getAfiliados('admin'));  	}elseif($act == 'editar' ){  	if(!empty($_POST['save'])){			if($tsAfiliado->saveAfiliado()) 	$tsCore->redirectTo($tsCore->settings['url'].'/admin/afs?save=true');		}  else {// MOSTRAR	$smarty->assign("tsAfiliados",$tsAfiliado->getAfiliado2());		}		 }elseif($act == 'activar' ){ 	if(!empty($_POST['save'])){				if($tsAfiliado->save2Afiliado()) 	$tsCore->redirectTo($tsCore->settings['url'].'/admin/afs?save=true');		}  else {// MOSTRAR	$smarty->assign("tsAfiliados",$tsAfiliado->getAfiliado());			}		 		 			}elseif($act == 'borrar'){			if(!empty($_POST['confirm'])){		if($tsAfiliado->deleteAfiliado()) 	$tsCore->redirectTo($tsCore->settings['url'].'/admin/afs?save=true');			}	   			}elseif($act == 'nueva' ){		if($_POST['save']){			if($tsAfiliado->newAfiliado()) 	$tsCore->redirectTo($tsCore->settings['url'].'/admin/afs?save=true');	}		} */
+        }
 	} elseif($action == 'afs'){
         // CLASS
         include("../class/c.afiliado.php");
-        $tsAfiliado =& tsAfiliado::getInstance();
+        $tsAfiliado = new tsAfiliado;
         // QUE HACER
 	   if($act == ''){
         // AFILIADOS

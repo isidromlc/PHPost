@@ -7,15 +7,6 @@
  */
 class tsCuenta {
 
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsCuenta();
-    	}
-		return $instance;
-	}
     /**
      * @name loadPerfil()
      * @access public

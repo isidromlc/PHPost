@@ -51,7 +51,7 @@
 	$act = htmlspecialchars($_GET['act']);
 	// CLASE POSTS
 	include("../class/c.moderacion.php");
-	$tsMod =& tsMod::getInstance();
+	$tsMod = new tsMod();
 
 /**********************************\
 

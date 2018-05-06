@@ -41,7 +41,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
     // CLASS
     include("../class/c.portal.php");
-    $tsPortal =& tsPortal::getInstance();
+    $tsPortal = new tsPortal();
     //
 	// CODIGO
 	switch($action){

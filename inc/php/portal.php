@@ -45,10 +45,10 @@
 \*********************************/
     // PORTAL
     include(TS_CLASS."c.portal.php");
-    $tsPortal =& tsPortal::getInstance();
+    $tsPortal = new tsPortal();
     // AFILIADOS
     include("inc/class/c.afiliado.php");
-    $tsAfiliado =& tsAfiliado::getInstance();
+    $tsAfiliado = new tsAfiliado();
     // NOS HAN REFERIDO?
     if(!empty($_GET['ref'])) $tsAfiliado->urlIn();
 

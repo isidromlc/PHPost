@@ -7,16 +7,6 @@
  */
 class tsPortal{
 
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsPortal();
-    	}
-		return $instance;
-	}
-	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								PUBLICAR POSTS
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -28,7 +18,7 @@ class tsPortal{
      public function getNews(){
         // MURO
         include(TS_CLASS."c.muro.php");
-        $tsMuro =& tsMuro::getInstance();
+        $tsMuro = new tsMuro();
         return $tsMuro->getNews(0);
      }
     /** setPostsConfig()
@@ -155,7 +145,7 @@ class tsPortal{
      public function getFotos(){
         // FOTOS
     	include(TS_CLASS."c.fotos.php");
-    	$tsFotos =& tsFotos::getInstance();
+    	$tsFotos = new tsFotos();
         return $tsFotos->getLastFotos();
      }
      /** getStats()
@@ -166,7 +156,7 @@ class tsPortal{
      public function getStats(){
     	// CLASE TOPS
     	include(TS_CLASS."c.tops.php");
-    	$tsTops =& tsTops::getInstance();
+    	$tsTops = new tsTops();
         return $tsTops->getStats();
      }
 }

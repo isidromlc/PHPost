@@ -9,7 +9,7 @@ function countUpperCase(string) {
 //
 function showError(obj, str) {
 	if (obj.tagName.toLowerCase() == 'textarea') {
-		obj = $(obj).parent().parent().parent();
+		obj = $(obj).parent().parent();
 	}
 	$(obj).parent('li').addClass('error').children('span.errormsg').html(str).show(); // TODO QUE ONDA
 	$.scrollTo($(obj).parent('li'), 500);
@@ -17,7 +17,7 @@ function showError(obj, str) {
 //
 function hideError(obj) {
 	if (obj.tagName.toLowerCase() == 'textarea') {
-		obj = $(obj).parent().parent().parent();
+		obj = $(obj).parent().parent();
 	}
 	$(obj).parent('li').removeClass('error').children('span.errormsg').html('').hide();
 }
@@ -218,7 +218,7 @@ $(document).ready(function(){
 //
 function postSave() {
 	confirm = false;
-	document.forms.newpost.submit()
+	$('form[name=newpost]').submit();
 }
 </script>
 {/literal}

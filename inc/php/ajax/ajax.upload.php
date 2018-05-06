@@ -40,7 +40,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
 	// CLASE
 	require('../class/c.upload.php');
-	$tsUpload =& tsUpload::getInstance();
+	$tsUpload = new tsUpload();
 	// CODIGO
 	switch($action){
         case 'upload-avatar':

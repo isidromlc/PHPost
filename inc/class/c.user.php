@@ -16,7 +16,7 @@ class tsUser {
 	var $is_error;			// SI OCURRE UN ERROR ESTA VARIABLE CONTENDRA EL NUMERO DE ERROR
 	var $session;
 
-	function tsUser()
+	function __construct()
     {
 		global $tsCore, $tsMedal;
 		/* CARGAR SESSION */
@@ -103,15 +103,6 @@ class tsUser {
 		}
 	   }
 	  }
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-
-		if( is_null($instance) ){
-			$instance = new tsUser();
-    	}
-		return $instance;
-	}
 
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 							// MANEJAR SESSIONES \\

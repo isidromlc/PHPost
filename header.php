@@ -96,24 +96,20 @@
  * -------------------------------------------------------------------
  */
  
- 
-    // Interacción con la base de datos
-    //$tsdb =& tsDatabase::getInstance();
-    
     // Limpiar variables...
     cleanRequest();
 
     // Cargamos el nucleo
-    $tsCore =& tsCore::getInstance();
+    $tsCore = new tsCore();
     
     // Usuario
-    $tsUser =& tsUser::getInstance();
+    $tsUser = new tsUser();
 
     // Monitor
     $tsMonitor = new tsMonitor();
 
     // Actividad
-    $tsActividad =& tsActividad::getInstance();
+    $tsActividad = new tsActividad();
 
     // Mensajes
     $tsMP = new tsMensajes();
@@ -124,7 +120,7 @@
     define('TS_TEMA', $tsTema);
 
     // Smarty
-    $smarty =& tsSmarty::getInstance();
+    $smarty = new tsSmarty();
 
 /*
  * -------------------------------------------------------------------

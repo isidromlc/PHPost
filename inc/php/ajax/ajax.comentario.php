@@ -47,10 +47,10 @@
     $do = $_GET['do'];
 	// CLASE
 	require('../class/c.posts.php');
-	$tsPosts =& tsPosts::getInstance();
+	$tsPosts = new tsPosts();
     if($do == 'fotos'){
         require('../class/c.fotos.php');
-        $tsFotos =& tsFotos::getInstance();
+        $tsFotos = new tsFotos();
     }
 	// CODIGO
 	switch($action){

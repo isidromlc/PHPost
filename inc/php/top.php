@@ -47,7 +47,7 @@
 
 	// CLASE TOPS
 	include("../class/c.tops.php");
-	$tsTops =& tsTops::getInstance();
+	$tsTops = new tsTops();
 	//
 	$fecha = empty($_GET['fecha']) || $_GET['fecha'] > 5 || !ctype_digit($_GET['fecha']) ? 5 : (int)$_GET['fecha'];
 	$smarty->assign("tsFecha",$fecha);

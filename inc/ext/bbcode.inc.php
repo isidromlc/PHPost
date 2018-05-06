@@ -38,18 +38,6 @@ class BBCode {
      */
     private $parser;
 
-    /**
-     * Public instance.
-     */
-    public static function &getInstance() {
-        static $bbcode;
-
-        if (is_null($bbcode)) {
-            $bbcode = new BBCode();
-        }
-
-        return $bbcode;
-    }
 
     public function __construct() {
         $this->restriction = array();

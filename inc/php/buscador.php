@@ -50,7 +50,7 @@
     $a = htmlspecialchars($_GET['autor']);
 	//
 	include("../class/c.posts.php");
-	$tsPosts =& tsPosts::getInstance();
+	$tsPosts = new tsPosts();
 
 /**********************************\
 

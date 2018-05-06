@@ -6,6 +6,7 @@
 <link href="{$tsConfig.tema.t_url}/estilo.css" rel="stylesheet" type="text/css" />
 <link href="{$tsConfig.tema.t_url}/phpost.css" rel="stylesheet" type="text/css" />
 <link href="{$tsConfig.tema.t_url}/extras.css" rel="stylesheet" type="text/css" />
+<link href="{$tsConfig.css}/wysibb.css" rel="stylesheet" type="text/css" />
 
 {if $tsUser->is_admod && $tsConfig.c_see_mod && $tsConfig.novemods.total}
 <!-- AGREGAMOS ESTILO DE MODERACIÓN SI HAY CONTENIDO PARA REVISAR -->
@@ -22,6 +23,7 @@
 <script src="{$tsConfig.js}/jquery.plugins.js" type="text/javascript"></script>
 <script src="{$tsConfig.js}/acciones.js" type="text/javascript"></script>
 <script src="{$tsConfig.js}/funciones.js" type="text/javascript"></script>
+<script src="{$tsConfig.js}/wysibb.js" type="text/javascript"></script>
 {if $tsUser->is_admod || $tsUser->permisos.moacp || $tsUser->permisos.most || $tsUser->permisos.moayca || $tsUser->permisos.mosu || $tsUser->permisos.modu || $tsUser->permisos.moep || $tsUser->permisos.moop || $tsUser->permisos.moedcopo || $tsUser->permisos.moaydcp || $tsUser->permisos.moecp}
 <script src="{$tsConfig.js}/moderacion.js" type="text/javascript"></script>
 {/if}

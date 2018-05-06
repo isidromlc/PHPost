@@ -112,8 +112,8 @@ function el(id){
 /* Citar comentarios */
 function citar_comment(id, nick){
 	var textarea = $('#body_comm');
-	textarea.focus();
-	textarea.val(((textarea.val()!='') ? textarea.val() + '\n' : '') + '[quote=' + nick + ']' + htmlspecialchars_decode($('#citar_comm_'+id).html(), 'ENT_NOQUOTES') + '[/quote]\n');
+	var message = $.trim($('#comment-body-'+id).html());
+	$('.wysibb-texarea').execCommand('quote',{autor: nick, seltext: message});
 }
 
 /* Box login */
@@ -774,24 +774,25 @@ function markit_upload(h){
 
 //Imprimir editores
 function print_editor(){
-	//Editor de posts
-	if($('#markItUp') && !$('#markItUpMarkItUp').length){
-		$('#markItUp').markItUp(mySettings);
-		$('#emoticons a').live("click",function(){
-			emoticon = ' ' + $(this).attr("smile") + ' ';
-			$.markItUp({ replaceWith:emoticon });
-			return false;
-		});
-	}
-	//Editor de posts comentarios
-	if($('#body_comm') && !$('#markItUpbody_comm').length){
-		$('#body_comm').markItUp(mySettings_cmt);
-	}
-
-	//Editor de respuestas comunidades
-	if($('#body_resp') && !$('#markItUpbody_resp').length){
-		$('#body_resp').markItUp(mySettings_cmt);
-	}
+    //Editor de posts
+    if($('#markItUp').length && !$('.wysibb-texarea').length || $('#wysibb').length && !$('.wysibb-texarea').length){
+        $('#markItUp, #wysibb').removeAttr('onblur onfocus class style').css('height', '400').addClass('required').wysibb();
+        $('#moreemofn, #emoticons').remove();
+    }
+    //Editor de posts comentarios
+    if($('#body_comm').length && !$('.wysibb-texarea').length){
+        var wbbOpt = { buttons: "smilebox,|,bold,italic,underline,strike,sup,sub,|,img,video,link" }
+        $('#body_comm').removeAttr('onblur onfocus class style title').css('height', '80').html('').wysibb(wbbOpt);
+    }
+    //Editor de respuestas comunidades
+    if($('#body_resp') && !$('#markItUpbody_resp').length){
+        $('#body_resp').markItUp(mySettings_cmt);
+    }
+    //Editor de respuesta de mensajes
+    if($('#respuesta').length && !$('.wysibb-texarea').length){
+        var wbbOpt = { buttons: "smilebox,|,bold,italic,underline,strike,sup,sub,|,img,video,link,|,removeFormat" }
+        $('#respuesta').removeAttr('onblur onfocus class style title').css('height', '80').html('').wysibb(wbbOpt);
+    }
 }
 /* FIN - Editor */
 
@@ -1648,8 +1649,10 @@ var mensaje = {
 		mydialog.show(true);
 		mydialog.title('Nuevo mensaje');
 		mydialog.body(this.form());
-		mydialog.buttons(true, true, 'Enviar', 'mensaje.enviar(0)', true, true, true, 'Cancelar', 'close', true, false);
-		mydialog.center();
+		mydialog.buttons(true, true, 'Enviar', '$(\'.wysibb-texarea\').sync(); mensaje.enviar(0)', true, true, true, 'Cancelar', 'close', true, false);
+        var wbbOpt = { resize_maxheight: 170, buttons: "smilebox,|,bold,italic,underline,strike,sup,sub,|,img,video,link,|,removeFormat" }
+        $('#msg_body').wysibb(wbbOpt);
+        mydialog.center();
 	},
     // ENVIAR...
     enviar: function (enviar){
@@ -1676,7 +1679,7 @@ var mensaje = {
     // RESPONDER
     responder: function(mp_id){
         this.vars['mp_id'] = $('#mp_id').val();
-        this.vars['mp_body'] = encodeURIComponent($('#respuesta').val()); // Fix: 14/12/2014 - 1.1.000.9
+        this.vars['mp_body'] = encodeURIComponent($('#respuesta').bbcode()); // Fix: 06/05/2018 - 1.3
         if(this.vars['mp_body'] == '') {
             $('#respuesta').focus();
             return;
@@ -1684,6 +1687,7 @@ var mensaje = {
         //
         this.ajax('respuesta','id=' + this.vars['mp_id'] + '&body=' + this.vars['mp_body'], function(h){
             $('#respuesta').val(''); // LIMPIAMOS
+            $('.wysibb-body').html('');
             switch(h.charAt(0)){
                 case '0':
                     mydialog.alert("Error", h.substring(3));

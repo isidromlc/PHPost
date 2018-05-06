@@ -46,7 +46,7 @@
 	$file = './ajax/ajax.'.$action_type.'.php';
 	//
 	if(file_exists($file)) include($file);
-	else die("0: No se encontro el archivo que se ha solicitado.");
+	else die("0: No se encontro el archivo que se ha solicitado." . $file);
 	
 /**********************************\
 

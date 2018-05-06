@@ -6,16 +6,6 @@
  * @author  PHPost Team
  */
 class tsSwat{
-
-	// INSTANCIA DE LA CLASE
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsSwat();
-    	}
-		return $instance;
-	}
 	
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								METODOS

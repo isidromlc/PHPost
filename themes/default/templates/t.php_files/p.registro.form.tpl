@@ -77,12 +77,9 @@
 		</div>
 
 		<div class="form-line">
-			<label for="recaptcha_response_field">Ingresa el c&oacute;digo de la imagen:</label>
-
-			<div id="recaptcha_ajax">
-				<div id="recaptcha_image"></div>
-				<input type="text" id="recaptcha_response_field" name="recaptcha_response_field" />
-			</div> <div class="help recaptcha"><span><em></em></span></div>
+			<label>Confirme humanidad:</label>
+			<div class="g-recaptcha" data-sitekey="{$tsConfig.pkey}"></div>
+			<div class="help"><span><em></em></span></div>
 		</div>
 
 		<div class="footerReg">
@@ -93,41 +90,11 @@
 		</div>
 	</div>
 </div>
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 <script type="text/javascript">
-//
 $.getScript("{$tsConfig.js}/registro.js{literal}", function(){
-	//Seteo el pais seleccionado
-	//registro.datos['pais']='MX';
-	//registro.datos_status['pais']='ok';
-	//registro.datos_text['pais']='OK';
-	//
 	registro.change_paso(1);
-	
-	//Genero el autocomplete de la ciudad
-	/*$('#RegistroForm .pasoDos #ciudad').autocomplete('/registro-geo.php', {
-		minChars: 2,
-		width: 298
-	}).result(function(event, data, formatted){
-		registro.datos['ciudad_id'] = (data) ? data[1] : '';
-		registro.datos['ciudad_text'] = (data) ? data[0].toLowerCase() : '';
-		if(data)
-			$('#RegistroForm .pasoDos #terminos').focus();
-	});*/
 	mydialog.procesando_fin();
-});
-
-//Load recaptcha
-$.getScript("http://www.google.com/recaptcha/api/js/recaptcha_ajax.js", function(){
-	Recaptcha.create('6LcXvL0SAAAAAPJkBrro96lnXGZ56TBRExEmVM3L', 'recaptcha_ajax', {
-		theme:'white', lang:'es', tabindex:'13', custom_theme_widget: 'recaptcha_ajax',
-		callback: function(){
-			$('#recaptcha_response_field').blur(function(){
-				registro.blur(this);
-			}).focus(function(){
-				registro.focus(this);
-			}).attr('title', 'Ingrese el c&oacute;digo de la imagen');
-		}
-	});
 });
 </script>
 {/literal}

@@ -18,7 +18,7 @@ class tsEmail {
 		$tsEmailRef : tipo de email
 		$tsEmailData: datos del email
 	*/
-	function tsEmail($tsEmailData,$tsEmailRef){
+	function __construct($tsEmailData,$tsEmailRef){
 		$this->email_info = array(
 			'ref' => $tsEmailRef,
 			'data' => $tsEmailData

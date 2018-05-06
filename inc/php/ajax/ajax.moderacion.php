@@ -41,7 +41,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
 	// CLASE
 	require('../class/c.moderacion.php');
-	$tsMod =& tsMod::getInstance();
+	$tsMod = new tsMod();
     //
     $do = htmlspecialchars($_GET['do']);
 	// CODIGO

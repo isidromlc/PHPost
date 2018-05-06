@@ -38,7 +38,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg; die();}
     // CLASE
 	include("../class/c.cuenta.php");
-	$tsCuenta =& tsCuenta::getInstance();
+	$tsCuenta = new tsCuenta();
     //
     //echo $tsUser->getUserName($_GET['user']);
 	// CODIGO

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
 
 /**
  * Nueva forma de conectar a la base de datos

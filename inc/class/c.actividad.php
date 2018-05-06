@@ -34,17 +34,7 @@
 */
 class tsActividad {
 	private $actividad = array();
-    /*
-        CONSTRUCTOR
-    */
-	public static function &getInstance(){
-		static $instance;
-		
-		if( is_null($instance) ){
-			$instance = new tsActividad();
-    	}
-		return $instance;
-	}
+
     public function __construct(){
         # NO ES NESESARIO HACER ALGO EN EL CONSTRUCTOR
     }
@@ -92,7 +82,7 @@ class tsActividad {
      * @params none
      * @return void
      */
-    public function setActividad($ac_type, $obj_uno, $obj_dos = 0){
+    public function setActividad($ac_type = NULL, $obj_uno = NULL, $obj_dos = 0){
         # VARIABLES GLOBALES
         global $tsUser, $tsCore;
         # VARIABLES LOCALES{
@@ -130,7 +120,7 @@ class tsActividad {
      * @params int(3)
      * @return array
      */
-    public function getActividad($user_id, $ac_type = 0, $start = 0, $v_type){
+    public function getActividad($user_id = NULL, $ac_type = 0, $start = 0, $v_type = NULL){
         # CREAR ACTIVIDAD
         $this->makeActividad();
         # VARIABLES LOCALES
@@ -208,7 +198,7 @@ class tsActividad {
      * @params array
      * @return array
      */
-    private function armActividad($data){
+    private function armActividad($data = NULL){
         # VARIABLES LOCALES
         $actividad = array(
             'total' => count($data),
@@ -250,7 +240,7 @@ class tsActividad {
      * @params array
      * @return string/array
      */
-    private function makeConsulta($data){
+    private function makeConsulta($data = NULL){
         # CON UN SWITCH ESCOGEMOS LA CONSULTA APROPIADA
         switch($data['ac_type']){
             // DEL TIPO 1 al 7 USAMOS LA MISMA CONSULTA
@@ -288,7 +278,7 @@ class tsActividad {
      * @params array
      * @return array
      **/
-    private function makeOracion($data){
+    private function makeOracion($data = NULL){
         # VARIABLES GLOBALES
         global $tsCore;
         # VARIABLES LOCALES
@@ -379,7 +369,7 @@ class tsActividad {
      * @params int
      * @return string
      */
-    private function makeFecha($time){
+    private function makeFecha($time = NULL){
         # VARIABLES LOCALES
         $tiempo = time() - $time; 
         $dias = round($tiempo / 86400);

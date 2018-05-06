@@ -39,7 +39,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
     // CLASS
     include("../class/c.muro.php");
-    $tsMuro =& tsMuro::getInstance();
+    $tsMuro = new tsMuro();
     //
 	// CODIGO
 	switch($action){
@@ -66,7 +66,7 @@
             } elseif($do == 'more'){
                 // CLASS
                 include("../class/c.cuenta.php");
-                $tsCuenta =& tsCuenta::getInstance();
+                $tsCuenta = new tsCuenta();
                 // VARIABLES
                 $user_id = $tsCore->setSecure($_POST['pid']);
                 $start = $tsCore->setSecure($_POST['start']);

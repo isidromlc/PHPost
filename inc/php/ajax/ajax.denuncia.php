@@ -41,7 +41,7 @@
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg; die();}
     // SWAT
 	include("../class/c.swat.php");
-	$tsSwat =& tsSwat::getInstance();
+	$tsSwat = new tsSwat();
     // VARS
     $obj_id = $tsCore->setSecure($_POST['obj_id']);
 	// CODIGO

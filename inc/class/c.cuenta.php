@@ -1,6 +1,6 @@
 <?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
 /**
- * Modelo para el control y edición de la cuenta de usuario
+ * Modelo para el control y ediciÃ³n de la cuenta de usuario
  *
  * @name    c.cuenta.php
  * @author  PHPost Team
@@ -15,7 +15,7 @@ class tsCuenta {
      * @return array
      */
 	public function loadPerfil($user_id = 0){
-		global$tsUser;
+		global $tsUser;
 		//
 		if(empty($user_id)) $user_id = $tsUser->uid;
 		//

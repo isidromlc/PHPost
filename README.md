@@ -1,5 +1,5 @@
-# PHPost
-PHPost Risus es un sistema de compartimiento de enlaces que permite crear un sitio web similar a Taringa!
+# CrapMS
+CrapMS es el CMS usado en la famosisisisisisisisisima página Craper. (bueno no)
 
-# Por ahora
-Este repositorio servirá para que la comunidad pueda ir actualizando el código del script
+# Basado en PHPost
+PHPost Risus es un sistema de compartimiento de enlaces que permite crear un sitio web similar a Taringa!

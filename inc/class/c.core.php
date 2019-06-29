@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Funciones globales
  *
@@ -16,11 +16,11 @@ class tsCore {
 		$this->settings = $this->getSettings();
 		$this->settings['domain'] = str_replace('http://','',$this->settings['url']);
 		$this->settings['categorias'] = $this->getCategorias();
-        $this->settings['default'] = $this->settings['url'].'/themes/default';
-		$this->settings['tema'] = $this->getTema();
-		$this->settings['images'] = $this->settings['tema']['t_url'].'/images';
-        $this->settings['css'] = $this->settings['tema']['t_url'].'/css';
-		$this->settings['js'] = $this->settings['tema']['t_url'].'/js';
+        $this->settings['default'] = $this->settings['url'].'/assets';
+		$this->settings['tema'] = $this->settings['url'] . '/assets';
+		$this->settings['images'] = $this->settings['tema'].'/images';
+        $this->settings['css'] = $this->settings['tema'].'/css';
+		$this->settings['js'] = $this->settings['tema'].'/js';
         //
         if($_GET['do'] == 'portal' || $_GET['do'] == 'posts') $this->settings['news'] = $this->getNews();
 		# Mensaje del instalador y pendientes de moderación #
@@ -56,19 +56,6 @@ class tsCore {
 		$categorias = result_array($query);
         //
         return $categorias;
-	}
-	/*
-		getTema()
-	*/
-	function getTema()
-    {
-		//
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM w_temas WHERE tid = '.$this->settings['tema_id'].' LIMIT 1');
-		//
-		$data = db_exec('fetch_assoc', $query);
-        $data['t_url'] = $this->settings['url'] . '/themes/' . $data['t_path'];
-		//
-		return $data;
 	}
 	/*
         getNews()
@@ -188,11 +175,9 @@ class tsCore {
 	/*
 		setJSON($tsContent)
 	*/
-	function setJSON($data, $type = 'encode'){
-		require_once(TS_EXTRA . 'JSON.php');	// INCLUIMOS LA CLASE
-		$json = new Services_JSON;	// CREAMOS EL SERVICIO
-        if($type == 'encode') return $json->encode($data);
-        elseif($type == 'decode') return $json->decode($data);            
+	function setJSON($data = '', $type = 'encode') {
+        if($type == 'encode') return json_encode($data);
+        elseif($type == 'decode') return json_decode($data);                       
 	}
 	/*
 		setPagesLimit($tsPages, $start = false)

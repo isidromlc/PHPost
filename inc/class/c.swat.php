@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Modelo para el control denuncias
  *

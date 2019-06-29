@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Modelo para el control del portal/mi
  *
@@ -136,17 +136,6 @@ class tsPortal{
         $data['pages'] = $pages;
         //
         return $data;
-     }
-     /** getFotos()
-     * @access public
-     * @param
-     * @return array
-     */
-     public function getFotos(){
-        // FOTOS
-    	include(TS_CLASS."c.fotos.php");
-    	$tsFotos = new tsFotos();
-        return $tsFotos->getLastFotos();
      }
      /** getStats()
      * @access public

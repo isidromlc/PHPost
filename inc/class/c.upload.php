@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Modelo para subir im�genes
  *
@@ -75,7 +75,7 @@ class tsUpload {
             $type = explode('/',$file['type']);
             $ext = ($type[1] == 'jpeg' || $type[1] == 'url') ? 'jpg' : $type[1]; // EXTENCION
             $key = rand(0,1000);
-            $newName = 'phpost_'.$key.'.'.$ext;
+            $newName = 'craper_'.$key.'.'.$ext;
             // IMAGEN
             if($this->type == 1)
                 return array(1, $this->sendFile($file,$newName), $type[1]);
@@ -189,7 +189,7 @@ class tsUpload {
     			// COPIAMOS
                 $root = TS_FILES.'uploads/'.$name;
                 //
-    			imagejpeg($newimg,$root,100);
+    			imagewebp($newimg,$root,100);
     			imagedestroy($newimg);
     			imagedestroy($img);
                 // RETORNAMOS
@@ -207,7 +207,7 @@ class tsUpload {
      * @return array
     */
     public function cropAvatar($key){
-        $source = TS_FILES.'uploads/phpost_'.$_POST['key'].'.'.$_POST['ext'];
+        $source = TS_FILES.'uploads/craper_'.$_POST['key'].'.'.$_POST['ext'];
         $size = getimagesize($source);
         // COORDENADAS
         $x = $_POST['x'];
@@ -242,8 +242,8 @@ class tsUpload {
         imagecopyresampled($thumb, $img, 0, 0, $x, $y, $_tw, $_th, $w, $h);
         // GUARDAMOS...
         $root = TS_FILES.'avatar/'.$key.'_';
-        imagejpeg($avatar,$root.'120.jpg',90);
-        imagejpeg($thumb,$root.'50.jpg',90);
+        imagewebp($avatar,$root.'120.webp',90);
+        imagewebp($thumb,$root.'50.webp',90);
         // CLEAR
     	imagedestroy($img);
     	imagedestroy($avatar);

@@ -1,6 +1,7 @@
 <?php 
 /**
  * Controlador
+ * Actualizacion Realizada: Smarty 3
  *
  * @name    ajax_files.php
  * @author  PHPost Team
@@ -46,7 +47,7 @@
 	$file = './ajax/ajax.'.$action_type.'.php';
 	//
 	if(file_exists($file)) include($file);
-	else die("0: No se encontro el archivo que se ha solicitado." . $file);
+	else die("0: No se encontro el archivo que se ha solicitado.");
 	
 /**********************************\
 
@@ -56,7 +57,6 @@
 
 if(empty($tsAjax)) {	// SI LA PETICION SE HIZO POR AJAX DETENER EL SCRIPT Y NO MOSTRAR PLANTILLA, SI NO ENTONCES MOSTRARLA.
 
-    $smarty->template_ts = false;   // SMARTY SETTINGS
 	$smarty->assign("tsTitle",$tsTitle);	// AGREGAR EL TITULO DE LA PAGINA ACTUAL
 
 	/*++++++++ = ++++++++*/

@@ -82,9 +82,6 @@
 	elseif($action == 'pospelera'){
         $smarty->assign("tsPospelera",$tsMod->getPospelera());
     }
-	elseif($action == 'fopelera'){
-        $smarty->assign("tsFopelera",$tsMod->getFopelera());
-    }
 	// CONTENIDO DESAPROBADO
 	elseif($action == 'comentarios'){
         $smarty->assign("tsComentarios",$tsMod->getComentariosD());

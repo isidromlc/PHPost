@@ -69,10 +69,6 @@
     //
     $smarty->assign("tsLastPostsVisited",$tsPortal->getLastPosts());
     $smarty->assign("tsFavorites",$tsPortal->getFavorites());
-    // FOTOS
-    $tsImages = $tsPortal->getFotos();
-	$smarty->assign("tsImages",$tsImages);
-    $smarty->assign("tsImTotal",count($tsImages));
     // STATS
     $smarty->assign("tsStats",$tsPortal->getStats());
     // AFILIADOS

@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 
 function upload($image) {
     $server  = 'https://api.imgur.com/3/image.json';

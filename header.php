@@ -85,7 +85,7 @@
     include TS_CLASS.'c.mensajes.php';
     
     // Smarty
-    include TS_CLASS.'c.smarty.php';
+    require(TS_ROOT . DIRECTORY_SEPARATOR .'inc'. DIRECTORY_SEPARATOR .'smarty'. DIRECTORY_SEPARATOR .'SmartyBC.class.php');
     
     // Crean requests
     include TS_EXTRA.'QueryString.php';
@@ -120,7 +120,7 @@
     define('TS_TEMA', $tsTema);
 
     // Smarty
-    $smarty = new tsSmarty();
+    $smarty = new smartyBC();
 
 /*
  * -------------------------------------------------------------------

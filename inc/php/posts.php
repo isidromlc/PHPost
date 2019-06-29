@@ -86,9 +86,6 @@
     		$smarty->assign("tsAutor",$tsPosts->getAutor($tsPost['post_user']));						
 			// DATOS DEL RANGO DEL PUTEADOR						
 			$smarty->assign("tsPunteador",$tsPosts->getPunteador());
-    		// RELACIONADOS
-    		$tsRelated = $tsPosts->getRelated($tsPost['post_tags']);
-    		$smarty->assign("tsRelated",$tsRelated);
     		// COMENTARIOS
     		/*$tsComments = $tsPosts->getComentarios($tsPost['post_id']);
     		$tsComments = array('num' => $tsComments['num'], 'data' => $tsComments['data']);
@@ -153,14 +150,6 @@
             $tsTitle = $tsCore->settings['titulo'].' - '.$catData['c_nombre'];
             $smarty->assign("tsCatData",$catData);
         }
-        // IMAGENES
-        // FOTOS
-    	include(TS_CLASS."c.fotos.php");
-    	$tsFotos = new tsFotos();
-        $tsImages = $tsFotos->getLastFotos();
-    	$smarty->assign("tsImages",$tsImages);
-        $smarty->assign("tsImTotal",count($tsImages));
-        
         // AFILIADOS
     	$smarty->assign("tsAfiliados",$tsAfiliado->getAfiliados());
         // DO <= PARA EL MENU

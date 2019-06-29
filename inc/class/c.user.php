@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Modelo para el control de los usuarios
  *
@@ -436,7 +436,7 @@ class tsSession {
     var $sess_expiration    = 7200;
     var $sess_match_ip      = FALSE;
     var $sess_time_online   = 300;
-    var $cookie_prefix      = 'pp_';
+    var $cookie_prefix      = 'craper_';
     var $cookie_name        = '';
     var $cookie_path        = '/';
     var $cookie_domain      = '';
@@ -594,7 +594,7 @@ class tsSession {
         $cookiename = rawurlencode($this->cookie_name . '_' . $name);
         $cookiedata = rawurlencode($cookiedata);
 		// Establecer la cookie
-        setcookie($cookiename, $cookiedata, ($this->time_now + $cookietime), '/', $this->cookie_domain);
+        setcookie($cookiename, $cookiedata, ($this->time_now + $cookietime), '/', $this->cookie_domain, false, true);
 	}
     /**
      * Generar un ID de sesión

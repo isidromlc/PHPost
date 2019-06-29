@@ -499,15 +499,4 @@ $tsPaises = array(
     		'No cumple con el protocolo',
     		'Otra raz&oacute;n (especificar)'
       ),
-	   'fotos' => array(
-            '',
-    		'Ya est&aacute; publicada',
-    		'Se hace Spam',
-    		'La imagen est&aacute; ca&iacute;da',
-    		'Es racista o irrespetuosa',
-    		'Contiene informaci&oacute;n personal',
-    		'Contiene pedofilia',
-    		'Es gore o asquerosa',
-    		'Otra raz&oacute;n (especificar)'
-      ),
 	);

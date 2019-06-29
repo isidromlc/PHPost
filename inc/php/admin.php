@@ -125,11 +125,6 @@
 		 if(!$act) {
 		 $smarty->assign("tsAdminPosts",$tsAdmin->GetAdminPosts());
 		 }
-	//FOTOS
-	} elseif($action == 'fotos'){
-		 if(!$act) {
-		 $smarty->assign("tsAdminFotos",$tsAdmin->GetAdminFotos());
-		 }
 	// ESTADÍSTICAS
 	} elseif($action == 'stats'){
 		 

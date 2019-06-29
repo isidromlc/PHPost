@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Modelo para el control de los borradores
  *
@@ -19,6 +19,7 @@ class tsDrafts {
 		$draftData = array(
 			'date' => time(),
 			'title' => $tsCore->setSecure($tsCore->parseBadWords($_POST['titulo']), true),
+			'portada' => $tsCore->setSecure($tsCore->parseBadWords($_POST['imagen']), true),
 			'body' => $tsCore->setSecure($_POST['cuerpo'], true),
 			'tags' => $tsCore->setSecure($tsCore->parseBadWords($_POST['tags']), true),
 			'category' => $tsCore->setSecure($_POST['categoria']),
@@ -41,7 +42,7 @@ class tsDrafts {
 				else return '0: '.show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db');
 		   } else {
 				// INSERT
-			    if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_borradores` (`b_user`, `b_date`, `b_title`, `b_body`, `b_tags`, `b_category`, `b_private`, `b_block_comments`, `b_sponsored`, `b_sticky`, `b_smileys`, `b_visitantes`, `b_status`, `b_causa`) VALUES (\''.$tsUser->info['user_id'].'\', \''.$draftData['date'].'\', \''.$draftData['title'].'\', \''.$draftData['body'].'\', \''.$draftData['tags'].'\', \''.$draftData['category'].'\', \''.$draftData['private'].'\', \''.$draftData['block_comments'].'\', \''.$draftData['sponsored'].'\', \''.$draftData['sticky'].'\', \''.$draftData['smileys'].'\', \''.$draftData['visitantes'].'\', \'1\', \'\')')) return '1: '.db_exec('insert_id');
+			    if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_borradores` (`b_user`, `b_date`, `b_title`, `b_portada`, `b_body`, `b_category`, `b_private`, `b_block_comments`, `b_sponsored`, `b_sticky`, `b_smileys`, `b_visitantes`, `b_status`, `b_causa`) VALUES (\''.$tsUser->info['user_id'].'\', \''.$draftData['date'].'\', \''.$draftData['title'].'\', \''.$draftData['portada'].'\', \''.$draftData['body'].'\', \''.$draftData['category'].'\', \''.$draftData['private'].'\', \''.$draftData['block_comments'].'\', \''.$draftData['sponsored'].'\', \''.$draftData['sticky'].'\', \''.$draftData['smileys'].'\', \''.$draftData['visitantes'].'\', \'1\', \'\')')) return '1: '.db_exec('insert_id');
 			   else return '0: '.show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db');
 			}
 			} else $return = 'Categor&iacute;a';

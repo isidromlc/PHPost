@@ -1,10 +1,10 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
-/**
- * Modelo para el control del envio de emails
- *
- * @name    c.emails.php
- * @author  PHPost Team
- */
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
+/* 
+   Creado por: itsrascii (Phpost: https://www.phpost.net/foro/perfil/8214-1tsr4sc11/)
+   Reconfigurado por: Migue92 (Phpost: https://www.phpost.net/foro/perfil/521013-miguel92/)
+*/
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 class tsEmail {
 	
 	var $email_info = array();		// REFERENCIA PARA ENVIAR UN EMAIL
@@ -13,16 +13,21 @@ class tsEmail {
 	var $emailBody;
 	var $emailTo;
 	var $is_error;		// SI OCURRE UN ERROR ESTA VARIABLE CONTENDRA EL NUMERO DE ERROR
-
+	var $setup_host = 'TU HOST DE CORREO SMTP';
+	var $setup_address = 'TU CORREO';
+	var $setup_password = 'TU CONTRASENA';
+        var $setup_port = 'TU PUERTO SMTP';
+	var $setup_sourcefolder = TS_EXTRA . 'PHPMailer/src/';
+	
 	/*
 		$tsEmailRef : tipo de email
 		$tsEmailData: datos del email
 	*/
-	function __construct($tsEmailData,$tsEmailRef){
+	function tsEmail($tsEmailData,$tsEmailRef){
 		$this->email_info = array(
 			'ref' => $tsEmailRef,
 			'data' => $tsEmailData
-			);
+		);
 	}
 	/*
 		setEmailInfo()
@@ -37,8 +42,39 @@ class tsEmail {
 		sendEmail()
 	*/
 	function sendEmail(){
-		if(mail($this->emailTo,$this->emailSubject,$this->emailBody,$this->emailHeaders)) return true;
-		else return false;
+		global $tsCore;
+		require $this->setup_sourcefolder . 'Exception.php';
+		require $this->setup_sourcefolder . 'PHPMailer.php';
+		require $this->setup_sourcefolder . 'SMTP.php';
+		$smail = new PHPMailer(true);
+		try {
+		    // https://github.com/PHPMailer/PHPMailer/issues/1209#issuecomment-338898794
+		    // $smail->isSMTP();
+		    $smail->SMTPDebug = 0; // Se lo cambias por un 2 y mostrará si hay error
+		    $smail->Host = $this->setup_host;
+		    $smail->SMTPAuth = true;
+		    $smail->SMTPOptions = array(
+		    'ssl' => array('verify_peer' => false, 'verify_peer_name' => false, 'allow_self_signed' => true)
+		    );
+		    $smail->Username = $this->setup_address;
+		    $smail->Password = $this->setup_password;
+		    $smail->SMTPSecure = 'ssl'; // SSL para puerto 465 || TLS para puerto 587
+		    $smail->Port = $this->setup_port;
+		
+		    $smail->setFrom($this->setup_address, $tsCore->settings['titulo']);
+		    $smail->addAddress($this->emailTo);
+		
+		    $smail->isHTML(true);
+		    $smail->Subject = $this->emailSubject;
+		    $smail->Body    = $this->emailBody;
+		    $smail->AltBody = strip_tags($this->emailBody);
+		    /* $smail->send(); = Para  PHP > 5.4 a PHP < 7.1 */
+		    /* $smail->isSendmail(); = Para  PHP < 7.3 */
+		    $smail->send();
+		    return true;
+		} catch (Exception $e) {
+		    return false;
+		}
 	}
 	/*
 		setEmailSubject()
@@ -55,20 +91,10 @@ class tsEmail {
 	}
 	/*
 		setEmailHeaders()
+		Se mantiene por compatibilidad
 	*/
 	function setEmailHeaders(){
-		global $tsCore;
-		// SET HEADERS
-		$sender = $tsCore->settings['titulo']." <no-reply@".$tsCore->settings['domain'].">";
-		//
-		$headers = "MIME-Version: 1.0"."\n";
-		$headers .= "Content-type: text/html; charset=utf-8"."\n";
-		$headers .= "Content-Transfer-Encoding: 8bit"."\n";
-		$headers .= "From: $sender"."\n";
-		$headers .= "Return-Path: $sender"."\n";
-		$headers .= "Reply-To: $sender\n";
-		//
-		return $headers;
+		return true;
 	}
 	/*
 		setEmailBody()

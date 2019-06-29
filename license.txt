@@ -1,4 +1,4 @@
-Copyright (c) 2012-2019 PHPost
+﻿Copyright (c) 2012-2019 PHPost
 
 Se autoriza por la presente, de forma gratuita, a cualquier
 persona que haya obtenido una copia de este software y

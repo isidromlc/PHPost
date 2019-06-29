@@ -1,4 +1,4 @@
-<?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
+<?php if ( ! defined('TS_HEADER')) exit('Que carajo haces master');
 /**
  * Clase para el manejo de los posts
  *
@@ -10,40 +10,6 @@ class tsPosts {
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*\
 								PUBLICAR POSTS
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-    /** simiPosts($q)
-     * @access public
-     * @param string
-     * @return array
-     */
-    public function simiPosts($q)
-    {
-		global $tsUser, $tsCore;
-        $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p.post_id, p.post_title, c.c_seo FROM p_posts AS p LEFT JOIN u_miembros AS u ON u.user_id = p.post_user LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE p.post_status = \'0\' '.($tsUser->is_admod && $tsCore->settings['c_see_mod'] == 1 ? '' : '&& u.user_activo = \'1\' && u.user_baneado = \'0\'').' && MATCH(p.post_title) AGAINST(\''.$q.'\' IN BOOLEAN MODE) ORDER BY RAND() DESC LIMIT 5');
-        $data = result_array($query);
-        
-        //
-        return $data;
-    }
-    /** genTags($q)
-     * @access public
-     * @param string
-     * @return string
-     */
-     public function genTags($q){
-        $content = trim(preg_replace("/[^ A-Za-z0-9]/", "", $q));
-        $ketxt = preg_replace('/ {2,}/si', " ", $content);
-        $t = explode(" ", $ketxt);
-        $total = count($t);
-        $tg = "";
-        $i = 0;
-        foreach($t as $v){ $i++;
-            $coma = ($i < $total) ? ", " : " ";
-            $tg .= (strlen($v) >= 4 && strlen($v) <= 8) ? ($v.$coma) : "";
-        }
-        $tag = strtolower($tg);
-        //
-        return ($tag);
-     }
 	/*
 		getPreview()
 	*/
@@ -55,23 +21,6 @@ class tsPosts {
 		//
 		return array('titulo' => $titulo, 'cuerpo' => $tsCore->parseBadWords($tsCore->parseBBCode($cuerpo), true));
 	}
-    /*
-        validTags($tags)
-    */
-    function validTags($tags){
-        $tags = trim(preg_replace('/[^ A-Za-z0-9,]/', '', $tags));
-        $tags = str_replace(' ','',$tags);
-        if(empty($tags)) return false;
-        else {
-            $tags = explode(',',$tags);
-            if(count($tags) < 4) return false;
-            foreach($tags as $val){
-                if(empty($val)) return false;
-            }   
-        }
-        //
-        return true;
-    }
 	/*
 		newPost()
 	*/
@@ -83,8 +32,8 @@ class tsPosts {
 		$postData = array(
 			'date' => time(),
 			'title' => $tsCore->parseBadWords($tsCore->setSecure($_POST['titulo'], true)),2,
+			'portada' => $tsCore->parseBadWords($tsCore->setSecure($_POST['imagen'], true)),
 			'body' => $tsCore->setSecure($_POST['cuerpo']),
-			'tags' => $tsCore->parseBadWords($tsCore->setSecure($_POST['tags'], true)),true,1,
 			'category' => intval($_POST['categoria']),
 		);
         //ANTIFLOOD
@@ -97,9 +46,6 @@ class tsPosts {
             $val = str_replace(' ', '', $val);
 			if(empty($val)) return 0;
 		}
-        // TAGS
-        $tags = $this->validTags($postData['tags']);
-        if(empty($tags)) return 'Tienes que ingresar por lo menos <b>4</b> tags.';
 		// ESTOS PUEDEN IR VACIOS
 		$postData['visitantes'] = empty($_POST['visitantes']) ? 0 : 1;
 		$postData['smileys'] = empty($_POST['smileys']) ? 0 : 1;
@@ -121,7 +67,7 @@ class tsPosts {
 			// INSERTAMOS
 			$_SERVER['REMOTE_ADDR'] = $_SERVER['X_FORWARDED_FOR'] ? $_SERVER['X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
             if(!filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) { die('0: Su ip no se pudo validar.'); }
-			if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_posts` (post_user, post_category, post_title, post_body, post_date, post_tags, post_ip, post_private, post_block_comments, post_sponsored, post_sticky, post_smileys, post_visitantes, post_status) VALUES (\''.$tsUser->uid.'\', \''.(int)$postData['category'].'\', \''.$postData['title'].'\',  \''.$postData['body'].'\', \''.$postData['date'].'\', \''.$postData['tags'].'\', \''.$_SERVER['REMOTE_ADDR'].'\', \''.(int)$postData['private'].'\', \''.(int)$postData['block_comments'].'\', \''.(int)$postData['sponsored'].'\', \''.(int)$postData['sticky'].'\', \''.(int)$postData['smileys'].'\', \''.(int)$postData['visitantes'].'\', '.(!$tsUser->is_admod && ($tsCore->settings['c_desapprove_post'] == 1 || $tsUser->permisos['gorpap'] == true) ? '\'3\'' : '\'0\'').')')) {
+			if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_posts` (post_user, post_category, post_title, post_portada, post_body, post_date, post_ip, post_private, post_block_comments, post_sponsored, post_sticky, post_smileys, post_visitantes, post_status) VALUES (\''.$tsUser->uid.'\', \''.(int)$postData['category'].'\', \''.$postData['title'].'\', \''.$postData['portada'].'\',  \''.$postData['body'].'\', \''.$postData['date'].'\', \''.$_SERVER['REMOTE_ADDR'].'\', \''.(int)$postData['private'].'\', \''.(int)$postData['block_comments'].'\', \''.(int)$postData['sponsored'].'\', \''.(int)$postData['sticky'].'\', \''.(int)$postData['smileys'].'\', \''.(int)$postData['visitantes'].'\', '.(!$tsUser->is_admod && ($tsCore->settings['c_desapprove_post'] == 1 || $tsUser->permisos['gorpap'] == true) ? '\'3\'' : '\'0\'').')')) {
 				$postID = db_exec('insert_id');
 				// Si está oculto, lo creamos en el historial e.e
 				if(!$tsUser->is_admod && ($tsCore->settings['c_desapprove_post'] == 1 || $tsUser->permisos['gorpap'] == true)) db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `w_historial` (`pofid`, `action`, `type`, `mod`, `reason`, `date`, `mod_ip`) VALUES (\''.(int)$postID.'\', \'3\', \'1\', \''.$tsUser->uid.'\', \'Revisi&oacute;n al publicar\', \''.time().'\', \''.$_SERVER['REMOTE_ADDR'].'\')');
@@ -158,8 +104,8 @@ class tsPosts {
 		//
 		$postData = array(
 			'title' => $tsCore->parseBadWords($_POST['titulo'], true),
+			'portada' => $tsCore->parseBadWords($tsCore->setSecure($_POST['imagen'], true)),
 			'body' => $tsCore->setSecure($_POST['cuerpo'], true),
-			'tags' => $tsCore->parseBadWords($tsCore->setSecure($_POST['tags'], true)),
 			'category' => $_POST['categoria'],
 		);
 		// VACIOS
@@ -168,9 +114,6 @@ class tsPosts {
             $val = str_replace(' ', '', $val);
 			if(empty($val)) return 0;
 		}
-        // TAGS
-        $tags = $this->validTags($postData['tags']);
-        if(empty($tags)) return 'Tienes que ingresar por lo menos <b>4</b> tags.';
 		//
 		$postData['visitantes'] = empty($_POST['visitantes']) ? 0 : 1;
 		$postData['smileys'] = empty($_POST['smileys']) ? 0 : 1;			
@@ -186,7 +129,7 @@ class tsPosts {
         }
 		// ACTUALIZAMOS
 		if($tsUser->uid == $data['post_user'] || !empty($tsUser->is_admod) || !empty($tsUser->permisos['moedpo'])){
-		    if(db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE p_posts SET post_title = \''.$postData['title'].'\', post_body = \''.$postData['body'].'\', post_tags = \''.$tsCore->setSecure($postData['tags']).'\', post_category = \''.(int)$postData['category'].'\', post_private = \''.$postData['private'].'\', post_block_comments = \''.$postData['block_comments'].'\', post_sponsored = \''.$postData['sponsored'].'\', post_smileys = \''.$postData['smileys'].'\', post_visitantes = \''.$postData['visitantes'].'\', post_sticky = \''.$postData['sticky'].'\' WHERE post_id = \''.(int)$post_id.'\'') or exit( show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db') )) {
+		    if(db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE p_posts SET post_title = \''.$postData['title'].'\', post_portada = \''.$postData['portada'].'\', post_body = \''.$postData['body'].'\', post_category = \''.(int)$postData['category'].'\', post_private = \''.$postData['private'].'\', post_block_comments = \''.$postData['block_comments'].'\', post_sponsored = \''.$postData['sponsored'].'\', post_smileys = \''.$postData['smileys'].'\', post_visitantes = \''.$postData['visitantes'].'\', post_sticky = \''.$postData['sticky'].'\' WHERE post_id = \''.(int)$post_id.'\'') or exit( show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db') )) {
 			     // GUARDAR EN EL HISTORIAL	DE MODERACION		 
 			     if(($tsUser->is_admod || $tsUser->permisos['moedpo']) && $tsUser->uid != $data['post_user'] && $_POST['razon']){
 					 include("c.moderacion.php");
@@ -273,7 +216,7 @@ class tsPosts {
        $lastPosts['pages'] = $tsCore->getPages($posts['total'], $tsCore->settings['c_max_posts']);
       }
       /*********/
-      $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p.post_id, p.post_user, p.post_category, p.post_title, p.post_date, p.post_comments, p.post_puntos, p.post_private, p.post_sponsored, p.post_status, p.post_sticky, u.user_id, u.user_name, u.user_activo, u.user_baneado, c.c_nombre, c.c_seo, c.c_img FROM p_posts AS p LEFT JOIN u_miembros AS u ON p.post_user = u.user_id  '.($tsUser->is_admod && $tsCore->settings['c_see_mod'] == 1 ? '' : ' && u.user_activo = \'1\' && u.user_baneado = \'0\'').' LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE '.($tsUser->is_admod && $tsCore->settings['c_see_mod'] == 1 ? 'p.post_id > 0' : 'p.post_status = \'0\' && u.user_activo = \'1\' && u.user_baneado = \'0\'').'  '.$c_where.' '.$s_where.' GROUP BY p.post_id ORDER BY '.$s_order.' DESC LIMIT '.$start);
+      $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p.post_id, p.post_user, p.post_category, p.post_title, p.post_portada, p.post_date, p.post_comments, p.post_puntos, p.post_private, p.post_sponsored, p.post_status, p.post_sticky, u.user_id, u.user_name, u.user_activo, u.user_baneado, c.c_nombre, c.c_seo, c.c_img FROM p_posts AS p LEFT JOIN u_miembros AS u ON p.post_user = u.user_id  '.($tsUser->is_admod && $tsCore->settings['c_see_mod'] == 1 ? '' : ' && u.user_activo = \'1\' && u.user_baneado = \'0\'').' LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE '.($tsUser->is_admod && $tsCore->settings['c_see_mod'] == 1 ? 'p.post_id > 0' : 'p.post_status = \'0\' && u.user_activo = \'1\' && u.user_baneado = \'0\'').'  '.$c_where.' '.$s_where.' GROUP BY p.post_id ORDER BY '.$s_order.' DESC LIMIT '.$start);
       $lastPosts['data'] = result_array($query);
       
       //
@@ -353,10 +296,6 @@ class tsPosts {
         $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT m.*, a.* FROM w_medallas AS m LEFT JOIN w_medallas_assign AS a ON a.medal_id = m.medal_id WHERE a.medal_for = \''.(int)$postData['post_id'].'\' AND m.m_type = \'2\' ORDER BY a.medal_date');
 		$postData['medallas'] = result_array($query);
         $postData['m_total'] = count($postData['medallas']);
-        
-		// TAGS
-		$postData['post_tags'] = explode(",",$postData['post_tags']);
-		$postData['n_tags'] = count($postData['post_tags']) - 1;
 	   // FECHA
 		$postData['post_date'] = strftime("%d.%m.%Y a las %H:%M hs",$postData['post_date']);
 		// NUEVA VISITA : FUNCION SIMPLE
@@ -470,9 +409,6 @@ class tsPosts {
 		//
 		return $data;
 	}
-	/*
-		deletePost()
-	*/
 	/* 
 		deletePost()
 	*/
@@ -481,7 +417,7 @@ class tsPosts {
 		//
 		$post_id = $tsCore->setSecure($_POST['postid']);
 		// ES SU POST EL Q INTENTA BORRAR?
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT post_id, post_title, post_user, post_body, post_category FROM p_posts WHERE post_id = \''.(int)$post_id.'\' AND post_user = \''.$tsUser->uid.'\'');
+		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT post_id, post_title, post_portada, post_user, post_body, post_category FROM p_posts WHERE post_id = \''.(int)$post_id.'\' AND post_user = \''.$tsUser->uid.'\'');
 		$data = db_exec('fetch_assoc', $query);
 		
         db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE `w_stats` SET `stats_posts` = stats_posts - \'1\' WHERE `stats_no` = \'1\'');
@@ -491,7 +427,7 @@ class tsPosts {
             // SI ES MIS POST LO BORRAMOS Y MANDAMOS A BORRADORES
 			if(db_exec(array(__FILE__, __LINE__), 'query', 'DELETE FROM p_posts WHERE post_id = \''.(int)$post_id.'\'')) {
 				if(db_exec(array(__FILE__, __LINE__), 'query', 'DELETE FROM p_comentarios WHERE c_post_id = \''.(int)$post_id.'\'')) {
-                   if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_borradores` (b_user, b_date, b_title, b_body, b_tags, b_category, b_status, b_causa) VALUES (\''.$tsUser->uid.'\', \''.time().'\', \''.$tsCore->setSecure($data['post_title']).'\', \''.$tsCore->setSecure($data['post_body']).'\', \'\', \''.$data['post_category'].'\', \'2\', \'\')'))
+                   if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `p_borradores` (b_user, b_date, b_title, b_body, b_category, b_status, b_causa) VALUES (\''.$tsUser->uid.'\', \''.time().'\', \''.$tsCore->setSecure($data['post_title']).'\', \''.$tsCore->setSecure($data['post_body']).'\', \'\', \''.$data['post_category'].'\', \'2\', \'\')'))
                     return "1: El post fue eliminado satisfactoriamente.";  
                  }
 			}else {
@@ -513,22 +449,6 @@ class tsPosts {
 				}else return '0: Ha ocurrido un error eliminando el post.';
 				 }else return '0: El post ya se encuentra eliminado';
 			}else return '0: Para el carro chacho';
-	}
-	/*
-		getRelated()
-	*/
-	function getRelated($tags){
-		global $tsCore, $tsUser;
-		// ES UN ARRAT AHORA A UNA CADENA
-		if(is_array($tags)) $tags = implode(", ",$tags);
-		else str_replace('-',', ',$tags);
-		//
-		$query = db_exec(array(__FILE__, __LINE__), 'query', "SELECT DISTINCT p.post_id, p.post_title, p.post_category, p.post_private, c.c_seo, c.c_img FROM p_posts AS p LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE MATCH (post_tags) AGAINST ('$tags' IN BOOLEAN MODE) AND p.post_status = 0 AND post_sticky = 0 ORDER BY rand() LIMIT 0,10");
-		//
-		$data = result_array($query);
-		
-		//
-		return $data;
 	}
 	/*
 		getLastComentarios()
@@ -1034,7 +954,6 @@ class tsPosts {
         $e = $_GET['e'];
         // ESTABLECER FILTROS
         if($c > 0) $where_cat = 'AND p.post_category = \''.(int)$c.'\'';
-        if($e == 'tags') $search_on = 'p.post_tags';
         else $search_on = 'p.post_title';
         // BUSQUEDA
         $w_search = 'AND MATCH('.$search_on.') AGAINST(\''.$q.'\' IN BOOLEAN MODE)';
@@ -1055,7 +974,7 @@ class tsPosts {
         
         $data['pages'] = $tsCore->getPagination($total, 12);
         //
-        $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p.post_id, p.post_user, p.post_category, p.post_title, p.post_date, p.post_comments, p.post_favoritos, p.post_puntos, u.user_name, c.c_seo, c.c_nombre, c.c_img FROM p_posts AS p LEFT JOIN u_miembros AS u ON u.user_id = p.post_user LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE p.post_status = \'0\' '.$where_cat.' '.$w_autor.' '.$w_search.' ORDER BY p.post_date DESC LIMIT '.$data['pages']['limit']);
+        $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p.post_id, p.post_user, p.post_category, p.post_title, p.post_portada, p.post_date, p.post_comments, p.post_favoritos, p.post_puntos, u.user_name, c.c_seo, c.c_nombre, c.c_img FROM p_posts AS p LEFT JOIN u_miembros AS u ON u.user_id = p.post_user LEFT JOIN p_categorias AS c ON c.cid = p.post_category WHERE p.post_status = \'0\' '.$where_cat.' '.$w_autor.' '.$w_search.' ORDER BY p.post_date DESC LIMIT '.$data['pages']['limit']);
         $data['data'] = result_array($query);
         
         // ACTUALES

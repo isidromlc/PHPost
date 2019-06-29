@@ -56,8 +56,7 @@
 	// ACTION
 	$action = htmlspecialchars($_GET['ver']);
     // HISTORIAL
-    if($action == 'fotos') $smarty->assign("tsHistory",$tsMod->getHistory('fotos'));
-	else $smarty->assign("tsHistory",$tsMod->getHistory(1));
+	$smarty->assign("tsHistory",$tsMod->getHistory(1));
 /**********************************\
 
 * (AGREGAR DATOS GENERADOS | SMARTY) *

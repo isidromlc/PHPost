@@ -29,7 +29,7 @@ class tsAfiliado {
     /*
         getAfiliado()
     */
-    function getAfiliado($type){
+    function getAfiliado($type = NULL){
         global $tsCore;
         //
         if(!$type){

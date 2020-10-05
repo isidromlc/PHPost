@@ -315,7 +315,7 @@ switch ($step) {
     ?>" method="post" id="form">
                     <fieldset>
                         <legend>Permisos de escritura</legend>
-                        <p>Los siguientes archivos y directorios requieren de permisos especiales, debes cambiarlos desde tu cliente FTP, los archivos deben tener permiso <strong>666</strong> y los direcorios <strong>777</strong></p>
+                        <p>Los siguientes archivos y directorios requieren de permisos especiales, debes cambiarlos desde tu cliente FTP, los archivos deben tener permiso <strong>666</strong> y los directorios <strong>777</strong></p>
                         <dl>
                             <dt><label for="f1">/config.inc.php</label></dt>
                             <dd><span class="status <?php echo strtolower($permisos['f1']['css']); ?>"><?php echo $permisos['f1']['css']; ?></span></dd>

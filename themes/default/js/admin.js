@@ -22,7 +22,7 @@ var admin = {
 			
         }else{
             
-            $('#loading').fadeIn(250);
+            NProgress.start();
 		
            $.post(global_data.url + '/afiliado-borrar.php', 'afid=' + aid, function(a){
 		   
@@ -30,7 +30,7 @@ var admin = {
 		   
            mydialog.center();
            
-           success:  if(a.charAt(0) == '1') $('#few_' + aid).fadeOut().remove; $('#loading').fadeOut(350);
+           success:  if(a.charAt(0) == '1') $('#few_' + aid).fadeOut().remove; NProgress.done();
            
       });
      }
@@ -38,7 +38,7 @@ var admin = {
 
 
   accion: function(aid){
-    $('#loading').fadeIn(250);
+    NProgress.start();
     $.ajax({
 		type: 'POST',
 		url: global_data.url +'/afiliado-setactive.php',
@@ -66,7 +66,7 @@ var admin = {
 
 news : {
  accion: function(nid){
-    $('#loading').fadeIn(250);
+    NProgress.start();
     $.ajax({
 		type: 'POST',
 		url: global_data.url +'/admin-noticias-setInActive.php',
@@ -86,7 +86,7 @@ news : {
 				break;
 			}
             
-            $('#loading').fadeOut(350);
+            NProgress.done();
 		}
 	});
   }, 
@@ -107,7 +107,7 @@ nicks : {
 			
         }else{
             
-            $('#loading').fadeIn(250);
+            NProgress.start();
 		
            $.post(global_data.url + '/admin-nicks-change.php', 'nid=' + nid + '&accion=' + accion, function(a){
 		   
@@ -115,7 +115,7 @@ nicks : {
 		   
 		   mydialog.center();
 		   
-		   success:  if(a.charAt(0) == '1') $('#nick_' + nid).fadeOut(); $('#loading').fadeOut(350);
+		   success:  if(a.charAt(0) == '1') $('#nick_' + nid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -137,7 +137,7 @@ sesiones : {
 			
         }else{
             
-            $('#loading').fadeIn(250);
+            NProgress.start();
 		
            $.post(global_data.url + '/admin-sesiones-borrar.php', 'sesion_id=' + sid, function(a){
 		   
@@ -145,7 +145,7 @@ sesiones : {
 		   
 		   mydialog.center();
 		   
-		   success:  if(a.charAt(0) == '1') $('#sesion_' + sid).fadeOut(); $('#loading').fadeOut(350);
+		   success:  if(a.charAt(0) == '1') $('#sesion_' + sid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -168,7 +168,7 @@ posts : {
 			
         }else{
 		  
-          $('#loading').fadeIn(250);
+          NProgress.start();
         
            $.post(global_data.url + '/posts-admin-borrar.php', 'postid=' + pid, function(a){
 		   
@@ -176,7 +176,7 @@ posts : {
 		   
 		   mydialog.center();
            
-           success:  if(a.charAt(0) == '1') $('#post_' + pid).fadeOut(); $('#loading').fadeOut(350);
+           success:  if(a.charAt(0) == '1') $('#post_' + pid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -198,7 +198,7 @@ blacklist : {
 			
         }else{
 		  
-          $('#loading').fadeIn(250);
+          NProgress.start();
         
            $.post(global_data.url + '/admin-blacklist-delete.php', 'bid=' + id, function(a){
 		   
@@ -206,7 +206,7 @@ blacklist : {
 		   
 		   mydialog.center();
            
-           success:  if(a.charAt(0) == '1') $('#block_' + id).fadeOut(); $('#loading').fadeOut(350);
+           success:  if(a.charAt(0) == '1') $('#block_' + id).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -228,7 +228,7 @@ badwords : {
 			
         }else{
 		  
-          $('#loading').fadeIn(250);
+          NProgress.start();
         
            $.post(global_data.url + '/admin-badwords-delete.php', 'wid=' + wid, function(a){
 		   
@@ -236,7 +236,7 @@ badwords : {
 		   
 		   mydialog.center();
            
-           success:  if(a.charAt(0) == '1') $('#wid_' + wid).fadeOut(); $('#loading').fadeOut(350);
+           success:  if(a.charAt(0) == '1') $('#wid_' + wid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -258,7 +258,7 @@ fotos : {
 			
         }else{
 		
-            $('#loading').fadeIn(250);
+            NProgress.start();
             
            $.post(global_data.url + '/admin-foto-borrar.php', 'foto_id=' + fid, function(a){
 		   
@@ -266,14 +266,14 @@ fotos : {
 		   
 		   mydialog.center();
 		   
-		   success:  $('#foto_' + fid).fadeOut(); $('#loading').fadeOut(350);
+		   success:  $('#foto_' + fid).fadeOut(); NProgress.done();
 					   
       });
      }
    },
    setOpenClosed:function(fid){
          
-         $('#loading').fadeIn(250);
+         NProgress.start();
          
 		 $.ajax({
 		type: 'POST',
@@ -293,14 +293,14 @@ fotos : {
 					$('#comments_foto_' + fid).html('<font color="green">Abiertos</font>');
 				break;
 			}
-            $('#loading').fadeOut(350);
+            NProgress.done();
 		}
 	});
 		 
 		 
    },
    setShowHide:function(fid){
-         $('#loading').fadeIn(250);
+         NProgress.start();
 		 $.ajax({
 		type: 'POST',
 		url: global_data.url +'/admin-foto-setShowHide.php',
@@ -319,7 +319,7 @@ fotos : {
 					$('#status_foto_' + fid).html('<font color="green">Visible</font>');
 				break;
 			}
-            $('#loading').fadeOut(350);
+            NProgress.done();
 		}
 	});
 		 
@@ -352,7 +352,7 @@ medallas : {
 						
         }else{
 		      
-              $('#loading').fadeIn(250);
+              NProgress.start();
               
            $.post(global_data.url + '/admin-medalla-borrar.php', 'medal_id=' + mid, function(a){
 		   
@@ -360,7 +360,7 @@ medallas : {
 		   
 		   mydialog.center();
 		   
-		   success:  $('#medal_id_' + mid).fadeOut(); $('#loading').fadeOut(350);
+		   success:  $('#medal_id_' + mid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -382,7 +382,7 @@ medallas : {
 			
         }else{
 		
-           $('#loading').fadeIn(250);
+           NProgress.start();
             
            $.post(global_data.url + '/admin-medallas-borrar-asignacion.php', 'aid=' + aid + '&mid=' + mid, function(a){
 		   
@@ -390,7 +390,7 @@ medallas : {
 		   
 		   mydialog.center();
 		   
-		   success:  $('#assign_id_' + aid).fadeOut(); $('#loading').fadeOut(350);
+		   success:  $('#assign_id_' + aid).fadeOut(); NProgress.done();
 					   
       });
      }
@@ -424,7 +424,7 @@ medallas : {
 	var m_post = $('#m_post').val(); 
 	var m_foto = $('#m_foto').val();
     
-    $('#loading').fadeIn(250); 
+    NProgress.start(); 
 	
 	$.post(global_data.url + '/admin-medalla-asignar.php', 'mid=' + mid + '&m_usuario=' + m_usuario + '&pid=' + m_post + '&fid=' + m_foto, function(c){
 		   
@@ -433,7 +433,7 @@ medallas : {
 		   success: if(c.charAt(0) != '0') {
 				var nmeds = parseInt($('#total_med_assig_' + mid).text());
 				$('#total_med_assig_' + mid).text(nmeds + 1);
-                $('#loading').fadeOut(350);
+                NProgress.done();
 				}
 		   
            mydialog.center();
@@ -450,7 +450,7 @@ medallas : {
     users: {
 		setInActive: function(uid){
         
-        $('#loading').fadeIn(250);
+        NProgress.start();
 		$.ajax({
 		type: 'POST',
 		url: global_data.url +'/admin-users-InActivo.php',
@@ -469,7 +469,7 @@ medallas : {
 					$('#status_user_' + uid).html('<font color="purple">Inactivo</font>');
 				break;
 			}
-            $('#loading').fadeOut(350);
+            NProgress.done();
 		}
 	});
 	 

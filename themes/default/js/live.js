@@ -81,18 +81,18 @@ var live = {
     },
     // UPDATE
     update: function(){
-        $('#loading').fadeIn(250);
+        NProgress.start();
 		$.ajax({
 			type: 'POST',
 			url: global_data.url + '/live-stream.php',
             data: 'nots=' + live.status['nots'] + '&mps=' + live.status['mps'],
 			success: function(h){
                 live.print(h);
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			},
 			complete: function(){
 				setTimeout(function(){ live.update(); }, live.update_time);
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			}
 		});
     },
@@ -162,7 +162,7 @@ jQuery.cookie = function(name, value, options) {
 // READY
 $(document).ready(function(){
     //
-    $('.beeper_x').live("click",function(){
+    $('.beeper_x').on("click",function(){
         var bid = $(this).attr('bid');
         //
         $('#beep_' + bid).fadeOut().remove();

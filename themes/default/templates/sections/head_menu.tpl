@@ -6,29 +6,29 @@
 			<ul class="menuTabs">
                 {if $tsConfig.c_allow_portal && $tsUser->is_member == true}
                 <li class="tabbed {if $tsPage != 'home' && $tsPage != 'posts' && $tsPage != 'tops' && $tsPage != 'admin' && $tsPage != 'fotos'}here{/if}" id="tabbedhome">
-                    <a title="Ir a Inicio" onclick="menu('home', this.href); return false;" href="{$tsConfig.url}/mi/"><span>&nbsp;</span></a>
+                    <a title="Ir a Inicio" href="{$tsConfig.url}/mi/"><span>&nbsp;</span></a>
                 </li>
                 {/if}
                 <li class="tabbed {if $tsPage == 'posts' || $tsPage == 'home'}here{/if}" id="{if $tsConfig.c_allow_portal && $tsUser->is_member}tabbedposts{else}tabbedhome{/if}">
-                    <a title="Ir a Posts" onclick="menu('posts', this.href); return false;" href="{$tsConfig.url}/posts/">Posts <img alt="Drop Down" src="{$tsConfig.tema.t_url}/images/arrowdown.png"></a>
+                    <a title="Ir a Posts" href="{$tsConfig.url}/posts/">Posts</a>
                 </li>				
 				{if $tsConfig.c_fotos_private == '1' && !$tsUser->is_member}{else}								
                 <li class="tabbed {if $tsPage == 'fotos'}here{/if}" id="tabbedfotos">
-                    <a title="Ir a Fotos" onclick="menu('fotos', this.href); return false;" href="{$tsConfig.url}/fotos/">Fotos <img alt="Drop Down" src="{$tsConfig.tema.t_url}/images/arrowdown.png"></a>
+                    <a title="Ir a Fotos" href="{$tsConfig.url}/fotos/">Fotos</a>
                 </li>								
 				{/if}
                 <li class="tabbed {if $tsPage == 'tops'}here{/if}" id="tabbedtops">
-                    <a title="Ir a TOPs" onclick="menu('tops', this.href); return false;" href="{$tsConfig.url}/top/">TOPs <img alt="Drop Down" src="{$tsConfig.tema.t_url}/images/arrowdown.png"></a>
+                    <a title="Ir a TOPs" href="{$tsConfig.url}/top/">TOPs</a>
                 </li>
                 {if $tsUser->is_member}
                     {if $tsUser->is_admod == 1}
                 <li class="tabbed {if $tsPage == 'admin'}here{/if}" id="tabbedAdmin">
-                    <a class=qtip title="Panel de Administrador" onclick="menu('Admin', this.href); return false;" href="{$tsConfig.url}/admin/">Administraci&oacute;n <img alt="Drop Down" src="{$tsConfig.tema.t_url}/images/arrowdown.png"></a>
+                    <a class=qtip title="Panel de Administrador" onclick="menu('Admin', this.href); return false;" href="{$tsConfig.url}/admin/">Administraci&oacute;n</a>
                 </li>
    	                {/if}
                 {else}
                 <li class="tabbed registrate">
-                    <a title="Registrate!" onclick="registro_load_form(); return false" href=""><b>Registrate!</b></a>
+                    <a title="Registrate!" href="{$tsConfig.url}/registro/"><b>Registrate!</b></a>
                 </li>
                 {/if}
                 <li class="clearBoth"></li>
@@ -100,11 +100,11 @@
                 </div>
                 {else}
 				<div class="identificarme">
-					<a title="Identificarme" href="javascript:open_login_box()" class="iniciar_sesion">Identificarme</a>
+					<a title="Identificarme" href="{$tsConfig.url}/login/" class="iniciar_sesion">Identificarme</a>
 				</div>
                 <div id="login_box" style="display: none;">
                 	<div class="login_header">
-                    	<img title="Cerrar mensaje" onclick="close_login_box();" class="login_cerrar" src="http://o2.t26.net/images/cerrar.png" style="left:220px">
+                    	<img title="Cerrar mensaje" onclick="close_login_box();" class="login_cerrar" src="{$tsConfig.images}/borrar.png" style="left:220px">
                     </div>
                 	<div class="login_cuerpo">
 	                  <span class="gif_cargando floatR" id="login_cargando" style="display: none;"></span>

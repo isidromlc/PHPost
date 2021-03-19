@@ -172,7 +172,7 @@ var muro = {
         },
         // VERIFICAR ARCHIVO
         ajaxCheck: function(url, inpt){
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
             $.ajax({
             	type: 'POST',
             	url: global_data.url + '/muro-stream.php?do=check&type=' + muro.stream.type,
@@ -188,13 +188,13 @@ var muro = {
                             $('#' + muro.stream.type + 'Frame').html(h.substring(3));
             				break;
             		}
-                    $('#loading').fadeOut(350); 
+                    NProgress.done(); 
             	},
                 complete: function (){
                     // LOADER/ STATUS
                     muro.stream.loader(false);
                     muro.stream.status = 0;
-                    $('#loading').fadeOut(350); 
+                    NProgress.done(); 
                 }
             });
         },
@@ -306,7 +306,7 @@ var muro = {
                     // LOADER/ STATUS
                     muro.stream.loader(false);
                     muro.stream.status = 0;
-                    $('#loading').fadeOut(350); 
+                    NProgress.done(); 
                 }
             });
         },
@@ -318,7 +318,7 @@ var muro = {
             $('.more-pubs a').hide();
             $('.more-pubs span').css('display','block');
             // CARGAMOS
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
             $.ajax({
             	type: 'POST',
             	url: global_data.url + '/muro-stream.php?do=more&type=' + type,
@@ -403,7 +403,7 @@ var muro = {
     show_likes: function(id, type){
         muro.stream.status = 1;
         // MANDAMOS
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
         $.ajax({
         	type: 'POST',
         	url: global_data.url + '/muro-likes.php?do=show',
@@ -431,7 +431,7 @@ var muro = {
                         mydialog.center();
         				break;
         		}
-                $('#loading').fadeOut(350); 
+                NProgress.done(); 
         	},
             complete: function (){
                 // STATUS
@@ -454,7 +454,7 @@ var muro = {
             return false;
         }
         //
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
         $.ajax({
         	type: 'POST',
         	url: global_data.url + '/muro-stream.php?do=repost',
@@ -474,7 +474,7 @@ var muro = {
             complete: function (){
                 // STATUS
                 muro.stream.status = 0;
-                $('#loading').fadeOut(350); 
+                NProgress.done(); 
             }
         });
     },
@@ -484,7 +484,7 @@ var muro = {
         muro.stream.status = 1;
         $(obj).parent().find('img').show();
         //
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
         $.ajax({
         	type: 'POST',
         	url: global_data.url + '/muro-stream.php?do=more_comments',
@@ -498,7 +498,7 @@ var muro = {
                         $('#cl_' + id).html(h.substring(3));
         				break;
         		}
-                $('#loading').fadeOut(350); 
+                NProgress.done(); 
         	},
             complete: function (){
                 // STATUS
@@ -575,7 +575,7 @@ $(function(){
         $('.frameForm').css('border-bottom', '1px solid #E9E9E9');
     });
     // ENVIAR PUBLICACION
-    $('textarea[name=add_wall_comment]').live("keypress",function(k){
+    $('textarea[name=add_wall_comment]').on("keypress",function(k){
         if(k.which == 13){
             var pub_id = $(this).attr('pid');
             muro.comentar(pub_id);
@@ -586,10 +586,8 @@ $(function(){
     $('.adj').click(function(){
         var aid = $(this).attr('aid');
     })
-    // RESPUESTAS
-    $('.comentar').css('max-height', '200px').autogrow().css('height','14px');
     //
-    $('input[name=hack]').live("focus",function(){
+    $('input[name=hack]').on("focus",function(){
         $(this).hide();
         $(this).parent().find('div.formulario').show();
         var pub_id = $(this).attr('pid');

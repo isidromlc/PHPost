@@ -120,7 +120,7 @@ var registro = {
                         return registro.show_status(el, 'error', this.cache[campo][value_lower]['text']);
                 }
                 this.show_status(el, 'loading', 'Comprobando nick...');
-                $('#loading').fadeIn(250);
+                NProgress.start();
                 $.ajax({
                     type: 'POST',
                     url: global_data.url + '/registro-check-nick.php?t=nombre de usuario',
@@ -138,7 +138,7 @@ var registro = {
                                 registro.show_status(el, 'ok', h.substring(3));
                                 break;
                         }
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
                     },
                     error: function() {
                         registro.show_status(el, 'error', 'Hubo un error al intentar procesar lo solicitado');
@@ -249,7 +249,7 @@ var registro = {
                         return registro.show_status(el, 'error', this.cache[campo][value]['text']);
                 }
                 this.show_status(el, 'loading', 'Comprobando email...');
-                $('#loading').fadeIn(250);
+                NProgress.start();
                 $.ajax({
                     type: 'POST',
                     url: global_data.url + '/registro-check-email.php?t=email',
@@ -267,12 +267,12 @@ var registro = {
                                 registro.show_status(el, 'ok', 'OK');
                                 break;
                         }
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
                     },
                     error: function() {
                         registro.show_status(el, 'error', 'Hubo un error al intentar procesar lo solicitado');
                         registro.datos[campo] = '';
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
                     }
                 });
                 break;
@@ -385,7 +385,7 @@ var registro = {
                 //Compruebo si ya esta en uso
                 this.show_status($('#RegistroForm .pasoDos #estado'), 'loading', 'Obteniendo...');
                 //
-                $('#loading').fadeIn(250);
+                NProgress.start();
                 $.ajax({
                     type: 'GET',
                     url: global_data.url + '/registro-geo.php',
@@ -401,14 +401,14 @@ var registro = {
                                 $('#RegistroForm .pasoDos #estado').append(h.substring(3)).removeAttr('disabled').val('').focus();
                                 break;
                         }
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
                         // Argentina / Ciudad de Buenos Aires => Barrio
                         //$('label[for=ciudad]').html('Ciudad');
                     },
                     error: function() {
                         registro.show_status(el, 'error', 'Hubo un error al intentar procesar lo solicitado');
                         registro.datos[campo] = '';
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
 
                     }
                 });
@@ -722,7 +722,7 @@ var registro = {
         //return false;
         //Envio los datos
 
-        $('#loading').fadeIn(250);
+        NProgress.start();
         $.ajax({
             type: 'POST',
             url: global_data.url + '/registro-nuevo.php',
@@ -797,11 +797,11 @@ var registro = {
                         }
                         break;
                 }
-                $('#loading').fadeOut(350);
+                NProgress.done();
             },
             error: function() {
                 mydialog.error_500("registro.submit()");
-                $('#loading').fadeOut(350);
+                NProgress.done();
 
             },
             complete: function() {

@@ -156,7 +156,7 @@ var borradores = {
 			mydialog.buttons(true, true, 'SI', 'borradores.eliminar(' + id + ', false)', true, false, true, 'NO', 'close', true, true);
 			mydialog.center();
 		}else{
-		  $('#loading').fadeIn(250);
+		  NProgress.start();
 			$.ajax({
 				type: 'POST',
 				url: global_data.url + '/borradores-eliminar.php',
@@ -197,11 +197,11 @@ var borradores = {
 							borradores.printCounts();
 							break;
 					}
-                    $('#loading').fadeOut(350);
+                    NProgress.done();
 				},
 				error: function(){	
 					mydialog.alert('Error', 'Hubo un error al intentar procesar lo solicitado');
-                    $('#loading').fadeOut(350);
+                    NProgress.done();
 				}
 			});
 		}
@@ -214,7 +214,7 @@ var borradores = {
 		mydialog.buttons(true, true, 'Aceptar', 'close', true, true, false);
 		mydialog.center();
 		mydialog.procesando_inicio();
-        $('#loading').fadeIn(250);
+        NProgress.start();
 		$.ajax({
 			type: 'POST',
 			url: global_data.url + '/borradores-get.php',
@@ -231,15 +231,15 @@ var borradores = {
 						mydialog.center();
 						break;
 				}
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			},
 			error: function(){	
 				mydialog.alert('Error', 'Hubo un error al intentar procesar lo solicitado');
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			},
 			complete: function(){
 				mydialog.procesando_fin();
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			}
 		});
 	}

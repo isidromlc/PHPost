@@ -51,7 +51,6 @@
     display: block;
     font-weight: bold;
     text-align: center;
-    background: url('../images/hrline.gif') top left repeat-x;
     padding: 5px;
 }
 #fg_centro .foto{
@@ -136,7 +135,6 @@ div.v_info .v_follow{
 #fg_centro span.spacer{
     display: block;
     height: 2px;
-    background: url('../images/hrline.gif') top left repeat-x;
 }
 #fg_centro .item{
     border-bottom: 1px solid #CCC;

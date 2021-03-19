@@ -1,5 +1,5 @@
 $(document).ready(function(){
-	$('textarea.imagen-desc').live('focus', function(){ if ($(this).html() == 'Descripcion de la foto') $(this).html(''); });
+	$('textarea.imagen-desc').on('focus', function(){ if ($(this).html() == 'Descripcion de la foto') $(this).html(''); });
 	/*$('input[name=ciudad]').autocomplete('/registro-geo.php', {
 		minChars: 2,
 		width: 298
@@ -33,7 +33,7 @@ function desactivate(few) {
 			
 		var pass = $('#passi');
         
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
 			
            $.post(global_data.url + '/cuenta.php?action=desactivate', 'validar=' + 'ajaxcontinue', function(a){
 		   
@@ -89,7 +89,7 @@ var cuenta = {
 		}else{
 			//Obtengo las estados
 			$(el_estado).html('');
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
 			$.ajax({
 				type: 'GET',
 				url: global_data.url + '/registro-geo.php',
@@ -173,7 +173,7 @@ var cuenta = {
 			var url = $(obj).prev().prev(), caption = $(obj).prev();
 			$(url).removeClass('input-incorrect');
 			$(caption).removeClass('input-incorrect');
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
 			$.ajax({
 				type: 'post', url: global_data.url + '/cuenta.php?ajax=1&action=add', data: 'url='+$(url).val()+'&caption='+$(caption).val(), dataType: 'json',
 				success: function (r) {
@@ -186,7 +186,7 @@ var cuenta = {
 					}
 					else if (typeof r.id != 'undefined') {
 						$(obj).attr('onclick', '');
-						$(obj).unbind('click').bind('click', function(){ cuenta.imagen.del(this, r.id); });
+						$(obj).off('click').on('click', function(){ cuenta.imagen.del(this, r.id); });
 						$(obj).removeClass('misfotos-add').addClass('misfotos-del').html('Eliminar');
 						$(url).parent().prepend('<div class="floatL"><img src="'+$(url).val()+'" class="imagen-preview" /></div>')
 						$('<div class="field"><label>Imagen</label><div class="input-fake"><input value="http://" type="text" class="text" /><textarea style="margin-top:10px">Descripcion de la foto</textarea><a onclick="cuenta.imagen.add(this)" class="misfotos-add floatL">Agregar</a></div></div>').appendTo('.content-tabs.mis-fotos > fieldset');
@@ -198,7 +198,7 @@ var cuenta = {
 
 		del: function (obj, id) {
 			var container = $(obj).parent().parent();
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
 			$.ajax({
 				type: 'post', url: global_data.url + '/cuenta.php?ajax=1&action=del', data: 'id='+id, dataType: 'json',
 				success: function (r) { $(container).slideUp(100, function(){ $(container).remove(); cuenta.alert_close(7); }); $('#loading').fadeOut(250);  }
@@ -284,7 +284,7 @@ var avatar = {
 		mydialog.title('Cortar avatar');
 		mydialog.body('<img class="avatar-crop" src="'+img+'?'+Math.random()+'" onload="mydialog.center()">');
 		mydialog.buttons(true, true, 'Guardar', 'avatar.save()', true, false, true, 'Cancelar', 'avatar.close()', true, true);
-		$('img.avatar-big').attr('src', img+'?'+Math.random()).bind('load', function(){ $('img.avatar-crop').Jcrop({ aspectRatio: 1, sideHandles: false, setSelect: [ 0, 0, 120, 120 ], onChange: avatar.preview, onSelect: function(c) { avatar.crop_coord = c; } }) });
+		$('img.avatar-big').attr('src', img+'?'+Math.random()).on('load', function(){ $('img.avatar-crop').Jcrop({ aspectRatio: 1, sideHandles: false, setSelect: [ 0, 0, 120, 120 ], onChange: avatar.preview, onSelect: function(c) { avatar.crop_coord = c; } }) });
 	},
 	reload: function () {
 		$('.avatar-big').attr('src', this.current+'?'+Math.random()).css({ margin: 0, width: '120px', height: '120px' });
@@ -317,7 +317,7 @@ var avatar = {
 		else {
             $('div.avatar-loading').show();
             $('#avatar-img').attr({'style' : 'display:none'});
-            $('#loading').fadeIn(250); 
+            NProgress.start(); 
 			$.ajax({
 				type: 'post', 
                 url: global_data.url + '/upload-crop.php', 
@@ -414,7 +414,7 @@ jQuery.extend({
 				if (s.global) jQuery.event.trigger('ajaxComplete', [xml, s]);
 				if (s.global && !--jQuery.active) jQuery.event.trigger('ajaxStop');
 				if (s.complete) s.complete(xml, status);
-				jQuery(io).unbind();
+				jQuery(io).off();
 				setTimeout(function() { try { $(io).remove(); $(form).remove(); } catch(e) { jQuery.handleError(s, xml, null, e); } }, 100);
 				xml = null;
 			}
@@ -531,7 +531,7 @@ function toFront()
 {$(document).mousemove(trackMove).mouseup(trackUp);}}
 function toBack()
 {$trk.css({zIndex:290});if(trackDoc)
-{$(document).unbind('mousemove',trackMove).unbind('mouseup',trackUp);}}
+{$(document).off('mousemove',trackMove).off('mouseup',trackUp);}}
 function trackMove(e)
 {onMove(mouseAbs(e));};function trackUp(e)
 {e.preventDefault();e.stopPropagation();if(btndown)

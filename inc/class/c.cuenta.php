@@ -185,7 +185,7 @@ class tsCuenta {
 		$maxsize = 1000;	// LIMITE DE TEXTO
 		// GUARDAR...
 		switch($save){
-        	case 'cuenta':
+        	case 1:
             // NUEVOS DATOS
 				$perfilData = array(
 					'email' => $tsCore->setSecure($_POST['email'], true),
@@ -236,7 +236,7 @@ class tsCuenta {
                } else $msg_return = array('error' => 'Los cambios fueron aceptados y ser&aacute;n aplicados en los pr&oacute;ximos minutos. NO OBSTANTE, la nueva direcci&oacute;n de correo electr&oacute;nico especificada debe ser comprobada. '.$tsCore->settings['titulo'].' envi&oacute; un mensaje de correo electr&oacute;nico con las instrucciones necesarias');
 				}
 			break;
-			case 'perfil':
+			case 2:
             // INTERNOS
             $sitio = trim($_POST['sitio']);
             if(!empty($sitio)) $sitio = substr($sitio, 0, 4) == 'http' ? $sitio : 'http://'.$sitio;
@@ -250,7 +250,6 @@ class tsCuenta {
 				$perfilData = array(
 					'nombre' => $tsCore->setSecure($tsCore->parseBadWords($_POST['nombre']), true),
 					'mensaje' => $tsCore->setSecure($tsCore->parseBadWords($_POST['mensaje']), true),
-               'cabecera' => $tsCore->setSecure($tsCore->parseBadWords($_POST['cabecera']), true),
 					'sitio' => $tsCore->setSecure($tsCore->parseBadWords($sitio), true),
 					'socials' => serialize(array($facebook,$twitter,$instagram,$twitch,$youtube)),
 					'estado' => $tsCore->setSecure($_POST['estado']),
@@ -262,7 +261,7 @@ class tsCuenta {
             if(!empty($perfilData['sitio']) && !filter_var($perfilData['sitio'], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) return array('error' => 'El sitio web introducido no es correcto.');
 			break;
 			// NEW PASSWORD
-         case 'seguridad':
+         case 3:
             $passwd = $_POST['passwd'];
             $new_passwd = $_POST['new_passwd'];
             $confirm_passwd = $_POST['confirm_passwd'];
@@ -279,7 +278,7 @@ class tsCuenta {
                endif;
             }
          break;        
-         case 'privacidad':
+         case 4:
             $muro_firm = ($_POST['muro_firm'] > 4) ? 5 : $_POST['muro_firm'];
 				$rec_mps = ($_POST['rec_mps'] > 6) ? 5 : $_POST['rec_mps'];
 				$see_hits = ($_POST['last_hits'] == 1 || $_POST['last_hits'] == 2) ? 0 : $_POST['last_hits'];
@@ -287,7 +286,7 @@ class tsCuenta {
             //
             $perfilData['configs'] = serialize($array);
          break;
-        case 'username':
+        case 5:
             # Arreglo de datos
             $datos_nuevos = array(
                "nickNuevo" => $tsCore->setSecure(htmlspecialchars($_POST['new_nick'])),
@@ -317,7 +316,7 @@ class tsCuenta {
          break;
 		}
 		// ACTUALIZAR
-		if($save == 'cuenta') {
+		if($save == 1) {
 		   db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_email = \''.$tsCore->setSecure($perfilData['email'], true).'\' WHERE user_id = \''.$tsUser->uid.'\'');
             array_splice($perfilData, 0, 1); // HACK
             $updates = $tsCore->getIUP($perfilData, 'user_');

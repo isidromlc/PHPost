@@ -359,7 +359,7 @@ switch ($step) {
                <?php } elseif ($step == 5) {?>
                   <h2 class="s16">Bienvenido a PHPost Risus</h2>
                   <!-- ESTADISTICAS -->
-                  <form action="http://download.phpost.net/feed/install.php" method="post" id="form">
+                  <form action="https://newrisus.com/feed/install.php" method="post" id="form">
                      <div class="error">Ingresa a tu FTP y borra la carpeta <strong><?php echo basename(getcwd()); ?></strong> antes de usar el script.</div>
                      <fieldset>
                         Gracias por instalar <strong>PHPost Risus</strong>, ya est&aacute; lista tu nueva comunidad <strong>Link Sharing System</strong>. S&oacute;lo inicia sesi&oacute;n con tus datos y comienza a disfrutar. Ahora no dejes de <a href="http://www.phpost.net/" target="_blank"><u>visitarnos</u></a> para estar pendiente de futuras actualizaciones. Recuerda reportar cualquier bug que encuentres, de esta manera todos ganamos.<br /><br />

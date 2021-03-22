@@ -15,6 +15,18 @@ $step = empty($_GET['step']) ? 0 : $_GET['step'];
 $step = htmlspecialchars(intval($step));
 $next = true; // CONTINUAR
 
+function getSSL() {
+   if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') {
+      $isSecure = false;
+   } elseif (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') {
+      $isSecure = true;
+   } elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+      $isSecure = true;
+   }
+   $isSecure = ($isSecure == true) ? 'https://' : 'http://';
+   return $isSecure;
+}
+
 switch ($step) {
    case 0:
       $_SESSION['license'] = false;
@@ -88,10 +100,8 @@ switch ($step) {
       // No saltar la licensia
       if (!$_SESSION['licence']) header("Location: index.php");
       // Step
-      if (isset($_SERVER['HTTP_HOST'])) {
-         $base_url = isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) !== 'off' ? 'https' : 'http';
-         $base_url .= '://' . $_SERVER['HTTP_HOST'];
-      } else $base_url = 'http://localhost';
+      $local = ($step == 0) ? dirname($_SERVER["REQUEST_URI"]) : dirname(dirname($_SERVER["REQUEST_URI"]));
+      $base_url = (isset($_SERVER['HTTP_HOST'])) ? getSSL() ."{$_SERVER['HTTP_HOST']}{$local}" : "http://localhost{$local}";
       #
       $next = false;
       if ($_POST['save']) {

@@ -253,7 +253,8 @@ var mydialog = {
          'height': $(document).height(),
          'display': 'block'
       });
-
+      
+      $('#mydialog #dialog').css('position', 'fixed');
       $('#mydialog #dialog').fadeIn('fast');
    },
    close: function() {
@@ -270,7 +271,11 @@ var mydialog = {
       this.procesando_fin();
    },
    center: function() {
-      $('#mydialog #dialog').css('left', $(window).width() / 2 - $('#mydialog #dialog').width() / 2);
+      if($('#mydialog #dialog').height() > $(window).height()-60)
+         $('#mydialog #dialog').css({'position':'absolute', 'top':20});
+      else
+         $('#mydialog #dialog').css('top', $(window).height()/2-$('#mydialog #dialog').height()/2);
+      $('#mydialog #dialog').css('left', $(window).width()/2-$('#mydialog #dialog').width()/2);
    },
 
    title: function(title) {

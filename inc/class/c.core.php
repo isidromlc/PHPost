@@ -9,12 +9,11 @@ class tsCore {
     
 	var $settings;		// CONFIGURACIONES DEL SITIO
 	var $querys = 0;	// CONSULTAS
-
-	function __construct()
-    {
+	
+	function __construct() {
 		// CARGANDO CONFIGURACIONES
 		$this->settings = $this->getSettings();
-		$this->settings['domain'] = str_replace('http://','',$this->settings['url']);
+		$this->settings['domain'] = str_replace(['http://', 'https://'], ['', ''], $this->settings['url']);
 		$this->settings['categorias'] = $this->getCategorias();
         $this->settings['default'] = $this->settings['url'].'/themes/default';
 		$this->settings['tema'] = $this->getTema();
@@ -156,41 +155,39 @@ class tsCore {
 		redirect($tsDir)
 	*/
 	function redirectTo($tsDir){
-		$tsDir = urldecode($tsDir);
-		header("Location: $tsDir");
+		header("Location: " . urldecode($tsDir));
 		exit();
 	}
-    /*
-        getDomain()
+    /**
+     * getDomain()
+     * operador ternario
+     * @link https://www.php.net/manual/es/control-structures.if.php#102060
     */
     function getDomain(){
-        $domain = explode('/',str_replace('http://','',$this->settings['url']));
-        if(is_array($domain)) {
-        $domain = explode('.',$domain[0]);
-        } else $domain = explode('.',$domain);
+        $domain = explode('/', str_replace(['http://', 'https://'], ['', ''], $this->settings['url']));
+        $domain = (is_array($domain)) ? explode('.',$domain[0]) :  explode('.', $domain);
         //
         $t = count($domain);
         $domain = $domain[$t - 2].'.'.$domain[$t - 1];
         //
         return $domain;
     }
-	/*
-		currentUrl()
-	*/
-	function currentUrl(){
-		$current_url_domain = $_SERVER['HTTP_HOST'];
-		$current_url_path = $_SERVER['REQUEST_URI'];
-		$current_url_querystring = $_SERVER['QUERY_STRING'];
-		$current_url = "http://".$current_url_domain.$current_url_path;
-		$current_url = urlencode($current_url);
-		return $current_url;
-	}
-	/*
-		setJSON($tsContent)
+    /**
+     * currentUrl()
+     * Se eliminó "$current_url_querystring" ya que no se usá
+     * Reducción de código
+     */
+     function currentUrl(){
+	return urlencode("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+     }
+	/**
+	 * setJSON($tsContent)
+	 * Evitaremos que json_decode nos devuelva un objeto, 
+	 * con TRUE nos devolverá un array(arreglo)
+	 * @link https://www.php.net/manual/es/function.json-decode.php
 	*/
 	function setJSON($data, $type = 'encode'){
-           if($type == 'encode') return json_encode($data);
-           elseif($type == 'decode') return json_decode($data);            
+           return ($type == 'encode') ? json_encode($data) : json_decode($data, true);            
 	}
 	/*
 		setPagesLimit($tsPages, $start = false)
@@ -328,25 +325,26 @@ class tsCore {
 	
 		return $pageindex;
 	}
-	/*
-		setSecure()
+	/**
+	 * Realizó una comprobación de versión de PHP ya que magic_quotes_gpc 
+	 * es obsoleta desde 7.4.0 y removida de PHP 8
+	 * @link https://www.php.net/manual/en/function.get-magic-quotes-gpc.php
 	*/
-	public function setSecure($var, $xss = FALSE)
-    {
-        $var = db_exec('real_escape_string', function_exists('magic_quotes_gpc') ? stripslashes($var) : $var);
-        /**
-        if ($xss)
-        {
-        $var = htmlspecialchars($var, ENT_NOQUOTES,'UTF-8');
-        }*/
+	# Seguridad
+	function setSecure($var, $xss = FALSE) {
+		$var = db_exec('real_escape_string', 
+			(version_compare(PHP_VERSION, "7.4.0", ">=")) 
+			? stripslashes($var) 
+			: function_exists('magic_quotes_gpc' ? stripslashes($var) : $var)
+		);
+      if ($xss) $var = htmlspecialchars($var, ENT_COMPAT|ENT_QUOTES, 'UTF-8');
      return $var;
-    }
+   }
 	
     /*
         antiFlood()
     */
-    public function antiFlood($print = true, $type = 'post', $msg = '')
-    {
+    public function antiFlood($print = true, $type = 'post', $msg = '') {
         global $tsUser;
         //
         $now = time();
@@ -355,16 +353,14 @@ class tsCore {
         $limit = $tsUser->permisos['goaf'];
         $resta = $now - $_SESSION['flood'][$type];
         if($resta < $limit) {
-            $msg = '0: '.$msg.' Int&eacute;ntalo en '.($limit - $resta).' segundos.';
+		$less = ($limit - $resta);
+            $msg = "0: {$msg} Int&eacute;ntalo en {$less} segundos.";
             // TERMINAR O RETORNAR VALOR
             if($print) die($msg);
             else return $msg;
-        }
-        else {
+        } else {
             // ANTIFLOOD
-            if(empty($_SESSION['flood'][$type])) {
-                $_SESSION['flood'][$type] = time();
-            } else $_SESSION['flood'][$type] = $now;
+            $_SESSION['flood'][$type] = (empty($_SESSION['flood'][$type])) ? time() : $now;
             // TODO BIEN
             return true;
         }
@@ -393,6 +389,19 @@ class tsCore {
 		//
 		return $string;
 	}
+	/**
+	 * Mejoramos el seo para los enlaces (Me base en estas)
+	 * @link https://www.baulphp.com/urls-amigables-con-php-ejemplo-completo-con-un-string/
+	 * @link https://stackoverflow.com/questions/5305879/generate-seo-friendly-urls-slugs/9535967
+	*/
+	public function set_SEO(string $string, bool $max = false) {
+		$string = htmlentities($string, ENT_QUOTES, 'UTF-8');
+		$string = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
+		$string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
+		$string = preg_replace('~[^0-9a-z]+~i', '-', $string);
+		if($max) $string = strtolower(trim($string, '-'));
+		return $string;
+	}
 	/*
 		parseBBCode($bbcode)
 	*/
@@ -414,26 +423,18 @@ class tsCore {
                 $parser->parseSmiles();
                 // MENCIONES
                 $parser->parseMentions();
-                break;
+            break;
             // FIRMA
             case 'firma':
                 // BBCodes permitidos
                 $parser->setRestriction(array('url', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler'));
-                break;
+            break;
             // NOTICIAS
             case 'news':
                 // BBCodes permitidos
                 $parser->setRestriction(array('url', 'b', 'i', 'u', 's'));
                 // SMILES
                 $parser->parseSmiles();
-                break;
-            // SOLO SMILES (Esta opción se mantiene por compatibilidad con versiones anteriores, pero en su lugar se recomienda utilizar la opción "normal")
-            case 'smiles':
-                $parser->setRestriction(array('url', 'code', 'quote', 'quotePHPost', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 'align', 'spoiler', 'swf', 'goear', 'hr', 'li'));
-                // SMILES
-                $parser->parseSmiles();
-                // MENCIONES
-                $parser->parseMentions();
             break;
         }
         // Retornar resultado HTML
@@ -471,7 +472,8 @@ class tsCore {
         parseSmiles($st)
     */
     public function parseSmiles($bbcode){
-        return $this->parseBBCode($bbcode, 'smiles');
+		// SOLO SMILES (Esta opción se mantiene por compatibilidad con versiones anteriores, pero en su lugar se utiliza la opción "normal")
+        return $this->parseBBCode($bbcode, 'normal');
     }
 	/*
 		parseBBCodeFirma($bbcode)
@@ -479,50 +481,47 @@ class tsCore {
 	function parseBBCodeFirma($bbcode){
 	   return $this->parseBBCode($bbcode, 'firma');
 	}
-	/*
-		setHace()
+	/**
+	 * setHace()
+	 * if ternario
 	*/
 	function setHace($fecha, $show = false){
 		$fecha = $fecha; 
 		$ahora = time();
 		$tiempo = $ahora-$fecha; 
-		if($fecha <= 0){
-			return 'Nunca';
-		}
+		if($fecha <= 0) return 'Nunca';
 		elseif(round($tiempo / 31536000) <= 0){ 
-			if(round($tiempo / 2678400) <= 0){ 
-				 if(round($tiempo / 86400) <= 0){ 
-					 if(round($tiempo / 3600) <= 0){ 
-						if(round($tiempo / 60) <= 0){ 
-							if($tiempo <= 60){ $hace = 'instantes'; } 
+			if(round($tiempo / 2678400) <= 0) { 
+				if(round($tiempo / 86400) <= 0) { 
+					if(round($tiempo / 3600) <= 0) { 
+						if(round($tiempo / 60) <= 0) { 
+						if($tiempo <= 60) $hace = 'instantes';
 						} else  { 
 							$can = round($tiempo / 60); 
-							if($can <= 1) {    $word = 'minuto'; } else { $word = 'minutos'; } 
-							$hace = $can. " ".$word; 
+							$word = ($can <= 1) ? 'minuto' : 'minutos';
+							$hace = "{$can} {$word}"; 
 						} 
 					} else { 
 						$can = round($tiempo / 3600); 
-						if($can <= 1) {    $word = 'hora'; } else {    $word = 'horas'; } 
-						$hace = $can. " ".$word; 
+						$word = ($can <= 1) ? 'hora' : 'horas';
+						$hace = "{$can} {$word}"; 
 					} 
 				} else  { 
 					$can = round($tiempo / 86400); 
-					if($can <= 1) {    $word = 'd&iacute;a'; } else {    $word = 'd&iacute;as'; } 
-					$hace = $can. " ".$word;
+					$word = ($can <= 1) ? 'd&iacute;a' : 'd&iacute;as';
+					$hace = "{$can} {$word}";
 				} 
 			} else  { 
 				$can = round($tiempo / 2678400);  
-				if($can <= 1) {    $word = 'mes'; } else { $word = 'meses'; } 
-				$hace = $can. " ".$word; 
+				$word = ($can <= 1) ? 'mes' : 'meses';
+				$hace = "{$can} {$word}"; 
 			}
-		 }else  {
+		} else {
 			$can = round($tiempo / 31536000); 
-			if($can <= 1) {    $word = 'a&ntilde;o';} else { $word = 'a&ntilde;os'; } 
-			$hace = $can. " ".$word; 
-		 }
-		 //
-		 if($show == true) return 'Hace '.$hace;
-		 else return $hace;
+			$word = ($can <= 1) ? 'a&ntilde;o' : 'a&ntilde;os';
+			$hace = "{$can} {$word}"; 
+		}
+		return ($show == true) ? 'Hace '.$hace : $hace;
 	}
 	/*
 		getUrlContent($tsUrl)
@@ -545,18 +544,7 @@ class tsCore {
         }
 		return $result;
 	}
-	/*
-		getUserCountry()
-	*/
-	function getUserCountry(){
-		//
-		require('../ext/geoip.inc.php');
-		$abir_bd = geoip_open('../ext/GeoIP.dat',GEOIP_STANDARD);
-		$country = geoip_country_code_by_addr($abir_bd, $_SERVER['REMOTE_ADDR']);
-		geoip_close($abir_bd); 
-		//
-		return $country;
-	}
+
     /*
         getIP
     */

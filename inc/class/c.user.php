@@ -187,46 +187,40 @@ class tsUser {
 	*/
 	function loginUser($username, $password, $remember = FALSE, $redirectTo = NULL){
 		global $tsCore;
-
-		/* ARMAR VARIABLES */
-		$username = strtolower($username);	// ARMAR VARIABLES
-        $pp_password = md5(md5($password) . $username);
 		/* CONSULTA */
-        $pwtype = (db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SHOW COLUMNS FROM u_miembros LIKE \'user_pwtype\'')) == 1) ? 'user_pwtype,' : '';      
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_id, user_password, ' . $pwtype . ' user_activo, user_baneado FROM u_miembros WHERE LOWER(user_name) = \''.$username.'\' LIMIT 1');
-        //
-        $data = db_exec('fetch_assoc', $query);
-        
-        if(empty($data)) return '0: El usuario no existe.';
-        //
-       	if($data['user_pwtype']){
-       	    $other_passwords = array();
-       	    $other_passwords[] = sha1($username . $password); // SMF 1.1.x, SMF 2.0.x
-            $other_passwords[] = md5($password); // Zinfinal
-            //
-            if(in_array($data['user_password'], $other_passwords)){
-                // UPDATE
-				db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_password = \''.$tsCore->setSecure($pp_password).'\', user_pwtype = \'0\' WHERE user_id = '.$data['user_id'].'');
-                //
-                $data['user_password'] = $pp_password;
-            }
-       	}
-        // CHECAMOS
-        if($data['user_password'] != $pp_password){
+      $data = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', "SELECT user_id, user_name, user_password, user_twofactor, user_activo, user_baneado FROM u_miembros WHERE user_name = '{$username}' LIMIT 1"));
+      # Comprobamos que el usuario exista
+      if(empty($data)) return '0: El usuario no existe.';
+      $VerifyPassword = $tsCore->passwordVerify($password, $username, $data['user_password']);
+      // CHECAMOS
+      if($VerifyPassword):
+
+	      if($data['user_activo'] == 1):
+
+	      	if(empty($data['user_twofactor'])):
+	         	$this->session->update($data['user_id'], $remember, TRUE);
+	         endif;
+	         $this->loadUser(true);
+	         $this->DarMedalla();
+	         #
+	         if(empty($data['user_twofactor'])):
+					if($redirectTo != NULL): 
+						$tsCore->redirectTo($redirectTo);
+					else:
+						return TRUE;
+					endif;
+				else:
+					return '2: Ingrese el código de autentificación.';
+				endif;
+				#
+			else:
+				return '0: Debes activar tu cuenta';
+			endif;
+
+			#
+		else:
 			return '0: Tu contrase&ntilde;a es incorrecta.';
-		} else {
-            if($data['user_activo'] == 1){
-                // Actualizamos la session
-                $this->session->update($data['user_id'], $remember, TRUE);
-                // Cargamos la información del usuario
-                $this->loadUser(true);
-                // COMPROBAMOS SI TENEMOS QUE ASIGNAR MEDALLAS
-                $this->DarMedalla();                
-				/* REDERIGIR */
-				if($redirectTo != NULL) $tsCore->redirectTo($redirectTo);	// REDIRIGIR
-				else return TRUE;
-			} else return '0: Debes activar tu cuenta';
-		}
+		endif;
 	}
 	/*
 		CERRAR SESSION

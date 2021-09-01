@@ -7,14 +7,16 @@ require_once 'CodeDefinition.php';
 use JBBCode\CodeDefinition;
 
 /**
- * An interface for sets of code definitons.
+ * An interface for sets of code definitions.
  *
  * @author jbowens
  */
-interface CodeDefinitionSet {
+interface CodeDefinitionSet
+{
 
     /**
      * Retrieves the CodeDefinitions within this set as an array.
+     * @return CodeDefinition[]
      */
     public function getCodeDefinitions();
 }

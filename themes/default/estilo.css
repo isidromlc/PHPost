@@ -5025,24 +5025,8 @@ ul.points_user li span.mBtn {
 .notificaciones-list .tipsy-inner {
 	background-color: #FFFFCC;
 }
-
-.tipsy { padding: 3px 3px 5px 3px; font-size: 10px;background-repeat: no-repeat; }
-  .tipsy-inner { 
-  padding: 4px 5px;
-  background: url(images/tipsy.png) repeat-x #000;
-  color: white;
-  max-width: 200px; 
- 	text-shadow: 0 1px 1px #000;
- 	border: 1px solid #000;
- 	text-align: center;
- 	font-weight: bold; 
- 	-moz-border-radius:3px;
- 	-webkit-border-radius: 3px;
- 	}
-  .tipsy-north { background-image: url(images/tipsy-north.gif); background-position: top center; }
-  .tipsy-south { background-image: url(images/tipsy-south-n.png); background-position: bottom center; }
-  .tipsy-east { background-image: url(images/tipsy-east.gif); background-position: right center; }
-  .tipsy-west { background-image: url(images/tipsy-west.gif); background-position: left center; }
+#nprogress{pointer-events:none}#nprogress .bar{background:#29d;position:fixed;z-index:1031;top:0;left:0;width:100%;height:2px}#nprogress .peg{display:block;position:absolute;right:0;width:100px;height:100%;box-shadow:0 0 10px #29d,0 0 5px #29d;opacity:1;-webkit-transform:rotate(3deg) translate(0px,-4px);-ms-transform:rotate(3deg) translate(0px,-4px);transform:rotate(3deg) translate(0px,-4px)}#nprogress .spinner{display:block;position:fixed;z-index:1031;top:15px;right:15px}#nprogress .spinner-icon{width:18px;height:18px;box-sizing:border-box;border:solid 2px transparent;border-top-color:#29d;border-left-color:#29d;border-radius:50%;-webkit-animation:nprogress-spinner 400ms linear infinite;animation:nprogress-spinner 400ms linear infinite}.nprogress-custom-parent{overflow:hidden;position:relative}.nprogress-custom-parent #nprogress .spinner,.nprogress-custom-parent #nprogress .bar{position:absolute}@-webkit-keyframes nprogress-spinner{0%{-webkit-transform:rotate(0deg)}100%{-webkit-transform:rotate(360deg)}}@keyframes nprogress-spinner{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+.tipsy{font-size:10px;position:absolute;padding:5px;word-wrap:break-word;z-index:100000}.tipsy-inner{background-color:#000;color:#FFF;max-width:200px;padding:5px 8px 4px;text-align:center;border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px}.tipsy-arrow{position:absolute;width:0;height:0;line-height:0;border:5px dashed #000}.tipsy-arrow-n{border-bottom-color:#000}.tipsy-arrow-s{border-top-color:#000}.tipsy-arrow-e{border-left-color:#000}.tipsy-arrow-w{border-right-color:#000}.tipsy-n .tipsy-arrow,.tipsy-nw .tipsy-arrow{border-left-color:transparent;border-right-color:transparent;top:0;border-bottom-style:solid;border-top:none}.tipsy-n .tipsy-arrow{left:50%;margin-left:-5px}.tipsy-nw .tipsy-arrow{left:10px}.tipsy-ne .tipsy-arrow{top:0;right:10px;border-bottom-style:solid;border-top:none;border-left-color:transparent;border-right-color:transparent}.tipsy-s .tipsy-arrow,.tipsy-se .tipsy-arrow,.tipsy-sw .tipsy-arrow{bottom:0;border-top-style:solid;border-bottom:none;border-left-color:transparent;border-right-color:transparent}.tipsy-s .tipsy-arrow{left:50%;margin-left:-5px}.tipsy-sw .tipsy-arrow{left:10px}.tipsy-se .tipsy-arrow{right:10px}.tipsy-e .tipsy-arrow,.tipsy-w .tipsy-arrow{top:50%;margin-top:-5px;border-top-color:transparent;border-bottom-color:transparent}.tipsy-e .tipsy-arrow{right:0;border-left-style:solid;border-right:none}.tipsy-w .tipsy-arrow{left:0;border-right-style:solid;border-left:none}
   
 .paginadorCom {
   background: #F7F7F7;

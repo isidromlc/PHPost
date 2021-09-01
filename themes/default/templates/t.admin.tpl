@@ -1,4 +1,5 @@
 {include file='sections/main_header.tpl'}
+
                 <script type="text/javascript" src="{$tsConfig.js}/admin.js"></script>
                 <div id="borradores">
 					<div class="clearfix">

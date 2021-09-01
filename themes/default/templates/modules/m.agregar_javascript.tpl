@@ -12,7 +12,7 @@ function showError(obj, str) {
 		obj = $(obj).parent().parent();
 	}
 	$(obj).parent('li').addClass('error').children('span.errormsg').html(str).show(); // TODO QUE ONDA
-	$.scrollTo($(obj).parent('li'), 500);
+	window.scrollTo($(obj).parent('li'), 500);
 }
 //
 function hideError(obj) {
@@ -200,15 +200,14 @@ $(document).ready(function(){
 
 					$('#mydialog #buttons .mBtn.btnOk').removeClass('btnCancel').addClass('btnGreen');
 
-					$.scrollTo(0, 500)
+					window.scrollTo(0, 500)
 
 				}
 			});
 
 	});
     //
-    $('a.consejos-view-more-button').bind(
-		'click',
+    $('a.consejos-view-more-button').on('click',
 		function () {
 			$(this).hide();
 			$('div.consejos-view-more').show();

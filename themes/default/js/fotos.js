@@ -81,7 +81,7 @@ var fotos = {
     	}
         // ENVIAMOS
         var auser = $('input[name=auser_post]').val();
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
        	$.ajax({
     		type: 'POST',
     		url: global_data.url + '/comentario-agregar.php?ts=true&do=fotos',
@@ -117,7 +117,7 @@ var fotos = {
     	var total_votos = parseInt($('#votos_total_' + voto).text());
         total_votos = (isNaN(total_votos)) ? 0 : total_votos;
         //
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
     	$.ajax({
     		type: 'POST',
     		url: global_data.url + '/comentario-votar.php?do=fotos',
@@ -154,7 +154,7 @@ var fotos = {
     },
     // ELIMINAR COMENTARIO
     del_comentario: function(cid){
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
     	$.ajax({
     		type: 'POST',
     		url: global_data.url + '/comentario-borrar.php?do=fotos',
@@ -181,7 +181,7 @@ var fotos = {
     },
     // ELIMINAR FOTO
     del_foto: function(fid){
-        $('#loading').fadeIn(250); 
+        NProgress.start(); 
     	$.ajax({
     		type: 'POST',
     		url: global_data.url + '/fotos/borrar.php',
@@ -219,15 +219,15 @@ $(function(){
         }
     });
     // AUTOGROW
-    $('.autorow').css('max-height', '140px').autogrow();
+    $('.autorow').css('max-height', '140px');
 	// QUITAR LOS ERRORES
-	$('.required').bind('keyup change',function(){
+	$('.required').on('keyup change',function(){
 		if ($.trim($(this).val())) {
 			hideError(this);
 		}
 	});
 	// CHECAR EL TITULO
-	$('input[name=titulo]').bind('keyup',function(){
+	$('input[name=titulo]').on('keyup',function(){
 		if ($(this).val().length >= 5 && countUpperCase($(this).val()) > 90) {
 			showError(this, 'El t&iacute;tulo no debe estar en may&uacute;sculas');
 		}

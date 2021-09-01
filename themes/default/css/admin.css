@@ -8,16 +8,8 @@
 }
 .phpost h1{
     background-color: #4D90FE;
-	background-image: -webkit-gradient(linear,left top,left bottom,from(#4D90FE),to(#4787ED));
-	background-image: -moz-linear-gradient(top,#4D90FE,#4787ED);
-	background-image: -ms-linear-gradient(top,#4D90FE,#4787ED);
-	background-image: -o-linear-gradient(top,#4D90FE,#4787ED);
-	background-image: -webkit-linear-gradient(top,#4D90FE,#4787ED);
 	background-image: linear-gradient(top,#4D90FE,#4787ED);
-	filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#4d90fe',EndColorStr='#4787ed');
 	border: 1px solid #3079ED;
-	-moz-border-radius: 2px 2px 0px 0px;
-	-webkit-border-radius: 2px 2px 0px 0px;
     border-radius: 2px 2px 0px 0px;
     margin: 0;
     padding: 5px;
@@ -49,25 +41,25 @@
 #admin_menu li a{
     display: block;
 }
-li#a_main {background-image: url(../images/icons/robot.png);}
-li#a_creditos {background-image: url(../images/icons/information-shield.png);}
-li#a_configs {background-image: url(../images/icons/gear.png);}
-li#a_configs {background-image: url(../images/icons/gear.png);}
-li#a_temas {background-image: url(../images/icons/color.png);}
-li#a_news {background-image: url(../images/icons/newspaper.png);}
-li#a_ads {background-image: url(../images/icons/currency.png);}
-li#a_medals {background-image: url(../images/icons/medal.png);}
-li#a_afs {background-image: url(../images/icons/block-share.png);}
-li#a_fotos {background-image: url(../images/icons/photo.png);}
-li#a_posts {background-image: url(../images/icons/posts.png);}
-li#a_cats {background-image: url(../images/icons/category.png);}
-li#a_users {background-image: url(../images/icons/users.png);}
-li#a_rangos {background-image: url(../images/icons/crown.png);}
-li#a_stats {background-image: url(../images/icons/chart.png);}
-li#a_sesiones {background-image: url(../images/icons/find.png);}
-li#a_nicks {background-image: url(../images/icons/key.png);}
-li#a_blacklist {background-image: url(../images/icons/flag_black.png);}
-li#a_badwords {background-image: url(../images/icons/stop.png);}
+li#a_main {background-image: url('../images/icons/robot.png');}
+li#a_creditos {background-image: url('../images/icons/information-shield.png');}
+li#a_configs {background-image: url('../images/icons/gear.png');}
+li#a_configs {background-image: url('../images/icons/gear.png');}
+li#a_temas {background-image: url('../images/icons/color.png');}
+li#a_news {background-image: url('../images/icons/newspaper.png');}
+li#a_ads {background-image: url('../images/icons/currency.png');}
+li#a_medals {background-image: url('../images/icons/medal.png');}
+li#a_afs {background-image: url('../images/icons/block-share.png');}
+li#a_fotos {background-image: url('../images/icons/photo.png');}
+li#a_posts {background-image: url('../images/icons/posts.png');}
+li#a_cats {background-image: url('../images/icons/category.png');}
+li#a_users {background-image: url('../images/icons/users.png');}
+li#a_rangos {background-image: url('../images/icons/crown.png');}
+li#a_stats {background-image: url('../images/icons/chart.png');}
+li#a_sesiones {background-image: url('../images/icons/find.png');}
+li#a_nicks {background-image: url('../images/icons/key.png');}
+li#a_blacklist {background-image: url('../images/icons/flag_black.png');}
+li#a_badwords {background-image: url('../images/icons/stop.png');}
 
 
 .admin_table {border:1px solid #ddd; border-width:1px 0 0 1px;}
@@ -84,7 +76,7 @@ li#a_badwords {background-image: url(../images/icons/stop.png);}
     padding: 10px;
 }
 .admin_header h1{
-    background: url(../images/icons/actions.png) no-repeat left center;
+    background: url('../images/icons/actions.png') no-repeat left center;
     font-size: 20px;
     line-height: 24px;
     padding-left: 30px;

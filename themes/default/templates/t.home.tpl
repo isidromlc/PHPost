@@ -1,5 +1,6 @@
 {include file='sections/main_header.tpl'}
 {$tsInstall}
+<script src="{$tsConfig.js}/home.js?{$smarty.now}"></script>
                 <div id="izquierda">
 					{include file='modules/m.home_last_posts.tpl'}
                 </div>

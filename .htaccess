@@ -77,6 +77,10 @@ RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)$ inc/php/$1.php?action=$2 [QSA,L]
 RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/$ inc/php/$1.php?action=$2 [QSA,L]
 RewriteRule ^([A-Za-z0-9_-]+)/([A-Za-z0-9_-]+)/([0-9]+)$ inc/php/$1.php?action=$2&id=$3 [QSA,L]
 
+
+RewriteRule ^registro/$ inc/php/registro.php [QSA,L]
+RewriteRule ^login/$ inc/php/login.php [QSA,L]
+
 #NO PERMITIR LA DESCARGA DE ARCHIVOS .TPL
 <FilesMatch "\.(htaccess|ini|log|cfg|tpl)$">
 Order Allow,Deny

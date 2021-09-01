@@ -3,35 +3,27 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>{$tsTitle}</title>
-<link href="{$tsConfig.tema.t_url}/estilo.css" rel="stylesheet" type="text/css" />
-<link href="{$tsConfig.tema.t_url}/phpost.css" rel="stylesheet" type="text/css" />
-<link href="{$tsConfig.tema.t_url}/extras.css" rel="stylesheet" type="text/css" />
+<link href="{$tsConfig.tema.t_url}/estilo.css?{$smarty.now}" rel="stylesheet" type="text/css" />
+<link href="{$tsConfig.tema.t_url}/phpost.css?{$smarty.now}" rel="stylesheet" type="text/css" />
+<link href="{$tsConfig.tema.t_url}/extras.css?{$smarty.now}" rel="stylesheet" type="text/css" />
 <link href="{$tsConfig.css}/wysibb.css" rel="stylesheet" type="text/css" />
 
 {if $tsUser->is_admod && $tsConfig.c_see_mod && $tsConfig.novemods.total}
 <!-- AGREGAMOS ESTILO DE MODERACIÓN SI HAY CONTENIDO PARA REVISAR -->
-<link href="{$tsConfig.tema.t_url}/css/moderacion.css" rel="stylesheet" type="text/css" />
 <div id="stickymsg" onmouseover="$('#brandday').css('opacity',0.5);" onmouseout="$('#brandday').css('opacity',1);" onclick="location.href = '{$tsConfig.url}/moderacion/'" style="cursor:default;">Hay {$tsConfig.novemods.total} contenido{if $tsConfig.novemods.total != 1}s{/if} esperando revisi&oacute;n</div>
 {/if}
-
-<!-- AGREGAMOS UN ESTILO EXTRA SI EXISTE -->
-<link href="{$tsConfig.css}/{$tsPage}.css" rel="stylesheet" type="text/css" />
-
+<link rel="stylesheet" href="{$tsConfig.css}/{$tsPage}.css">
 <link rel="shortcut icon" href="{$tsConfig.images}/favicon.ico" type="image/x-icon" />
-<script src="{$tsConfig.js}/jquery.min.js" type="text/javascript"></script>
-<!-- Cargamos libreria jQuery desde Google <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
-<script src="{$tsConfig.js}/jquery.plugins.js" type="text/javascript"></script>
-<script src="{$tsConfig.js}/acciones.js" type="text/javascript"></script>
-<script src="{$tsConfig.js}/funciones.js" type="text/javascript"></script>
-<script src="{$tsConfig.js}/wysibb.js" type="text/javascript"></script>
-{if $tsUser->is_admod || $tsUser->permisos.moacp || $tsUser->permisos.most || $tsUser->permisos.moayca || $tsUser->permisos.mosu || $tsUser->permisos.modu || $tsUser->permisos.moep || $tsUser->permisos.moop || $tsUser->permisos.moedcopo || $tsUser->permisos.moaydcp || $tsUser->permisos.moecp}
-<script src="{$tsConfig.js}/moderacion.js" type="text/javascript"></script>
-{/if}
+<script src="{$tsConfig.js}/jquery.min.js?{$smarty.now}"></script>
+<script src="{$tsConfig.js}/jquery.plugins.js?{$smarty.now}"></script>
+<script src="{$tsConfig.js}/acciones.js?{$smarty.now}"></script>
+<script src="{$tsConfig.js}/wysibb.js"></script>
+
 {if $tsConfig.c_allow_live}
 <link href="{$tsConfig.css}/live.css" rel="stylesheet" type="text/css" />
-<script src="{$tsConfig.js}/live.js" type="text/javascript"></script>
+<script src="{$tsConfig.js}/live.js"></script>
 {/if}
-<script type="text/javascript">
+<script>
 // {literal}
 var global_data={
 // {/literal}
@@ -78,7 +70,7 @@ $(document).ready(function(){
         <div id="head">
         	<div id="logo">
             	<a id="logoi" title="{$tsConfig.titulo}" href="{$tsConfig.url}">
-                	<img border="0" align="top" title="{$tsConfig.titulo}" alt="{$tsConfig.titulo}" src="http://o2.t26.net/images/space.gif">
+                	<img border="0" align="top" title="{$tsConfig.titulo}" alt="{$tsConfig.titulo}" src="{$tsConfig.images}/space.gif">
                 </a>
             </div>
             <div id="banner">

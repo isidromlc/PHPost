@@ -131,7 +131,7 @@ var favoritos = {
 	eliminados_force_order: false,
 	eliminados: new Array(), //Guardo los favoritos eliminados, por si quiere reactivar alguno
 	eliminar: function(fav_id, obj){
-	   $('#loading').fadeIn(250);
+	   NProgress.start();
 		$.ajax({
 			type: 'POST',
 			url: global_data.url + '/favoritos-borrar.php',
@@ -163,7 +163,7 @@ var favoritos = {
 																		'alt': 'reactivar'
 																	});
 						$(obj).parent().parent().css('opacity', '0.5');
-						$(obj).removeAttr('onclick').unbind('click').bind('click', function(){ favoritos.reactivar(fav_id, this); return false; });
+						$(obj).removeAttr('onclick').off('click').on('click', function(){ favoritos.reactivar(fav_id, this); return false; });
 /*
 						//Quedaba solo un borrador
 						if(borradores_data.length==1)
@@ -173,11 +173,11 @@ var favoritos = {
 						favoritos.printCounts();
 						break;
 				}
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			},
 			error: function(){	
 				mydialog.alert('Error', 'Hubo un error al intentar procesar lo solicitado');
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			}
 		});
 	},
@@ -194,7 +194,7 @@ var favoritos = {
 		if(i==s)
 			return false; //No encontrado
         
-        $('#loading').fadeIn(250);
+        NProgress.start();
 		$.ajax({
 			type: 'POST',
 			url: global_data.url + '/favoritos-agregar.php',
@@ -232,7 +232,7 @@ var favoritos = {
 																		'alt': 'Borrar'
 																	});
 						$(obj).parent().parent().css('opacity', '1');
-						$(obj).unbind('click').bind('click', function(){ favoritos.eliminar(fav_id, this); return false; });
+						$(obj).off('click').on('click', function(){ favoritos.eliminar(fav_id, this); return false; });
 /*
 						//Quedaba solo un borrador
 						if(borradores_data.length==1)
@@ -243,11 +243,11 @@ var favoritos = {
 						break;
 				}
                 
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			},
 			error: function(){	
 				mydialog.alert('Error', 'Hubo un error al intentar procesar lo solicitado');
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			}
 		});
 	}

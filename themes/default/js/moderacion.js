@@ -1,7 +1,7 @@
 var mod = {
     posts : {
         view: function(pid){
-            $('#loading').fadeIn(250);
+            NProgress.start();
 			$.ajax({
 				type: 'post',
 				url: global_data.url + '/moderacion-posts.php?do=view',
@@ -13,7 +13,7 @@ var mod = {
 					mydialog.body(r);
 					mydialog.buttons(true, true, 'Cerrar', 'close', true, false);
 					mydialog.center();
-                    $('#loading').fadeOut(350);
+                    NProgress.done();
 				}
 			});
         },
@@ -46,7 +46,7 @@ var mod = {
         // BORRAR
         borrar:function(pid, redirect, aceptar){
         	if(!aceptar){
-        	   $('#loading').fadeIn(250);
+        	   NProgress.start();
             	$.ajax({
             		type: 'POST',
             		url: global_data.url + '/moderacion-posts.php?do=borrar',
@@ -57,7 +57,7 @@ var mod = {
             			mydialog.buttons(true, true, 'Borrar', 'mod.posts.borrar(' + pid + ", '" + redirect + "', 1);", true, false, true, 'Cancelar', 'close', true, true);
                         $('#modalBody').css('padding', '20px 10px 0');
             			mydialog.center();
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
             			return;	  
             		}
             	});
@@ -69,7 +69,7 @@ var mod = {
 				if($('#send_b').attr('checked')){
 					var send_b = 'yes';
 				}
-				$('#loading').fadeIn(250);
+				NProgress.start();
             	$.ajax({
             		type: 'POST',
             		url: global_data.url + '/moderacion-posts.php?do=borrar',
@@ -91,11 +91,11 @@ var mod = {
                                     }
             					break;
             			}
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
             		},
             		complete: function(){
             			mydialog.procesando_fin();
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
             		}
             	});
             }
@@ -117,7 +117,7 @@ var mod = {
 			
         }else{
             
-            $('#loading').fadeIn(250);
+            NProgress.start();
 		
            $.post(global_data.url + '/moderacion-mps.php?do=borrar', 'mpid=' + mid, function(a){
 		   
@@ -127,7 +127,7 @@ var mod = {
 		   
 		   $('#report_' + mid).fadeOut(); 
            
-           $('#loading').fadeOut(350);
+           NProgress.done();
 		   
       });
      }
@@ -155,7 +155,7 @@ fotos : {
             	mydialog.procesando_inicio('Eliminando...', 'Borrar Foto');
                 var razon = $('#razon').val()
                 var razon_desc = $('input[name=razon_desc]').val();
-            	$('#loading').fadeIn(250);
+            	NProgress.start();
                 $.ajax({
             		type: 'POST',
             		url: global_data.url + '/moderacion-fotos.php?do=borrar',
@@ -177,11 +177,11 @@ fotos : {
                                     }
             					break;
             			}
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
             		},
             		complete: function(){
             			mydialog.procesando_fin();
-                        $('#loading').fadeOut(350);
+                        NProgress.done();
             		}
             	});
             }
@@ -214,7 +214,7 @@ fotos : {
 	
     },
     load_dialog: function(url_get, url_data, titulo, btn_txt, fn_txt){
-        $('#loading').fadeIn(250);
+        NProgress.start();
     	$.ajax({
     		type: 'POST',
     		url: global_data.url + url_get,
@@ -224,14 +224,14 @@ fotos : {
     			mydialog.title(titulo);
     			mydialog.body(h);
     			mydialog.buttons(true, true, btn_txt, fn_txt, true, false, true, 'Cancelar', 'close', true, true);
-                $('#loading').fadeOut(350);
+                NProgress.done();
     		}, complete: function(){
     		  mydialog.center();
     		}
     	});
     },
     send_data: function(url_post, url_data, id, redirect){
-        $('#loading').fadeIn(250);
+        NProgress.start();
     	mydialog.procesando_inicio('Procesando...', 'Espere');
     	$.ajax({
     		type: 'POST',
@@ -248,16 +248,16 @@ fotos : {
                         else if(redirect == 'false') $('#report_' + id).slideUp(); 
     					break;
     			}
-                $('#loading').fadeOut(350);
+                NProgress.done();
     		},
     		complete: function(){
     			mydialog.procesando_fin();
-                $('#loading').fadeOut(350);
+                NProgress.done();
     		}
     	});
     },
     reboot: function(id, type, hdo, redirect){
-        $('#loading').fadeIn(250);
+        NProgress.start();
 		$.ajax({
 			type: 'post',
 			url: global_data.url + '/moderacion-' + type +'.php?do=' + hdo,
@@ -274,7 +274,7 @@ fotos : {
                         else $('#report_' + id).slideUp();
                     break;
                 }
-                $('#loading').fadeOut(350);
+                NProgress.done();
 			}
 		});
     },

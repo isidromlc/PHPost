@@ -15,10 +15,13 @@
 	include 'header.php';
 
     // Checamos...
-    if($tsCore->settings['c_allow_portal'] == 1 && $tsUser->is_member == true && $_GET['do'] == 'portal') {
+    if($tsCore->settings['c_allow_portal'] == 1 && $tsUser->is_member == true && $_GET['do'] == 'portal')
+    {
         // Portal/mi
         include('inc/php/portal.php');
-    } else {
+    } 
+    else 
+    {
         // Home
         include('inc/php/posts.php');
     }

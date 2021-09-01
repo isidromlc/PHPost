@@ -10,18 +10,16 @@ require_once dirname(dirname(__FILE__)) . DIRECTORY_SEPARATOR . 'InputValidator.
  * @author jbowens
  * @since May 2013
  */
-class UrlValidator implements \JBBCode\InputValidator
-{
+class UrlValidator implements \JBBCode\InputValidator {
 
     /**
      * Returns true iff $input is a valid url.
      *
-     * @param string $input  the string to validate
-     * @return boolean
+     * @param $input  the string to validate
      */
-    public function validate($input)
-    {
+    public function validate($input) {
         $valid = filter_var($input, FILTER_VALIDATE_URL);
         return !!$valid;
     }
+
 }

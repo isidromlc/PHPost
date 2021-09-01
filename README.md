@@ -3,20 +3,3 @@ PHPost Risus es un sistema de compartimiento de enlaces que permite crear un sit
 
 # Por ahora
 Este repositorio servirá para que la comunidad pueda ir actualizando el código del script
-
-PHPost Risus 1.4 [Alpha]
-
-Version 1
- * Cambios en el instalador
- * Se quitaron opciones innecesarias del perfil
- * Seguridad en las contraseñas (PASSWORD_HASH)
- * Actualización de Smarty 3.1.39
- * Actualización de jQuery 3.6.0
- * Archivo de configuración para el Script
- * Vista independientes de Login & Registro
- * Se quitaron códigos innecesarios
- * Se eliminaron funciones obsoletas
- * Se integró vistas separadas para:
- 	- Mantenimiento
- 	- Archivo inexistente
- 	- Aviso

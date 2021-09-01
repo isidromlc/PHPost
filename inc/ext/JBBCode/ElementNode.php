@@ -11,54 +11,56 @@ require_once 'Node.php';
  *
  * @author jbowens
  */
-class ElementNode extends Node
-{
-    /** @var string The tagname of this element, for i.e. "b" in [b]bold[/b] */
+class ElementNode extends Node {
+    /* The tagname of this element, for i.e. "b" in [b]bold[/b] */
+
     protected $tagName;
 
-    /** @var string[] The attributes, if any, of this element node */
+    /* The attribute, if any, of this element node */
     protected $attribute;
 
-    /** @var Node[] The child nodes contained within this element */
+    /* The child nodes contained within this element */
     protected $children;
 
-    /** @var CodeDefinition The code definition that defines this element's behavior */
+    /* The code definition that defines this element's behavior */
     protected $codeDefinition;
 
-    /** @var integer How deeply this node is nested */
+    /* How deeply this node is nested */
     protected $nestDepth;
 
     /**
      * Constructs the element node
      */
-    public function __construct()
-    {
+    public function __construct() {
         $this->children = array();
         $this->nestDepth = 0;
     }
 
-    public function accept(NodeVisitor $nodeVisitor)
-    {
+    /**
+     * Accepts the given NodeVisitor. This is part of an implementation
+     * of the Visitor pattern.
+     *
+     * @param $nodeVisitor  the visitor attempting to visit this node
+     */
+    public function accept(NodeVisitor $nodeVisitor) {
         $nodeVisitor->visitElementNode($this);
     }
 
     /**
      * Gets the CodeDefinition that defines this element.
      *
-     * @return CodeDefinition this element's code definition
+     * @return this element's code definition
      */
-    public function getCodeDefinition()
-    {
+    public function getCodeDefinition() {
         return $this->codeDefinition;
     }
 
     /**
      * Sets the CodeDefinition that defines this element.
      *
-     * @param CodeDefinition $codeDef the code definition that defines this element node
+     * @param codeDef the code definition that defines this element node
      */
-    public function setCodeDefinition(CodeDefinition $codeDef)
-    {
+    public function setCodeDefinition(CodeDefinition $codeDef) {
         $this->codeDefinition = $codeDef;
         $this->setTagName($codeDef->getTagName());
     }
@@ -66,30 +68,27 @@ class ElementNode extends Node
     /**
      * Returns the tag name of this element.
      *
-     * @return string the element's tag name
+     * @return the element's tag name
      */
-    public function getTagName()
-    {
+    public function getTagName() {
         return $this->tagName;
     }
 
     /**
      * Returns the attribute (used as the option in bbcode definitions) of this element.
      *
-     * @return array the attributes of this element
+     * @return the attribute of this element
      */
-    public function getAttribute()
-    {
+    public function getAttribute() {
         return $this->attribute;
     }
 
     /**
      * Returns all the children of this element.
      *
-     * @return Node[] an array of this node's child nodes
+     * @return an array of this node's child nodes
      */
-    public function getChildren()
-    {
+    public function getChildren() {
         return $this->children;
     }
 
@@ -99,17 +98,15 @@ class ElementNode extends Node
      *
      * Returns the element as text (not including any bbcode markup)
      *
-     * @return string the plain text representation of this node
+     * @return the plain text representation of this node
      */
-    public function getAsText()
-    {
+    public function getAsText() {
         if ($this->codeDefinition) {
             return $this->codeDefinition->asText($this);
         } else {
             $s = "";
-            foreach ($this->getChildren() as $child) {
+            foreach ($this->getChildren() as $child)
                 $s .= $child->getAsText();
-            }
             return $s;
         }
     }
@@ -120,21 +117,17 @@ class ElementNode extends Node
      *
      * Returns the element as bbcode (with all unclosed tags closed)
      *
-     * @return string the bbcode representation of this element
+     * @return the bbcode representation of this element
      */
-    public function getAsBBCode()
-    {
-        $str = "[".$this->tagName;
+    public function getAsBBCode() {
+        $str = "[" . $this->tagName;
         if (!empty($this->attribute)) {
-            if (isset($this->attribute[$this->tagName])) {
-                $str .= "=".$this->attribute[$this->tagName];
-            }
 
             foreach ($this->attribute as $key => $value) {
                 if ($key == $this->tagName) {
-                    continue;
+                    $str .= "=" . $value;
                 } else {
-                    $str .= " ".$key."=" . $value;
+                    $str .= " " . $key . "=" . $value;
                 }
             }
         }
@@ -142,7 +135,7 @@ class ElementNode extends Node
         foreach ($this->getChildren() as $child) {
             $str .= $child->getAsBBCode();
         }
-        $str .= "[/".$this->tagName."]";
+        $str .= "[/" . $this->tagName . "]";
 
         return $str;
     }
@@ -153,10 +146,9 @@ class ElementNode extends Node
      *
      * Returns the element as html with all replacements made
      *
-     * @return string the html representation of this node
+     * @return the html representation of this node
      */
-    public function getAsHTML()
-    {
+    public function getAsHTML() {
         if ($this->codeDefinition) {
             return $this->codeDefinition->asHtml($this);
         } else {
@@ -165,63 +157,57 @@ class ElementNode extends Node
     }
 
     /**
-     * Adds a child to this node's content. A child may be a TextNode, or
-     * another ElementNode... or anything else that may extend the
+     * Adds a child to this node's content. A child may be a TextNode, or 
+     * another ElementNode... or anything else that may extend the 
      * abstract Node class.
      *
-     * @param Node $child the node to add as a child
+     * @param child the node to add as a child
      */
-    public function addChild(Node $child)
-    {
-        $this->children[] = $child;
+    public function addChild(Node $child) {
+        array_push($this->children, $child);
         $child->setParent($this);
     }
 
     /**
-     * Removes a child from this node's content.
+     * Removes a child from this node's contnet.
      *
-     * @param Node $child the child node to remove
+     * @param child the child node to remove
      */
-    public function removeChild(Node $child)
-    {
+    public function removeChild(Node $child) {
         foreach ($this->children as $key => $value) {
-            if ($value === $child) {
+            if ($value == $child)
                 unset($this->children[$key]);
-            }
         }
     }
 
     /**
      * Sets the tag name of this element node.
      *
-     * @param string $tagName the element's new tag name
+     * @param tagName the element's new tag name
      */
-    public function setTagName($tagName)
-    {
+    public function setTagName($tagName) {
         $this->tagName = $tagName;
     }
 
     /**
      * Sets the attribute (option) of this element node.
      *
-     * @param string[] $attribute the attribute(s) of this element node
+     * @param attribute the attribute of this element node
      */
-    public function setAttribute($attribute)
-    {
+    public function setAttribute($attribute) {
         $this->attribute = $attribute;
     }
 
     /**
-     * Traverses the parse tree upwards, going from parent to parent, until it finds a
+     * Traverses the parse tree upwards, going from parent to parent, until it finds a 
      * parent who has the given tag name. Returns the parent with the matching tag name
      * if it exists, otherwise returns null.
      *
-     * @param string $str the tag name to search for
+     * @param str the tag name to search for
      *
-     * @return ElementNode|null the closest parent with the given tag name
+     * @return the closest parent with the given tag name
      */
-    public function closestParentOfType($str)
-    {
+    public function closestParentOfType($str) {
         $str = strtolower($str);
         $currentEl = $this;
 
@@ -235,4 +221,5 @@ class ElementNode extends Node
             return $currentEl;
         }
     }
+
 }

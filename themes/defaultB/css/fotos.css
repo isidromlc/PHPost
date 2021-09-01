@@ -1,0 +1,191 @@
+/* FOTOS */
+.fotos-detail li{
+    font-size: 12px;
+    padding: 5px 0;
+    float:left;
+    width: 305px;
+    margin:0 5px;
+    border-bottom:1px dotted #CCCCCC;
+}
+.fotos-detail .avatar-box {
+    float: left;
+    margin-right: 10px;
+}
+.fotos-detail .notification-info {
+    float: left;
+    width: 190px;
+}
+.fotos-detail li a {
+    color: #116FCF;
+    font-weight: bold;
+}
+.fotos-detail .notification-info span.time {
+	word-wrap: break-word;
+    color: #808080;
+    font-size: 11px;
+}
+#foto_form {
+    padding: 1em 20px;
+    width: 590px;
+}
+#foto_form label{
+    font-size:12px;
+    cursor: pointer;
+}
+#foto_form input.text-inp, #foto_form textarea {
+    width: 580px;
+}
+#foto_form .loader{
+    text-align: center;
+    padding: 191px 0 192px;
+    display: none;
+}
+#v_album li{
+    text-align: center;
+    padding: 3px;
+}
+#v_album li a{
+    text-decoration: none;
+}
+.fb_foot {
+    display: block;
+    font-weight: bold;
+    text-align: center;
+    background: url('../images/hrline.gif') top left repeat-x;
+    padding: 5px;
+}
+#fg_centro .foto{
+    background: #F7F7F7;
+    border:1px solid #CCCCCC;
+    border-radius:5px;
+    padding: 12px;
+}
+#fg_centro .v_user {
+    padding-bottom: 1em;
+}
+div.foto h2{
+    font-size: 16px; 
+    margin:5px;
+}
+#imagen {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+#imagen .tools{
+    background: transparent url(../images/icons/transbg.png);
+    bottom:14px;
+    left:45%;
+    position: absolute;
+    padding:5px 3px;
+    width: auto;
+    display: none;
+}
+#imagen .tools a{
+    color:#FFF;
+    padding:0 3px
+}
+#imagen:hover .tools{
+    display: block;
+}
+#imagen .img{
+    max-width:568px; 
+    max-height:450px; 
+    margin:1em 0;
+    background: #FFF;
+    padding: 2px;
+    border:1px solid #CCC
+}
+div.foto .infoPost {
+    width: 100%;
+    margin: 0;
+    padding: 5px 0;
+    border:0;
+    position: relative;
+}
+div.v_user .v_info{
+    float: left;
+    margin-left: 10px;
+    width: 510px;
+    position: relative;
+    padding-top: 5px;
+}
+div.v_user .v_info a.user{
+    font-size: 18px;
+    font-weight: bold;
+    font-family: Arial;
+}
+div.v_info .links{
+    padding: 5px 0px;
+}
+div.v_info .links span{
+    background-position: left center;
+    background-repeat: no-repeat;
+    padding: 2px 5px 2px 20px;
+}
+div.v_info .v_follow{
+    position: absolute;
+    top:0;
+    right:0;
+}
+
+#fg_centro p{
+    padding: 0 10px;
+    font-size: 12px;
+}
+#fg_centro span.spacer{
+    display: block;
+    height: 2px;
+    background: url('../images/hrline.gif') top left repeat-x;
+}
+#fg_centro .item{
+    border-bottom: 1px solid #CCC;
+    padding: 1em 0 0;
+}
+#fg_centro .item .firma{
+    position: relative;
+    margin: 0 0 0 65px;
+    padding-bottom: 1em;
+    text-align: left;
+}
+#fg_centro .firma .info{
+    margin: 0 0 0.5em;
+}
+#fg_centro .firma .info span {
+    font-size: 11px;
+}
+#fg_centro .firma .options{
+    position: absolute;
+    top:0;
+    right:0;
+    display: none;
+}
+#fg_centro .firma:hover .options{
+    display: block;
+}
+#fg_centro .firma {
+    font-size: 12px;
+}
+#fg_centro .firma a{
+    font-weight: bold;
+    text-decoration: underline;
+    color:#000;
+}
+#fg_centro .form {
+    padding-left: 5px;
+    margin-top: 20px;
+}
+#fg_centro .form form{
+    width: 510px;
+    background-color: #F7F7F7;
+    border:1px solid #CCC;
+    padding: 10px;
+    float:right;
+}
+#fg_centro .noComments{
+    font-weight: bold; 
+    font-size: 14px;
+    text-align: center;
+    color: #666;
+    margin: 20px 0 20px 0;
+}

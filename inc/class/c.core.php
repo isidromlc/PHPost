@@ -10,6 +10,7 @@ class tsCore {
 	var $settings;		// CONFIGURACIONES DEL SITIO
 	var $querys = 0;	// CONSULTAS
 	
+
 	function __construct() {
 		// CARGANDO CONFIGURACIONES
 		$this->settings = $this->getSettings();
@@ -158,11 +159,13 @@ class tsCore {
 		header("Location: " . urldecode($tsDir));
 		exit();
 	}
+
     /**
      * getDomain()
      * operador ternario
      * @link https://www.php.net/manual/es/control-structures.if.php#102060
     */
+
     function getDomain(){
         $domain = explode('/', str_replace(['http://', 'https://'], ['', ''], $this->settings['url']));
         $domain = (is_array($domain)) ? explode('.',$domain[0]) :  explode('.', $domain);
@@ -188,6 +191,7 @@ class tsCore {
 	*/
 	function setJSON($data, $type = 'encode'){
            return ($type == 'encode') ? json_encode($data) : json_decode($data, true);            
+
 	}
 	/*
 		setPagesLimit($tsPages, $start = false)
@@ -366,11 +370,11 @@ class tsCore {
         }
     }
 	
-	/*
-		setSEO($string, $max) $max : MAXIMA CONVERSION
-		: URL AMIGABLES
+
+	/**
+	 * El seo para los enlaces 
 	*/
-	function setSEO($string, $max = false) {
+	public function setSEO(string $string, bool $max = false) {
 		// ESPAÑOL
 		$espanol = array('á','é','í','ó','ú','ñ');
 		$ingles = array('a','e','i','o','u','n');
@@ -556,6 +560,7 @@ class tsCore {
 	   else $ip = 'unknown';
 	   return $this->setSecure($ip);
     }
+
 	/* 
 		getIUP()
 	*/

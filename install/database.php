@@ -172,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `p_posts` (
 
 $phpos_sql['pv_posts'] = "
 INSERT INTO `p_posts` (`post_id`, `post_user`, `post_category`, `post_title`, `post_body`, `post_date`, `post_tags`, `post_puntos`, `post_hits`,  `post_private`, `post_block_comments`, `post_sponsored`, `post_sticky`, `post_status`) VALUES
-(1, 1, 30, 'Bienvenido a PHPost Risus', '[align=center][size=18]Este es el primer post de los miles que tendrá tu web  ;)  \r\n\r\nGracias por elegir a [url=http://www.phpost.net]PHPost[/url] como tu Link Sharing System.[/size][/align]', 0, 'PHPost, Risus, 1.4.0, Taringa!', 0, 0, 0, 0, 0, 0, 0);";
+(1, 1, 30, 'Bienvenido a PHPost Risus', '[align=center][size=18]Este es el primer post de los miles que tendrá tu web  ;)  \r\n\r\nGracias por elegir a [url=http://www.phpost.net]PHPost[/url] como tu Link Sharing System.[/size][/align]', 0, 'PHPost, Risus, 1.3.0.0, Taringa!', 0, 0, 0, 0, 0, 0, 0);";
 
 $phpos_sql['p_votos'] = "
 CREATE TABLE IF NOT EXISTS `p_votos` (
@@ -248,12 +248,11 @@ $phpos_sql['u_miembros'] = "
 CREATE TABLE IF NOT EXISTS `u_miembros` (
   `user_id` int(11) NOT NULL AUTO_INCREMENT,
   `user_name` varchar(16) NOT NULL,
-  `user_password` varchar(65) NOT NULL,
+  `user_password` varchar(32) NOT NULL,
   `user_email` varchar(35) NOT NULL,
   `user_rango` int(3) NOT NULL DEFAULT '3',
   `user_puntos` int(6) unsigned NOT NULL DEFAULT '0',
   `user_posts` int(11) NOT NULL,
-  `user_twofactor` varchar(18) NOT NULL DEFAULT '',
   `user_comentarios` int(11) NOT NULL,
   `user_seguidores` int(11) NOT NULL,
   `user_cache` int(10) NOT NULL,
@@ -361,10 +360,37 @@ CREATE TABLE IF NOT EXISTS `u_perfil` (
   `p_avatar` int(1) NOT NULL DEFAULT '0',
   `p_mensaje` varchar(60) NOT NULL,
   `p_sitio` varchar(60) NOT NULL,
-  `p_socials` text NOT NULL DEFAULT 'a:5:{i:0;s:0:\"\";i:1;s:0:\"\";i:2;s:0:\"\";i:3;s:0:\"\";i:4;s:0:\"\";}',
+  `p_socials` text NOT NULL,
+  `p_gustos` varchar(71) NOT NULL DEFAULT 'a:5:{i:0;i:0;i:1;i:0;i:2;i:0;i:3;i:0;i:4;i:0;}',
   `p_estado` int(1) NOT NULL DEFAULT '0',
+  `p_hijos` int(1) NOT NULL DEFAULT '0',
+  `p_vivo` int(1) NOT NULL DEFAULT '0',
+  `p_altura` int(3) NOT NULL DEFAULT '0',
+  `p_peso` int(3) NOT NULL DEFAULT '0',
+  `p_pelo` int(1) NOT NULL DEFAULT '0',
+  `p_ojos` int(1) NOT NULL DEFAULT '0',
+  `p_fisico` int(1) NOT NULL DEFAULT '0',
+  `p_dieta` int(1) NOT NULL DEFAULT '0',
+  `p_tengo` varchar(60) NOT NULL DEFAULT 'a:2:{i:0;i:0;i:1;i:0;}',
+  `p_fumo` int(1) NOT NULL DEFAULT '0',
+  `p_tomo` int(1) NOT NULL DEFAULT '0',
   `p_estudios` int(1) NOT NULL DEFAULT '0',
+  `p_idiomas` varchar(102) NOT NULL DEFAULT 'a:7:{i:0;i:0;i:1;i:0;i:2;i:0;i:3;i:0;i:4;i:0;i:5;i:0;i:6;i:0;}',
   `p_profesion` varchar(32) NOT NULL,
+  `p_empresa` varchar(32) NOT NULL,
+  `p_sector` int(2) NOT NULL DEFAULT '0',
+  `p_ingresos` int(1) NOT NULL DEFAULT '0',
+  `p_int_prof` text NOT NULL,
+  `p_hab_prof` text NOT NULL,
+  `p_intereses` text NOT NULL,
+  `p_hobbies` text NOT NULL,
+  `p_tv` text NOT NULL,
+  `p_musica` text NOT NULL,
+  `p_deportes` text NOT NULL,
+  `p_libros` text NOT NULL,
+  `p_peliculas` text NOT NULL,
+  `p_comida` text NOT NULL,
+  `p_heroes` text NOT NULL,
   `p_configs` varchar(100) NOT NULL DEFAULT 'a:3:{s:1:\"m\";s:1:\"5\";s:2:\"mf\";i:5;s:3:\"rmp\";s:1:\"5\";}',
   `p_total` varchar(54) NOT NULL DEFAULT 'a:6:{i:0;i:5;i:1;i:0;i:2;i:0;i:3;i:0;i:4;i:0;i:5;i:0;}',
   PRIMARY KEY (`user_id`)

@@ -1,13 +1,9 @@
-<?php
-
+<?php 
 /**
- * Ajax File :: Configuración de archivos ajax
+ * Controlador
  *
- * @package Smarty 3.1.39
- * @author PHPost Team & Miguel92 
- * @copyright NewRisus 2021
- * @version v1.0 23-02-2021
- * @link https://newrisus.com
+ * @name    ajax_files.php
+ * @author  PHPost Team
 */
 
 /**********************************\
@@ -22,9 +18,13 @@
 
 	$tsAjax = empty($_GET['ajax']) ? 0 : 1; // LA RESPUESTA SERA AJAX?
 	
+/*++++++++ = ++++++++*/
+
 	include "../../header.php"; // INCLUIR EL HEADER
 
 	$tsTitle = $tsCore->settings['titulo'].' - '.$tsCore->settings['slogan']; 	// TITULO DE LA PAGINA ACTUAL
+
+/*++++++++ = ++++++++*/
 
 /**********************************\
 
@@ -43,10 +43,10 @@
 \*********************************/
 
 	// QUE ARCHIVO NECESITAMOS?
-	$file = "./ajax/ajax.{$action_type}.php";
+	$file = './ajax/ajax.'.$action_type.'.php';
 	//
 	if(file_exists($file)) include($file);
-	else die("0: No se encontro el archivo que se ha solicitado.");
+	else die("0: No se encontro el archivo que se ha solicitado." . $file);
 	
 /**********************************\
 
@@ -54,9 +54,12 @@
 
 \*********************************/
 
-# SI LA PETICION SE HIZO POR AJAX DETENER EL SCRIPT Y NO MOSTRAR PLANTILLA, SI NO ENTONCES MOSTRARLA.
-if(empty($tsAjax)) {
-	# AGREGAR EL TITULO DE LA PAGINA ACTUAL
-	$smarty->assign("tsTitle",$tsTitle);
+if(empty($tsAjax)) {	// SI LA PETICION SE HIZO POR AJAX DETENER EL SCRIPT Y NO MOSTRAR PLANTILLA, SI NO ENTONCES MOSTRARLA.
+
+    $smarty->template_ts = false;   // SMARTY SETTINGS
+	$smarty->assign("tsTitle",$tsTitle);	// AGREGAR EL TITULO DE LA PAGINA ACTUAL
+
+	/*++++++++ = ++++++++*/
 	include("../../footer.php");
+	/*++++++++ = ++++++++*/
 }

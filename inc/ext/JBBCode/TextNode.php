@@ -9,9 +9,9 @@ require_once 'Node.php';
  *
  * @author jbowens
  */
-class TextNode extends Node
-{
-    /** @var string The value of this text node */
+class TextNode extends Node {
+    /* The value of this text node */
+
     protected $value;
 
     /**
@@ -19,13 +19,11 @@ class TextNode extends Node
      *
      * @param string $val
      */
-    public function __construct($val)
-    {
+    public function __construct($val) {
         $this->value = $val;
     }
 
-    public function accept(NodeVisitor $visitor)
-    {
+    public function accept(NodeVisitor $visitor) {
         $visitor->visitTextNode($this);
     }
 
@@ -33,10 +31,9 @@ class TextNode extends Node
      * (non-PHPdoc)
      * @see JBBCode.Node::isTextNode()
      *
-     * @returns boolean true
+     * returns true
      */
-    public function isTextNode()
-    {
+    public function isTextNode() {
         return true;
     }
 
@@ -45,8 +42,7 @@ class TextNode extends Node
      *
      * @return string
      */
-    public function getValue()
-    {
+    public function getValue() {
         return $this->value;
     }
 
@@ -56,10 +52,9 @@ class TextNode extends Node
      *
      * Returns the text representation of this node.
      *
-     * @return string this node represented as text
+     * @return this node represented as text
      */
-    public function getAsText()
-    {
+    public function getAsText() {
         return $this->getValue();
     }
 
@@ -69,10 +64,9 @@ class TextNode extends Node
      *
      * Returns the bbcode representation of this node. (Just its value)
      *
-     * @return string this node represented as bbcode
+     * @return this node represented as bbcode
      */
-    public function getAsBBCode()
-    {
+    public function getAsBBCode() {
         return $this->getValue();
     }
 
@@ -82,20 +76,19 @@ class TextNode extends Node
      *
      * Returns the html representation of this node. (Just its value)
      *
-     * @return string this node represented as HTML
+     * @return this node represented as HTML
      */
-    public function getAsHTML()
-    {
+    public function getAsHTML() {
         return $this->getValue();
     }
 
     /**
      * Edits the text value contained within this text node.
      *
-     * @param string $newValue  the new text value of the text node
+     * @param newValue  the new text value of the text node
      */
-    public function setValue($newValue)
-    {
+    public function setValue($newValue) {
         $this->value = $newValue;
     }
+
 }

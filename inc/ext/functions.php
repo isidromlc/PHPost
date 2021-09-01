@@ -48,11 +48,11 @@ endif;
  * Se quitó $tsUser ya que esta variable se crea después y no antes
 */
 function db_exec() {
-    if(isset(func_get_args()[0])) $info = func_get_args()[0];
-    if(isset(func_get_args()[1])) $type = func_get_args()[1];
-    if(isset(func_get_args()[2])) $data = func_get_args()[2];
-    
-    global $db_link, $tsAjax, $display;
+	if(isset(func_get_args()[0])) $info = func_get_args()[0];
+	if(isset(func_get_args()[1])) $type = func_get_args()[1];
+	if(isset(func_get_args()[2])) $data = func_get_args()[2];
+	
+	global $db_link, $tsAjax, $display;
     
    // Si la primera variable contiene un string, se entiende que es la consulta que debe ejecutarse. Esto lo prepara para ello.
    if(is_array($info)) {

@@ -2,8 +2,9 @@
 
 /**
  * Nueva forma de conectar a la base de datos
- */
-// Conectamos al servidor
+ * https://www.php.net/manual/es/mysqli.construct.php => Ejemplo 1
+*/
+
 $db_link = new mysqli($db['hostname'], $db['username'], $db['password'], $db['database']);
 
 /**
@@ -30,7 +31,8 @@ if (mysqli_connect_errno()):
   
 else:
 
-   if (!$db_link->set_charset('utf8mb4')):
+   if (!$db_link->set_charset('utf8mb4')): # utf8 | utf8mb4
+
     /**
      * @link https://www.php.net/manual/es/mysqli.set-charset.php
      * printf("Conjunto de caracteres actual: %s\n", $db_link->character_set_name());

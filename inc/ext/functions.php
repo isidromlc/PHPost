@@ -2,25 +2,48 @@
 
 /**
  * Nueva forma de conectar a la base de datos
- */
-// Conectamos al servidor
-$db_link = mysqli_connect($db['hostname'], $db['username'], $db['password'], $db['database']);
+ * https://www.php.net/manual/es/mysqli.construct.php => Ejemplo 1
+*/
 
-// Comprobamos el estado de la conexión
-if( mysqli_connect_errno() )
-{
-    exit( show_error( 'No se pudo establecer la conexi&oacute;n con la base de datos.</p> <p class="warning">'.mysqli_connect_error() , 'other') );
-}
-else
-{
-    if ( !mysqli_set_charset($db_link, 'utf8') )
-    {
-        exit( show_error( 'No se pudo establecer la codificaci&oacute;n de caracteres.', 'db' ) );
-    }
-    
-    //mysqli_query($db_link, 'set names \'utf8\'');
-	//mysqli_query($db_link, 'set character set utf8');
-}
+$db_link = new mysqli($db['hostname'], $db['username'], $db['password'], $db['database']);
+
+/**
+ * Aquí comprobaremos la conexión
+ * @link https://www.php.net/manual/es/mysqli.connect-errno.php 
+*/
+if (mysqli_connect_errno()):
+    $message = mysqli_connect_errno();
+   #$message = mysqli_connect_error(); // Lo mismo, pero en ingles
+   switch ($message) {
+    case 1045:
+        $pass = (empty($db['password'])) ? "NO" : "SI";
+        $message = "Acceso denegado para el usuario <b>'{$db['username']}'</b>@'localhost' ";
+        $message .= " (usando contraseña: {$pass})";
+    break;
+    case 1049:
+        $message = "La base de datos <b>{$db['database']}</b> es desconocida.";
+    break;
+    case 2002:
+        $message = "El host \"<b>{$db['hostname']}</b>\" que intentas conectar es desconocido.";
+    break;
+   }
+   exit(show_error("<p class=\"warning\">{$message}</p>", 'Conexión con MySQLI'));
+  
+else:
+
+   if (!$db_link->set_charset('utf8mb4')): # utf8 | utf8mb4
+
+    /**
+     * @link https://www.php.net/manual/es/mysqli.set-charset.php
+     * printf("Conjunto de caracteres actual: %s\n", $db_link->character_set_name());
+     * resultado: Conjunto de caracteres actual: utf8mb4
+    */
+      $message = "Error cargando el conjunto de caracteres:<br>\"<b>{$db_link->error}</b>\"";
+    exit(show_error("<p class=\"warning\">{$message}</p>", 'Juego de caracteres no válido'));
+
+   endif;
+
+endif;
 
 /**
  * Ejecutar consulta

@@ -208,7 +208,7 @@ public function setNotificacion($type, $user_id, $obj_user, $obj_uno = 0, $obj_d
      * @return void
      * @info Envia notificaciones a los usuarios que siguen a un post o usuario.
 	*/
-	function setFollowNotificacion($notType = null, $f_type = null, $user_id = null, $obj_uno = null, $obj_dos = 0, $excluir = null){
+	function setFollowNotificacion($notType = null, $f_type = null, $user_id = null, $obj_uno = null, $obj_dos = 0, array $excluir = []){
 		global $tsCore;
 		# TIPO DE FOLLOW USER o POST
         if($f_type == 1) $f_id = $user_id;

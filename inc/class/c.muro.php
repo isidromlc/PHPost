@@ -345,7 +345,7 @@ class tsMuro {
         
         //die(count($data));
         // RETORNAMOS
-        return array('total' => count($data), 'data' => $data);
+        return array('total' => (empty($data) ? 0 : count($data)), 'data' => $data);
     }
     /*
         getWall($count)
@@ -376,7 +376,7 @@ class tsMuro {
         }
         
         //
-        return array('total' => count($data), 'data' => $data);
+        return array('total' => (empty($data) ? 0 : count($data)), 'data' => $data);
     }
     /*
         getPubExtras($pud_id, $type)

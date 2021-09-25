@@ -123,23 +123,23 @@ class tsCuenta {
 		// MEDALLAS
 		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT m.*, a.* FROM w_medallas AS m LEFT JOIN w_medallas_assign AS a ON a.medal_id = m.medal_id WHERE a.medal_for = \''.(int)$user_id.'\' AND m.m_type = \'1\' ORDER BY a.medal_date DESC LIMIT 21');
 		$data['medallas'] = result_array($query);
-        $data['m_total'] = count($data['medallas']);
+        $data['m_total'] = empty($data["medallas"]) ? 0 : count($data['medallas']);
         
 		// SEGUIDORES
         $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT f.follow_id, u.user_id, u.user_name FROM u_follows AS f LEFT JOIN u_miembros AS u ON f.f_user = u.user_id WHERE f.f_id = \''.(int)$user_id.'\' && f.f_type = \'1\' && u.user_activo = \'1\' && u.user_baneado = \'0\' ORDER BY f.f_date DESC LIMIT 21');
         $data['segs']['data'] = result_array($query);
-        $data['segs']['total'] = count($data['segs']['data']);
+        $data['segs']['total'] = empty($data["segs"]["data"]) ? 0 : count($data['segs']['data']);
         
 		// SIGUIENDO
         $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT f.follow_id, u.user_id, u.user_name FROM u_follows AS f LEFT JOIN u_miembros AS u ON f.f_id = u.user_id WHERE f.f_user = \''.(int)$user_id.'\' AND f.f_type = \'1\' && u.user_activo = \'1\' && u.user_baneado = \'0\' ORDER BY f.f_date DESC LIMIT 21');
         $data['sigd']['data'] = result_array($query);
-        $data['sigd']['total'] = count($data['sigd']['data']);
+        $data['sigd']['total'] = empty($data["sigd"]["data"]) ? 0 : count($data['sigd']['data']);
         
         // ULTIMAS FOTOS
         if(empty($_GET['pid'])){
 		    $query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT foto_id, f_title, f_url FROM f_fotos WHERE f_user = \''.(int)$user_id.'\' ORDER BY foto_id DESC LIMIT 6');
             $data['fotos'] = result_array($query);
-            $total = count($data['fotos']);
+            $total = empty($data["fotos"]) ? 0 : count($data['fotos']);
             $data['fotos_total'] = $total;
             if($total < 6){
                 for($i = $total; $i <= 5; $i++){

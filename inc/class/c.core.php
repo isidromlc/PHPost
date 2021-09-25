@@ -16,13 +16,13 @@ class tsCore {
 		$this->settings = $this->getSettings();
 		$this->settings['domain'] = str_replace(['http://', 'https://'], ['', ''], $this->settings['url']);
 		$this->settings['categorias'] = $this->getCategorias();
-        $this->settings['default'] = $this->settings['url'].'/themes/default';
+      $this->settings['default'] = $this->settings['url'].'/themes/default';
 		$this->settings['tema'] = $this->getTema();
 		$this->settings['images'] = $this->settings['tema']['t_url'].'/images';
-        $this->settings['css'] = $this->settings['tema']['t_url'].'/css';
+      $this->settings['css'] = $this->settings['tema']['t_url'].'/css';
 		$this->settings['js'] = $this->settings['tema']['t_url'].'/js';
-        //
-        if($_GET['do'] == 'portal' || $_GET['do'] == 'posts') $this->settings['news'] = $this->getNews();
+      //
+      if($_GET['do'] == 'portal' || $_GET['do'] == 'posts') $this->settings['news'] = $this->getNews();
 		# Mensaje del instalador y pendientes de moderación #
 		$this->settings['install'] = $this->existinstall();
 		$this->settings['novemods'] = $this->getNovemods();
@@ -33,79 +33,57 @@ class tsCore {
 	/*
 		getSettings() :: CARGA DESDE LA DB LAS CONFIGURACIONES DEL SITIO
 	*/
-	function getSettings()
-    {
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM w_configuracion');
-		return db_exec('fetch_assoc', $query);
+	function getSettings() {
+		return db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM w_configuracion'));
 	}
 	
-	function getNovemods()
-    {
-        $datos = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT (SELECT count(post_id) FROM p_posts WHERE post_status = \'3\') as revposts, (SELECT count(cid) FROM p_comentarios WHERE c_status = \'1\' ) as revcomentarios, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'1\') as repposts, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'2\') as repmps, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'3\') as repusers, (SELECT count(DISTINCT obj_id) FROM w_denuncias  WHERE d_type = \'4\') as repfotos, (SELECT count(susp_id) FROM u_suspension) as suspusers, (SELECT count(post_id) FROM p_posts WHERE post_status = \'2\') as pospelera, (SELECT count(foto_id) FROM f_fotos WHERE f_status = \'2\') as fospelera'));
+	function getNovemods() {
+      $datos = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT (SELECT count(post_id) FROM p_posts WHERE post_status = \'3\') as revposts, (SELECT count(cid) FROM p_comentarios WHERE c_status = \'1\' ) as revcomentarios, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'1\') as repposts, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'2\') as repmps, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'3\') as repusers, (SELECT count(DISTINCT obj_id) FROM w_denuncias  WHERE d_type = \'4\') as repfotos, (SELECT count(susp_id) FROM u_suspension) as suspusers, (SELECT count(post_id) FROM p_posts WHERE post_status = \'2\') as pospelera, (SELECT count(foto_id) FROM f_fotos WHERE f_status = \'2\') as fospelera'));
 		$datos['total'] = $datos['repposts'] + $datos['repfotos'] + $datos['repmps'] + $datos['repusers'] + $datos['revposts'] + $datos['revcomentarios'];
 		return $datos;  
 	}
 	/*
 		getCategorias()
 	*/
-	function getCategorias()
-    {
-		// CONSULTA
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT cid, c_orden, c_nombre, c_seo, c_img FROM p_categorias ORDER BY c_orden');
-		// GUARDAMOS
-		$categorias = result_array($query);
-        //
-        return $categorias;
+	function getCategorias() {
+		return result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT cid, c_orden, c_nombre, c_seo, c_img FROM p_categorias ORDER BY c_orden'));
 	}
 	/*
 		getTema()
 	*/
-	function getTema()
-    {
-		//
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM w_temas WHERE tid = '.$this->settings['tema_id'].' LIMIT 1');
-		//
-		$data = db_exec('fetch_assoc', $query);
-        $data['t_url'] = $this->settings['url'] . '/themes/' . $data['t_path'];
-		//
+	function getTema() {
+		$data = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', "SELECT * FROM w_temas WHERE tid = {$this->settings['tema_id']} LIMIT 1"));
+      $data['t_url'] = "{$this->settings['url']}/themes/{$data['t_path']}";
 		return $data;
 	}
 	/*
-        getNews()
-    */
-    function getNews()
-    {
-        //
+      getNews()
+  	*/
+   function getNews() {
+      //
 		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT not_body FROM w_noticias WHERE not_active = \'1\' ORDER by RAND()');
 		while($row = db_exec('fetch_assoc', $query)){
-		  $row['not_body'] = $this->parseBBCode($row['not_body'],'news');
-          $data[] = $row;
+		  	$row['not_body'] = $this->parseBBCode($row['not_body'],'news');
+         $data[] = $row;
 		}
-        //
-        return $data;
-    }
-	
+      //
+      return $data;
+   }
 	//COMPROBACIONES DE LA EXISTENCIA DEL INSTALADOR O ACTUALIZADOR
-	
-	function existinstall() 
-    {
+	function existinstall()  {
 		$install_dir = TS_ROOT . '/install/';
 		$upgrade_dir = TS_ROOT . '/upgrade/';
 		if(is_dir($install_dir)) return '<div id="msg_install">Por favor, elimine la carpeta <b>install</b></div>';		
 		if(is_dir($upgrade_dir)) return '<div id="msg_install">Por favor, elimine la carpeta <b>upgrade</b></div>';
 	}
-    
-    // FUNCIÓN CONCRETA PARA CENSURAR
-	
-	function parseBadWords($c, $s = FALSE) 
-    {
-        $q = result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT word, swop, method, type FROM w_badwords '.($s == true ? '' : ' WHERE type = \'0\'')));
-        
-        foreach($q AS $badword) 
-        {
-        $c = str_ireplace((empty($badword['method']) ? $badword['word'] : $badword['word'].' '),($badword['type'] == 1 ? '<img class="qtip" title="'.$badword['word'].'" src="'.$badword['swop'].'" align="absmiddle"/>' : $badword['swop'].' '),$c);
-        }
-        return $c;
+   
+   // FUNCIÓN CONCRETA PARA CENSURAR
+	function parseBadWords($c, $s = FALSE) {
+      $q = result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT word, swop, method, type FROM w_badwords '.($s == true ? '' : ' WHERE type = \'0\'')));
+      foreach($q AS $badword) {
+      	$c = str_ireplace((empty($badword['method']) ? $badword['word'] : $badword['word'].' '),($badword['type'] == 1 ? '<img class="qtip" title="'.$badword['word'].'" src="'.$badword['swop'].'" align="absmiddle"/>' : $badword['swop'].' '),$c);
+      }
+      return $c;
 	}        
 	
 	/*
@@ -159,39 +137,28 @@ class tsCore {
 		header("Location: " . urldecode($tsDir));
 		exit();
 	}
-
-    /**
-     * getDomain()
-     * operador ternario
-     * @link https://www.php.net/manual/es/control-structures.if.php#102060
-    */
-
-    function getDomain(){
-        $domain = explode('/', str_replace(['http://', 'https://'], ['', ''], $this->settings['url']));
-        $domain = (is_array($domain)) ? explode('.',$domain[0]) :  explode('.', $domain);
-        //
-        $t = count($domain);
-        $domain = $domain[$t - 2].'.'.$domain[$t - 1];
-        //
-        return $domain;
-    }
-    /**
-     * currentUrl()
-     * Se eliminó "$current_url_querystring" ya que no se usá
-     * Reducción de código
-     */
-     function currentUrl(){
-	return urlencode("http://" . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
-     }
+	# Obtenemos el dominio
+   function getDomain(){
+      $domain = explode('/', str_replace(getSSL(), '', $this->settings['url']));
+      $domain = (is_array($domain)) ? explode('.',$domain[0]) : explode('.',$domain);
+      //
+      $t = count($domain);
+      $domain = $domain[$t - 2].'.'.$domain[$t - 1];
+      //
+      return $domain;
+   }
+	# Obtenemos url codificada
+	function currentUrl(){
+		return urlencode(getSSL() . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+	}
 	/**
 	 * setJSON($tsContent)
 	 * Evitaremos que json_decode nos devuelva un objeto, 
 	 * con TRUE nos devolverá un array(arreglo)
 	 * @link https://www.php.net/manual/es/function.json-decode.php
 	*/
-	function setJSON($data, $type = 'encode'){
-           return ($type == 'encode') ? json_encode($data) : json_decode($data, true);            
-
+	function setJSON(string $data, string $type = 'encode', bool $force = false){
+      return ($type == 'encode') ? json_encode($data) : ($force ? json_decode($data, true) : json_decode($data));
 	}
 	/*
 		setPagesLimit($tsPages, $start = false)
@@ -344,106 +311,78 @@ class tsCore {
       if ($xss) $var = htmlspecialchars($var, ENT_COMPAT|ENT_QUOTES, 'UTF-8');
      return $var;
    }
-	
-    /*
-        antiFlood()
-    */
-    public function antiFlood($print = true, $type = 'post', $msg = '') {
-        global $tsUser;
+   # Evitamos que realice muchas tareas en poco tiempo
+   function antiFlood(bool $print = true, string $type = 'post', string $msg = '') {
+      global $tsUser;
+      //
+      $now = time();
+      $msg = empty($msg) ? 'No puedes realizar tantas acciones en tan poco tiempo.' : $msg;
         //
-        $now = time();
-        $msg = empty($msg) ? 'No puedes realizar tantas acciones en tan poco tiempo.' : $msg;
-        //
-        $limit = $tsUser->permisos['goaf'];
-        $resta = $now - $_SESSION['flood'][$type];
-        if($resta < $limit) {
-		$less = ($limit - $resta);
-            $msg = "0: {$msg} Int&eacute;ntalo en {$less} segundos.";
-            // TERMINAR O RETORNAR VALOR
-            if($print) die($msg);
-            else return $msg;
-        } else {
-            // ANTIFLOOD
-            $_SESSION['flood'][$type] = (empty($_SESSION['flood'][$type])) ? time() : $now;
-            // TODO BIEN
-            return true;
-        }
-    }
-	
-
-	/**
-	 * El seo para los enlaces 
-	*/
-	public function setSEO(string $string, bool $max = false) {
-		// ESPAÑOL
-		$espanol = array('á','é','í','ó','ú','ñ');
-		$ingles = array('a','e','i','o','u','n');
-		// MINUS
-		$string = str_replace($espanol,$ingles,$string);
-		$string = trim($string);
-		$string = trim(preg_replace('/[^ A-Za-z0-9_]/', '-', $string));
-		$string = preg_replace('/[ \t\n\r]+/', '-', $string);
-		$string = str_replace(' ', '-', $string);
-		$string = preg_replace('/[ -]+/', '-', $string);
-		//
-		if($max) {
-			$string = str_replace('-','',$string);
-			$string = strtolower($string);
-		}
-		//
-		return $string;
-	}
+      $limit = $tsUser->permisos['goaf'];
+      $resta = $now - $_SESSION['flood'][$type];
+      if($resta < $limit) {
+      	$seg = $limit - $resta;
+         $msg = "0: {$msg} Int&eacute;ntalo en {$seg} segundos.";
+         // TERMINAR O RETORNAR VALOR
+         if($print) die($msg);
+         else return $msg;
+      } else {
+         $_SESSION['flood'][$type] = (empty($_SESSION['flood'][$type])) ? time() : $now;
+         return true;
+      }
+   }
 	/**
 	 * Mejoramos el seo para los enlaces (Me base en estas)
 	 * @link https://www.baulphp.com/urls-amigables-con-php-ejemplo-completo-con-un-string/
 	 * @link https://stackoverflow.com/questions/5305879/generate-seo-friendly-urls-slugs/9535967
 	*/
-	public function set_SEO(string $string, bool $max = false) {
+	# MAXIMA CONVERSION => URL AMIGABLES | MAX no se usa
+	function setSEO($string, $max = NULL) {
 		$string = htmlentities($string, ENT_QUOTES, 'UTF-8');
 		$string = preg_replace('~&([a-z]{1,2})(?:acute|cedil|circ|grave|lig|orn|ring|slash|th|tilde|uml);~i', '$1', $string);
 		$string = html_entity_decode($string, ENT_QUOTES, 'UTF-8');
 		$string = preg_replace('~[^0-9a-z]+~i', '-', $string);
-		if($max) $string = strtolower(trim($string, '-'));
+		$string = strtolower(trim($string, '-'));
 		return $string;
 	}
 	/*
 		parseBBCode($bbcode)
 	*/
 	function parseBBCode($bbcode, $type = 'normal') {
-        // Class BBCode
-        include_once(TS_EXTRA . 'bbcode.inc.php');
-        $parser = new BBCode();
-        
-        // Seleccionar texto
-        $parser->setText($bbcode);
-
-        // Seleccionar tipo
-        switch ($type) {
-            // NORMAL
-            case 'normal':
-                // BBCodes permitidos
-                $parser->setRestriction(array('url', 'code', 'quote', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler', 'swf', 'video', 'goear', 'hr', 'sub', 'sup', 'table', 'td', 'tr', 'ul', 'li', 'ol', 'notice', 'info', 'warning', 'error', 'success'));
-                // SMILES
-                $parser->parseSmiles();
-                // MENCIONES
-                $parser->parseMentions();
-            break;
-            // FIRMA
-            case 'firma':
-                // BBCodes permitidos
-                $parser->setRestriction(array('url', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler'));
-            break;
-            // NOTICIAS
-            case 'news':
-                // BBCodes permitidos
-                $parser->setRestriction(array('url', 'b', 'i', 'u', 's'));
-                // SMILES
-                $parser->parseSmiles();
-            break;
-        }
-        // Retornar resultado HTML
-        return $parser->getAsHtml();
-    }
+      // Class BBCode
+      include_once(TS_EXTRA . 'bbcode.inc.php');
+      $parser = new BBCode();
+      // Seleccionar texto
+      $parser->setText($bbcode);
+      // Seleccionar tipo
+      switch ($type) {
+         // NORMAL
+         case 'normal':
+         case 'comentario':
+         case 'smiles':
+            // BBCodes permitidos
+            $parser->setRestriction(array('url', 'code', 'quote', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler', 'swf', 'video', 'goear', 'hr', 'sub', 'sup', 'table', 'td', 'tr', 'ul', 'li', 'ol', 'notice', 'info', 'warning', 'error', 'success'));
+            // SMILES
+            $parser->parseSmiles();
+            // MENCIONES
+            $parser->parseMentions();
+         break;
+         // FIRMA
+         case 'firma':
+           	// BBCodes permitidos
+           	$parser->setRestriction(array('url', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler'));
+         break;
+         // NOTICIAS
+         case 'news':
+            // BBCodes permitidos
+            $parser->setRestriction(array('url', 'b', 'i', 'u', 's'));
+            // SMILES
+            $parser->parseSmiles();
+         break;
+      }
+      // Retornar resultado HTML
+      return $parser->getAsHtml();
+   }
     /**
      * @name setMenciones
      * @access public

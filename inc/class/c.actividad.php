@@ -92,7 +92,7 @@ class tsActividad {
         $data = result_array($query);
         
         //
-        $ntotal = count($data);
+        $ntotal = empty($data) ? 0 : count($data);
         $delid = $data[$ntotal-1]['ac_id']; // ID DE ULTIMA NOTIFICACION
 		// ELIMINAR ACTIVIDADES?
 		if($ntotal >= $tsCore->settings['c_max_acts']){			
@@ -201,7 +201,7 @@ class tsActividad {
     private function armActividad($data = NULL){
         # VARIABLES LOCALES
         $actividad = array(
-            'total' => count($data),
+            'total' => (empty($data) ? 0 : count($data)),
             'data' => array(
             'today' => array('title' => 'Hoy', 'data' => array()),
             'yesterday' => array('title' => 'Ayer', 'data' => array()),

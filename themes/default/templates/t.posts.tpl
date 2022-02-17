@@ -17,7 +17,7 @@
                     <br />
                    	{if !$tsUser->is_member}
                     <div class="emptyData clearfix">
-                    	Para poder comentar necesitas estar <a onclick="registro_load_form(); return false" href="">Registrado.</a> O.. ya tienes usuario? <a onclick="open_login_box('open')" href="#">Logueate!</a>
+                    	Para poder comentar necesitas estar <a href="{$tsConfig.url}/registro/">Registrado.</a> O.. ya tienes usuario? <a onclick="open_login_box('open')" href="#">Logueate!</a>
                     </div>
                     {elseif $tsPost.block > 0}
                     <div class="emptyData clearfix">

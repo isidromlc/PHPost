@@ -3,7 +3,7 @@
                             <ul>
                             	{if $tsRelated}
                                 {foreach from=$tsRelated item=p}
-                            	<li class="categoriaPost" style="background-image:url({$tsConfig.tema.t_url}/images/icons/cat/{$p.c_img})">
+                            	<li class="categoriaPost" style="background-image:url({$tsConfig.images}/icons/cat/{$p.c_img})">
 									<a class="{if $p.post_private}categoria privado{/if}"title="{$p.post_title}" href="{$tsConfig.url}/posts/{$p.c_seo}/{$p.post_id}/{$p.post_title|seo}.html" rel="dc:relation">{$p.post_title}</a>
 								</li>
                                 {/foreach}

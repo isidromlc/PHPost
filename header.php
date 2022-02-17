@@ -55,14 +55,6 @@
  * -------------------------------------------------------------------
  */
 
-
-   // Contiene las variables de configuración principal
-   include 'config.inc.php';
-
-   // No ha sido instalado el script...
-   //$install_dir = TS_ROOT . '/install/';
-   if($db['hostname'] == 'dbhost')  header("Location: ./install/index.php");
-       
    // Funciones
    include TS_EXTRA.'functions.php';
 
@@ -80,9 +72,6 @@
 
    // Mensajes de usuario
    include TS_CLASS.'c.mensajes.php';
-   
-   // Smarty
-   include TS_SMARTY.'SmartyBC.class.php';
    
    // Crean requests
    include TS_EXTRA.'QueryString.php';
@@ -116,55 +105,52 @@
    if(empty($tsTema)) $tsTema = 'default';
    define('TS_TEMA', $tsTema);
 
-   // Smarty
-   $smarty = new SmartyBC();
+   # Configuraciones adicionales para smarty
+   define('TS_THEMES', TS_ROOT . '/themes/'); # Todos los temas
+   define('TS_PLUGINS', TS_FILES . 'plugins/'); # Todos los plugins
+   # Tiempo de vida del cache antes de ser eliminado [5hs] (3600 equivale 1hs)
+   define('CACHE_LIFE_TIME', 3600 * 5);
+   define('CACHE_CHECKED', TRUE);
+   # Solo usar las carpetas agregadas en $smarty->setTemplateDir()
+   define('SECURITY', TRUE);
+   # Para comprimir el html y que sea más rápido
+   define('COMPRESS_HTML', FALSE);
+   # Smarty 4.0
+   require_once TS_EXTRA . 'smarty.config.php';
 
 /*
  * -------------------------------------------------------------------
  *  Asignación de variables
  * -------------------------------------------------------------------
- */
-    
-   $smarty->assign([
-      // Configuraciones
-      'tsConfig' => $tsCore->settings,
-      // Obtejo usuario
-      'tsUser' => $tsUser,
-      // Avisos
-      'tsAvisos' => $tsMonitor->avisos,
-      // Nofiticaciones
-      'tsNots' => $tsMonitor->notificaciones,
-      // Mensajes
-      'tsMPs' => $tsMP->mensajes
-   ]);
+*/
+// Configuraciones
+$smarty->assign('tsConfig', $tsCore->settings);
 
-/*
- * -------------------------------------------------------------------
- *  Validaciones extra
- * -------------------------------------------------------------------
- */
-   // Baneo por IP
-   $ip = $_SERVER['X_FORWARDED_FOR'] ? $_SERVER['X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
-   if(!filter_var($ip, FILTER_VALIDATE_IP)) die('Su ip no se pudo validar.'); 
-   if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id FROM w_blacklist WHERE type = \'1\' && value = \''.$ip.'\' LIMIT 1'))) die('Bloqueado');
+// Obtejo usuario
+$smarty->assign('tsUser', $tsUser);
 
-   // Online/Offline
-   if($tsCore->settings['offline'] == 1 && ($tsUser->is_admod != 1 && $tsUser->permisos['govwm'] == false) && $_GET['action'] != 'login-user'){
-    	$smarty->assign('tsTitle',$tsCore->settings['titulo'].' -  '.$tsCore->settings['slogan']);
-      if(empty($_GET['action'])) 
-         $smarty->display(TS_ROOT . '/themes/mantenimiento.tpl');
-      else die('Espera un poco...');
-    	exit();
-   // Banned
-   } elseif($tsUser->is_banned) {
-      $banned_data = $tsUser->getUserBanned();
-      if(!empty($banned_data)){
-         // SI NO ES POR AJAX
-         if(empty($_GET['action'])){
-            $smarty->assign('tsBanned',$banned_data);
-            $smarty->display('sections/suspension.tpl');
-         } else die('<div class="emptyError">Usuario suspendido</div>');
-         //
-      exit();
-      }
-   }
+// Avisos
+$smarty->assign('tsAvisos', $tsMonitor->avisos);
+
+// Nofiticaciones
+$smarty->assign('tsNots', $tsMonitor->notificaciones);
+
+// Mensajes
+$smarty->assign('tsMPs', $tsMP->mensajes);
+      
+/**
+ * Si hay alguna IP bloqueada por el Moderador/Administrador,
+ * ejecutamos esta función, en caso contrario no hará nada
+*/
+ip_banned();
+
+/**
+ * Si hay un usuario baneado por el Moderador/Administrador,
+ * ejecutamos esta función, en caso contrario no hará nada
+*/
+user_banned();
+
+/**
+ * Si la página esta en modo mantenimiento, ejecutamos la función
+*/
+site_in_maintenance();

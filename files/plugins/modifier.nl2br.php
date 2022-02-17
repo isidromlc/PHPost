@@ -1,22 +1,31 @@
 <?php
 /**
  * Smarty plugin
- * -------------------------------------------------------------
- * File:     modifier.nl2br.php
- * Type:     modifier
- * Name:     nl2br
- * Purpose:  Convierte de \r\n, \r o \n o => <br />
- * -------------------------------------------------------------
- * Input: <br />
- *         - Contenido = Contenido para reemplazar
- *         - preceed_test = si es verdadero, incluye etiquetas de ruptura anteriores en reemplazo
- * Example:  {$Contenido|nl2br}
- * @link https://www.php.net/nl2br
+ * @package Smarty
+ * @subpackage plugins
+ */
+
+
+/**
+ * Smarty plugin
+ *
+ * Type:     modifier<br>
+ * Name:     nl2br<br>
+ * Date:     Feb 26, 2003
+ * Purpose:  convert \r\n, \r or \n to <<br>>
+ * Input:<br>
+ *         - contents = contents to replace
+ *         - preceed_test = if true, includes preceeding break tags
+ *           in replacement
+ * Example:  {$text|nl2br}
+ * @link http://smarty.php.net/manual/en/language.modifier.nl2br.php
+ *          nl2br (Smarty online manual)
  * @version  1.0
  * @author   Monte Ohrt <monte at ohrt dot com>
  * @param string
  * @return string
  */
-function smarty_modifier_nl2br($string) {
+function smarty_modifier_nl2br($string)
+{
     return nl2br($string);
 }

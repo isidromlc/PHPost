@@ -58,68 +58,29 @@ class tsAdmin {
     }
     /*
     saveConfigs()
-    */
-    function saveConfig()
-    {
-        global $tsCore;
-        //
-        $c = array(
-            'titulo' => $tsCore->setSecure($tsCore->parseBadWords($_POST['titulo'])),
-            'slogan' => $tsCore->setSecure($tsCore->parseBadWords($_POST['slogan'])),
-            'url' => $tsCore->setSecure($tsCore->parseBadWords($_POST['url'])),
-            'offline' => empty($_POST['offline']) ? 0 : 1,
-            'offline_message' => $tsCore->setSecure($tsCore->parseBadWords($_POST['offline_message'])),
-            'chat' => $tsCore->setSecure($_POST['chat']),
-            'xat' => $tsCore->setSecure($_POST['xat']),
-            'edad' => $tsCore->setSecure($_POST['edad']),
-            'active' => $tsCore->setSecure($_POST['active']),
-            'sess_ip' => empty($_POST['sess_ip']) ? 0 : 1,
-            'count_guests' => $tsCore->setSecure($_POST['count_guests']),
-            'reg_active' => empty($_POST['reg_active']) ? 0 : 1,
-            'reg_activate' => empty($_POST['reg_activate']) ? 0 : 1,
-            'met_welcome' => $tsCore->setSecure($_POST['met_welcome']),
-            'message_welcome' => $tsCore->setSecure($tsCore->parseBadWords($_POST['message_welcome'])),
-            'fotos_private' => empty($_POST['fotos_private']) ? 0 : 1,
-            'hits_guest' => empty($_POST['hits_guest']) ? 0 : 1,
-            'keep_points' => empty($_POST['keep_points']) ? 0 : 1,
-            'allow_points' => $tsCore->setSecure($_POST['allow_points']),
-            'see_mod' => empty($_POST['see_mod']) ? 0 : 1,
-            'stats_cache' => $tsCore->setSecure($_POST['stats_cache']),
-            'desapprove_post' => empty($_POST['desapprove_post']) ? 0 : 1,
-            'firma' => empty($_POST['firma']) ? 0 : 1,
-            'upload' => empty($_POST['upload']) ? 0 : 1,
-            'portal' => empty($_POST['portal']) ? 0 : 1,
-            'live' => empty($_POST['live']) ? 0 : 1,
-            'max_nots' => $tsCore->setSecure($_POST['max_nots']),
-            'max_acts' => $_POST['max_acts'],
-            'max_posts' => $tsCore->setSecure($_POST['max_posts']),
-            'max_com' => $tsCore->setSecure($_POST['max_com']),
-            'sump' => empty($_POST['sump']) ? 0 : 1,
-            'newr' => empty($_POST['newr']) ? 0 : 1,
-            'pkey' => $tsCore->setSecure($_POST['pkey']),
-            'skey' => $tsCore->setSecure($_POST['skey']),
-        );
-        // UPDATE
-        if (db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE `w_configuracion` SET `titulo` = \'' . $c['titulo'] . '\', `slogan` = \'' .
-            $c['slogan'] . '\', `url` = \'' . $c['url'] . '\', `chat_id` = \'' . $c['chat'] .
-            '\', `xat_id` = \'' . $c['xat'] . '\',`c_last_active` = \'' . $c['active'] . '\', `c_allow_sess_ip` = \'' .
-            $c['sess_ip'] . '\', `c_count_guests` = \'' . $c['count_guests'] . '\', `c_reg_active` = \'' .
-            $c['reg_active'] . '\', `c_reg_activate` = \'' . $c['reg_activate'] . '\', `c_met_welcome` = \'' .
-            $c['met_welcome'] . '\', `c_message_welcome` = \'' . $c['message_welcome'] . '\', `c_fotos_private` = \'' .
-            $c['fotos_private'] . '\', `c_hits_guest` = \'' . $c['hits_guest'] . '\', `c_keep_points` = \'' .
-            $c['keep_points'] . '\', `c_allow_points` = \'' . $c['allow_points'] . '\', `c_see_mod` = \'' .
-            $c['see_mod'] . '\', `c_stats_cache` = \'' . $c['stats_cache'] . '\',`c_desapprove_post` = \'' .
-            $c['desapprove_post'] . '\', `c_allow_edad` = \'' . $c['edad'] . '\', `c_max_posts` = \'' .
-            $c['max_posts'] . '\', `c_max_com` = \'' . $c['max_com'] . '\', `c_max_nots` = \'' .
-            $c['max_nots'] . '\', `c_max_acts` = \'' . $c['max_acts'] . '\', `c_allow_sump` = \'' .
-            $c['sump'] . '\', `c_newr_type` = \'' . $c['newr'] . '\', `c_allow_firma` = \'' .
-            $c['firma'] . '\', `c_allow_upload` = \'' . $c['upload'] . '\', `c_allow_portal` = \'' .
-            $c['portal'] . '\', `c_allow_live` = \'' . $c['live'] . '\', `offline` = \'' . $c['offline'] .
-            '\', `offline_message` = \'' . $c['offline_message'] . '\', `pkey` = \'' . $c['pkey'] . '\', `skey` = \'' . $c['skey'] . '\' WHERE `tscript_id` = \'1\''))
-            return true;
-        else
-            exit( show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db') );
-    }
+    */   
+   public function saveConfig() {
+      global $tsCore;
+      /**
+       * Unimos todos los parametros y 
+       * quitamos el $_POST["save"] con array_slice()
+       * @link https://www.php.net/manual/es/function.array-slice.php
+       * con el -1 se quita el $_POST["save"]
+      */
+      # Consultamos si existe, tenemos que poner el nombre
+      if(isset($_POST["providers"])):
+         # Lo que va a hacer es reemplazar el parametro por este nuevo
+         /**
+          * @link https://www.php.net/manual/es/function.json-encode.php
+         */
+         $_POST["providers"] = json_encode(explode(', ', $_POST["providers"]), JSON_FORCE_OBJECT);
+      endif;
+      //
+      $columnas = $tsCore->getIUP( array_slice($_POST, 0, -1) );
+      if (db_exec([__FILE__, __LINE__], "query", "UPDATE w_configuracion SET {$columnas} WHERE tscript_id = 1")) return true;
+      else exit( show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'Base de datos') );
+   }
+
     /*
     getNoticias()
     */

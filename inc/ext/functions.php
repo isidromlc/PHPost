@@ -1,26 +1,64 @@
 <?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
 
+
+$CONFIGINC = TS_ROOT . "/config.inc.php";
+
+/**
+ * Comprobamos que el archivo exista
+*/
+if( file_exists( $CONFIGINC )) {
+
+   # Ahora preguntamos si esta instalado
+   require_once $CONFIGINC;
+   if( $db["hostname"] === 'dbhost') header("Location: ./install/index.php");
+
+} else header("Location: ./install/index.php");
+
+
 /**
  * Nueva forma de conectar a la base de datos
- */
-// Conectamos al servidor
-$db_link = mysqli_connect($db['hostname'], $db['username'], $db['password'], $db['database']);
+ * https://www.php.net/manual/es/mysqli.construct.php => Ejemplo 1
+*/
 
-// Comprobamos el estado de la conexión
-if( mysqli_connect_errno() )
-{
-    exit( show_error( 'No se pudo establecer la conexi&oacute;n con la base de datos.</p> <p class="warning">'.mysqli_connect_error() , 'other') );
-}
-else
-{
-    if ( !mysqli_set_charset($db_link, 'utf8') )
-    {
-        exit( show_error( 'No se pudo establecer la codificaci&oacute;n de caracteres.', 'db' ) );
-    }
-    
-    //mysqli_query($db_link, 'set names \'utf8\'');
-	//mysqli_query($db_link, 'set character set utf8');
-}
+$db_link = new mysqli($db['hostname'], $db['username'], $db['password'], $db['database']);
+
+/**
+ * Aquí comprobaremos la conexión
+ * @link https://www.php.net/manual/es/mysqli.connect-errno.php 
+*/
+if (mysqli_connect_errno()):
+    $message = mysqli_connect_errno();
+   #$message = mysqli_connect_error(); // Lo mismo, pero en ingles
+   switch ($message) {
+    case 1045:
+        $pass = (empty($db['password'])) ? "NO" : "SI";
+        $message = "Acceso denegado para el usuario <b>'{$db['username']}'</b>@'localhost' ";
+        $message .= " (usando contraseña: {$pass})";
+    break;
+    case 1049:
+        $message = "La base de datos <b>{$db['database']}</b> es desconocida.";
+    break;
+    case 2002:
+        $message = "El host \"<b>{$db['hostname']}</b>\" que intentas conectar es desconocido.";
+    break;
+   }
+   exit(show_error("<p class=\"warning\">{$message}</p>", 'Conexión con MySQLI'));
+  
+else:
+
+   if (!$db_link->set_charset('utf8mb4')): # utf8 | utf8mb4
+
+    /**
+     * @link https://www.php.net/manual/es/mysqli.set-charset.php
+     * printf("Conjunto de caracteres actual: %s\n", $db_link->character_set_name());
+     * resultado: Conjunto de caracteres actual: utf8mb4
+    */
+      $message = "Error cargando el conjunto de caracteres:<br>\"<b>{$db_link->error}</b>\"";
+    exit(show_error("<p class=\"warning\">{$message}</p>", 'Juego de caracteres no válido'));
+
+   endif;
+
+endif;
 
 /**
  * Ejecutar consulta
@@ -89,12 +127,12 @@ function db_exec()
 /**
  * Cargar resultados
  */
-function result_array($result)
-{
-    $result instanceof mysqli_result;
-    if( !is_a($result, 'mysqli_result') ) return false;
-	while($row = db_exec('fetch_assoc', $result)) $array[] = $row;
-	return $array;
+function result_array($result) {
+   $result instanceof mysqli_result;
+   if( !is_a($result, 'mysqli_result') ) return [];
+   $array = [];
+   while($row = db_exec('fetch_assoc', $result)) $array[] = $row;
+   return $array;
 }
 
 /**
@@ -120,3 +158,67 @@ function show_error($error = 'Indefinido', $type = 'db', $info = array())
 
 // Borramos la variable por seguridad
 unset($db);
+
+function ip_banned() {
+   $IPBAN = (isset($_SERVER["X_FORWARDED_FOR"])) ? $_SERVER['X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+   if(!filter_var($IPBAN, FILTER_VALIDATE_IP)) exit('Su ip no se pudo validar.');
+   if(db_exec( 'num_rows', db_exec([__FILE__, __LINE__], 'query', 
+         "SELECT id FROM w_blacklist WHERE type = 1 && value = '{$IPBAN}' LIMIT 1"
+   ))) die('Tu IP fue bloqueada por el administrador/moderador.');
+}
+
+function user_banned() {
+   global $tsCore, $tsUser, $smarty;
+   $banned_data = $tsUser->getUserBanned();
+
+   if(!empty($banned_data)){
+      if(empty($_GET['action'])){
+         $smarty->assign([
+            'tsTitle' => "Usuario baneado - {$tsCore->settings['titulo']}",
+            'tsBanned' => $banned_data
+         ]);
+         $smarty->loadFilter('output', 'trimwhitespace');
+         $smarty->display('suspension.tpl');
+
+      } else die('<div class="emptyError">Usuario suspendido</div>');
+      //
+      exit;
+   }
+
+}
+
+function site_in_maintenance() {
+   global $tsCore, $tsUser, $smarty;
+   if($tsCore->settings['offline'] == 1 && ($tsUser->is_admod != 1 && $tsUser->permisos['govwm'] == false) && $_GET['action'] != 'login-user'){
+      $smarty->assign('tsTitle', "Sitio en mantenimiento - {$tsCore->settings['titulo']}");
+      $smarty->assign('tsLogin', (isset($_GET["login"]) and $_GET["login"] == 'admin' ? true : false));
+
+      if(empty($_GET["action"])) {
+         $smarty->loadFilter('output', 'trimwhitespace');
+         $smarty->display('mantenimiento.tpl');
+      } else die('Espera un poco...');
+      exit();
+   }
+}
+
+function getSSL() {
+   if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') $isSecure = false;
+   elseif (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $isSecure = true;
+   elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+      $isSecure = true;
+   }
+   $isSecure = ($isSecure == true) ? 'https://' : 'http://';
+   return $isSecure;
+}
+
+/**
+ * Función is_countable
+ * @link https://www.php.net/manual/es/function.is-countable.php
+ * NOTA:
+ * Si no puede actualizar a PHP 7.3, puede usar este polyfill simple:
+*/
+if (!function_exists('is_countable')) {
+   function is_countable($var) {
+      return (is_array($var) || $var instanceof Countable);
+   }
+}

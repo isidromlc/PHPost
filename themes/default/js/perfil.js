@@ -575,7 +575,7 @@ $(function(){
         $('.frameForm').css('border-bottom', '1px solid #E9E9E9');
     });
     // ENVIAR PUBLICACION
-    $('textarea[name=add_wall_comment]').live("keypress",function(k){
+    $('textarea[name=add_wall_comment]').on("keypress",function(k){
         if(k.which == 13){
             var pub_id = $(this).attr('pid');
             muro.comentar(pub_id);
@@ -587,9 +587,9 @@ $(function(){
         var aid = $(this).attr('aid');
     })
     // RESPUESTAS
-    $('.comentar').css('max-height', '200px').autogrow().css('height','14px');
+    $('.comentar').css('max-height', '200px').css('height','14px');
     //
-    $('input[name=hack]').live("focus",function(){
+    $('input[name=hack]').on("focus",function(){
         $(this).hide();
         $(this).parent().find('div.formulario').show();
         var pub_id = $(this).attr('pid');

@@ -25,7 +25,7 @@
                             {if $tsGeneral.posts}
                             <ul class="ultimos">
                                 {foreach from=$tsGeneral.posts item=p}
-                            	<li class="categoriaPost" style="background-image:url({$tsConfig.tema.t_url}/images/icons/cat/{$p.c_img})">
+                            	<li class="categoriaPost" style="background-image:url({$tsConfig.images}/icons/cat/{$p.c_img})">
                                     <a title="{$p.post_title}" target="_self" href="{$tsConfig.url}/posts/{$p.c_seo}/{$p.post_id}/{$p.post_title|seo}.html">{$p.post_title|truncate:45}</a>
                                     <span>{$p.post_puntos} Puntos</span>
                                 </li>
@@ -43,7 +43,7 @@
                             {if $tsGeneral.temas}
                             <ul class="ultimos">
                                 {foreach from=$tsGeneral.posts item=p}
-                            	<li class="categoriaPost" style="background-image:url({$tsConfig.tema.t_url}/images/icons/cat/{$p.s_img})">
+                            	<li class="categoriaPost" style="background-image:url({$tsConfig.images}/icons/cat/{$p.s_img})">
                                     <a title="{$p.post_title}" target="_self" href="{$tsConfig.url}/posts/{$p.c_seo}/{$p.s_seo}/{$p.post_id}/{$p.post_title|seo}.html">{$p.post_title|truncate:45}</a>
                                     <span>{$p.post_puntos} Puntos</span>
                                 </li>

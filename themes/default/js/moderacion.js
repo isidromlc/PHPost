@@ -66,7 +66,7 @@ var mod = {
                 var razon = $('#razon').val()
                 var razon_desc = $('input[name=razon_desc]').val();
 				
-				if($('#send_b').attr('checked')){
+				if($('#send_b').prop('checked')){
 					var send_b = 'yes';
 				}
 				$('#loading').fadeIn(250);

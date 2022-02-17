@@ -108,13 +108,13 @@ function confirmleave() {
 var tags = false;
 $(document).ready(function(){
 	// QUITAR LOS ERRORES
-	$('.required').bind('keyup change',function(){
+	$('.required').on('keyup change',function(){
 		if ($.trim($(this).val())) {
 			hideError(this);
 		}
 	});
 	// CHECAR EL TITULO
-	$('input[name=titulo]').bind('keyup',function(){
+	$('input[name=titulo]').on('keyup',function(){
 		if ($(this).val().length >= 5 && countUpperCase($(this).val()) > 90) {
 			showError(this, 'El t&iacute;tulo no debe estar en may&uacute;sculas');
 		}
@@ -149,7 +149,7 @@ $(document).ready(function(){
 		});
     });
 	// PREVIEW
-	$('input[name=preview]').bind('click',function(){
+	$('input[name=preview]').on('click',function(){
 		var error = false;
 
     		$('.required').each(function(){
@@ -207,7 +207,7 @@ $(document).ready(function(){
 
 	});
     //
-    $('a.consejos-view-more-button').bind(
+    $('a.consejos-view-more-button').on(
 		'click',
 		function () {
 			$(this).hide();

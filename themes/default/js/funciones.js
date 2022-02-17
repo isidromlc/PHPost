@@ -257,6 +257,10 @@ var comentario = {
     	var textarea = $('#body_comm');
     	textarea.focus();
     	textarea.val(((textarea.val()!='') ? textarea.val() + '\n' : '') + '[quote=' + nick + ']' + htmlspecialchars_decode($('#citar_comm_'+id).html(), 'ENT_NOQUOTES') + '[/quote]\n');
+        /*
+        var message = $.trim($('#comment-body-'+id).html());
+    $('.wysibb-texarea').execCommand('quote',{autor: nick, seltext: message});
+        */
     },
     // EDITAR
     editar: function(id, step){
@@ -265,7 +269,7 @@ var comentario = {
                 var bbcode = htmlspecialchars_decode($('#citar_comm_'+id).html(), 'ENT_NOQUOTES');
                 var html = '<textarea id="edit-comment-' + id + '" class="textarea-edit autogrow" title="Escribir un comentario..." onfocus="onfocus_input(this)" onblur="onblur_input(this)">' + bbcode + '</textarea><br/><input type="button" class="mBtn btnGreen btnEdit" onclick="comentario.preview(\'' + id + '\', \'edit\')" value="Continuar &raquo;"/> <strong id="edit-error-' + id + '"></strong>';
                 $('#comment-body-' + id).html(html);
-                $('#edit-comment-' + id).css('max-height', '300px').autogrow();
+                $('#edit-comment-' + id).css('max-height', '300px');
             break;
             case 'send':
                 var cid = $('#edit-cid-' + id).val()
@@ -554,7 +558,7 @@ var news = {
 // READY
 $(document).ready(function(){
     /* NOTICIAS */
-    news.total = $('#top_news > li').size();
+    news.total = $('#top_news > li').length;
     news.slider();
     /* IMAGENES */
     imagenes.presentacion();

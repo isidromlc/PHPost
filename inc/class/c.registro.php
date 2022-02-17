@@ -7,20 +7,33 @@
  */
 class tsRegistro{
 
-    /**
-     * @name checkUserEmail($pid)
-     * @access public
-     * @param
-     * @return string
-     */
+   /**
+    * @name checkUserEmail($pid)
+    * @access public
+    * @param
+    * @return string
+   */
 	public function checkUserEmail(){
 	global $tsCore;
 		// Variables
 		$username = strtolower($_POST['nick']);
 		$email = strtolower($_POST['email']);
-        $which = empty($username) ? 'email' : 'nick'; 
+      $which = empty($username) ? 'email' : 'nick'; 
         // MENSAJE
 		$valid = '1: El '.$which.' est&aacute; disponible.';	// DEFAULT
+		if($email) {
+			$provider = explode('@', $email)[1];
+			$whitelist = $tsCore->settings["providers"];
+			if(!empty($whitelist)) {
+				$decode = explode(', ', $whitelist);
+				$msg = "0: Tu proveedor de correo no est&aacute; permitido en este sitio.";
+				if(count($decode) <= 1) {
+				   if($provider !== $whitelist) return $msg;
+				} else {
+				   if(!in_array($provider, $decode, false)) return $msg;
+				}
+			}
+		}
 		//
 		if(!empty($username) || !empty($email)){
 			$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT `user_id` FROM `u_miembros` WHERE '. ( !empty($username) ? 'LOWER(user_name) = \''.$tsCore->setSecure($username).'\'' : 'LOWER(user_email) = \''.$tsCore->setSecure($email).'\'' ) .' LIMIT 1');
@@ -44,14 +57,9 @@ class tsRegistro{
 			'user_nick' => $tsCore->parseBadWords($_POST['nick']),
 			'user_password' => $tsCore->parseBadWords($_POST['password']),
 			'user_email' => $_POST['email'],
-			'user_dia' => $_POST['dia'],
-			'user_mes' => $_POST['mes'],
-			'user_anio' => $_POST['anio'],
-			'user_sexo' => $_POST['sexo'] == 'f' ? '0' : 1,
-			'user_pais' => strtoupper($_POST['pais']),
-			'user_estado' => $_POST['estado'],
+			'user_sexo' => intval($_POST['sexo'] == 'f' ? 0 : 1),
 			'user_terminos' => $_POST['terminos'],
-			'user_captcha' => $_POST['g-recaptcha-response'],
+			'user_captcha' => $_POST['response'],
 			'user_registro' => time(),
 		);
 		// ERRORS
@@ -71,19 +79,11 @@ class tsRegistro{
 			}
 		}
 
-		/** reCAPTCHA **/
-        $recaptcha = 'https://www.google.com/recaptcha/api/siteverify?secret=' . $tsCore->settings['skey'] . '&response=' . $tsData['user_captcha'] . '&remoteip=' . $tsCore->getIP();
-        // Obtener respuesta
-        $response = file_get_contents($recaptcha);
-        // Extraer resultado
-        $ext1 = explode('"success":', $response);
-        $ext2 = explode(',', $ext1[1]);
-        // Comprobar resultado
-        $valid = trim($ext2[0]);
-        // Devolver respuesta si es incorrecta
-        if ($valid == 'false') {
-            return 'recaptcha: No hemos podido validar tu humanidad';
-        }
+		/**
+		 * Comprobamos el recaptcha v3
+		*/
+      $response = $tsCore->reCaptcha($tsData['user_captcha']);
+      if (!$response) return 'recaptcha: No hemos podido validar tu humanidad';
 		
         // COMPROBAR QUE EL NOMBRE DE USUARIO SEA VÁLIDO
         if( !preg_match("/^[a-zA-Z0-9_-]{4,16}$/", $tsData['user_nick']) ) {
@@ -99,9 +99,20 @@ class tsRegistro{
 		//
 		if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `u_miembros` (`user_name`, `user_password`, `user_email`, `user_rango`, `user_registro`) VALUES (\''.$tsCore->setSecure($tsData['user_nick']).'\', \''.$tsCore->setSecure($key).'\', \''.$tsCore->setSecure($tsData['user_email']).'\', '.(empty($tsCore->settings['c_reg_rango']) ? 3 : $tsCore->settings['c_reg_rango']).', \''.$tsData['user_registro'].'\')')){
             $tsData['user_id'] = db_exec('insert_id');
-            // INSERTAMOS EL PERFIL
-			db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `u_perfil` (`user_id`, `user_dia`, `user_mes`, `user_ano`, `user_pais`, `user_estado`, `user_sexo`) VALUES (\''.(int)$tsData['user_id'].'\', \''.(int)$tsData['user_dia'].'\', \''.(int)$tsData['user_mes'].'\', \''.(int)$tsData['user_anio'].'\', \''.$tsCore->setSecure($tsData['user_pais']).'\', \''.$tsCore->setSecure($tsData['user_estado']).'\', \''.(int)$tsData['user_sexo'].'\')');
-            db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `u_portal` (`user_id`) VALUES (\''.$tsData['user_id'].'\')');
+            db_exec([__FILE__, __LINE__], "query", "INSERT INTO u_perfil (user_id, p_avatar, user_sexo) VALUES({$tsData['user_id']}, 1, {$tsData['user_sexo']})");
+         db_exec([__FILE__, __LINE__], "query", "INSERT INTO u_portal (user_id) VALUES({$tsData['user_id']})");
+         
+         # Generamos automaticamente un avatar
+         $avatar = "https://ui-avatars.com/api/?name=$1&background=random&size=160&font-size=0.60&bold=true&length=1";
+         $copy = "../../files/avatar/$2_$3.jpg";
+         $sizes = [50, 120];
+         foreach ($sizes as $size) {
+         	copy(
+	         	str_replace('$1', $tsData['user_nick'], $avatar), 
+	         	str_replace(['$2', '$3'], [$tsData['user_id'], $size], $copy)
+	         );
+         }
+
 			
 			// MENSAJE PARA DAR LA BIENVENIDA BIENVENIDA
 			$send_welcome = $tsCore->settings['c_met_welcome'];

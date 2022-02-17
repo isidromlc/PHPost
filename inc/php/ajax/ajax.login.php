@@ -41,12 +41,12 @@
 	switch($action){
 		case 'login-user':
 			//<---
-				$user = $tsCore->setSecure($_POST['nick']);
-				$pass = $tsCore->setSecure($_POST['pass']);
-				$reme = ($_POST['rem'] == 'true') ? true : false;
-				//
-				if(empty($user) or empty($pass)) echo '0: Faltan datos';
-				else echo $tsUser->loginUser($user, $pass, $reme);
+			$user = $tsCore->setSecure($_POST['nick']);
+			$pass = $tsCore->setSecure($_POST['pass']);
+			$reme = ($_POST['rem'] == 'true') ? true : false;
+			//
+			if(empty($user) or empty($pass)) echo '0: Faltan datos';
+			else echo $tsUser->loginUser($user, $pass, $reme);
 			//--->
 		break;
 		case 'login-activar':

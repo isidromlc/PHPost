@@ -46,7 +46,7 @@ class tsMuro {
             break;
             case 5:
                 if(!$tsUser->is_member) $priv['m']['v'] = false;
-                $priv['m']['m'] = 'Solo usuarios <a onclick="registro_load_form();">registrados</a> pueden ver el muro de '.$username;
+                $priv['m']['m'] = 'Solo usuarios <a href="'.$tsCore->settings['url'].'/registro/">registrados</a> pueden ver el muro de '.$username;
             break;
         }
         // FIRMAR MURO
@@ -73,7 +73,7 @@ class tsMuro {
             break;
             case 5:
                 if(!$tsUser->is_member) $priv['mf']['v'] = false;
-                $priv['mf']['m'] = 'Solo usuarios <a onclick="registro_load_form();">registrados</a> pueden firmar el muro de '.$username;
+                $priv['mf']['m'] = 'Solo usuarios <a href="'.$tsCore->settings['url'].'/registro/">registrados</a> pueden firmar el muro de '.$username;
             break;
         }
         //

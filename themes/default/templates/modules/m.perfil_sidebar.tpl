@@ -10,7 +10,7 @@
                             {if $tsGeneral.m_total}
             				<ul class="clearfix">
                                 {foreach from=$tsGeneral.medallas item=m}
-							<img src="{$tsConfig.tema.t_url}/images/icons/med/{$m.m_image}_16.png" class="qtip" title="{$m.m_title} - {$m.m_description}"/>
+							<img src="{$tsConfig.images}/icons/med/{$m.m_image}_16.png" class="qtip" title="{$m.m_title} - {$m.m_description}"/>
                                 {/foreach}
             				</ul>
                             {if $tsGeneral.m_total >= 21}<a href="#medallas" onclick="perfil.load_tab('medallas', $('#medallas'));" class="see-more">Ver m&aacute;s &raquo;</a>{/if}

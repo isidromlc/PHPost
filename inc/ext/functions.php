@@ -1,5 +1,20 @@
 <?php if ( ! defined('TS_HEADER')) exit('No se permite el acceso directo al script');
 
+
+$CONFIGINC = TS_ROOT . "/config.inc.php";
+
+/**
+ * Comprobamos que el archivo exista
+*/
+if( file_exists( $CONFIGINC )) {
+
+   # Ahora preguntamos si esta instalado
+   require_once $CONFIGINC;
+   if( $db["hostname"] === 'dbhost') header("Location: ./install/index.php");
+
+} else header("Location: ./install/index.php");
+
+
 /**
  * Nueva forma de conectar a la base de datos
  * https://www.php.net/manual/es/mysqli.construct.php => Ejemplo 1
@@ -112,12 +127,12 @@ function db_exec()
 /**
  * Cargar resultados
  */
-function result_array($result)
-{
-    $result instanceof mysqli_result;
-    if( !is_a($result, 'mysqli_result') ) return false;
-	while($row = db_exec('fetch_assoc', $result)) $array[] = $row;
-	return $array;
+function result_array($result) {
+   $result instanceof mysqli_result;
+   if( !is_a($result, 'mysqli_result') ) return [];
+   $array = [];
+   while($row = db_exec('fetch_assoc', $result)) $array[] = $row;
+   return $array;
 }
 
 /**
@@ -143,3 +158,67 @@ function show_error($error = 'Indefinido', $type = 'db', $info = array())
 
 // Borramos la variable por seguridad
 unset($db);
+
+function ip_banned() {
+   $IPBAN = (isset($_SERVER["X_FORWARDED_FOR"])) ? $_SERVER['X_FORWARDED_FOR'] : $_SERVER['REMOTE_ADDR'];
+   if(!filter_var($IPBAN, FILTER_VALIDATE_IP)) exit('Su ip no se pudo validar.');
+   if(db_exec( 'num_rows', db_exec([__FILE__, __LINE__], 'query', 
+         "SELECT id FROM w_blacklist WHERE type = 1 && value = '{$IPBAN}' LIMIT 1"
+   ))) die('Tu IP fue bloqueada por el administrador/moderador.');
+}
+
+function user_banned() {
+   global $tsCore, $tsUser, $smarty;
+   $banned_data = $tsUser->getUserBanned();
+
+   if(!empty($banned_data)){
+      if(empty($_GET['action'])){
+         $smarty->assign([
+            'tsTitle' => "Usuario baneado - {$tsCore->settings['titulo']}",
+            'tsBanned' => $banned_data
+         ]);
+         $smarty->loadFilter('output', 'trimwhitespace');
+         $smarty->display('suspension.tpl');
+
+      } else die('<div class="emptyError">Usuario suspendido</div>');
+      //
+      exit;
+   }
+
+}
+
+function site_in_maintenance() {
+   global $tsCore, $tsUser, $smarty;
+   if($tsCore->settings['offline'] == 1 && ($tsUser->is_admod != 1 && $tsUser->permisos['govwm'] == false) && $_GET['action'] != 'login-user'){
+      $smarty->assign('tsTitle', "Sitio en mantenimiento - {$tsCore->settings['titulo']}");
+      $smarty->assign('tsLogin', (isset($_GET["login"]) and $_GET["login"] == 'admin' ? true : false));
+
+      if(empty($_GET["action"])) {
+         $smarty->loadFilter('output', 'trimwhitespace');
+         $smarty->display('mantenimiento.tpl');
+      } else die('Espera un poco...');
+      exit();
+   }
+}
+
+function getSSL() {
+   if (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != 'on') $isSecure = false;
+   elseif (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == 'on') $isSecure = true;
+   elseif (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https' || !empty($_SERVER['HTTP_X_FORWARDED_SSL']) && $_SERVER['HTTP_X_FORWARDED_SSL'] == 'on') {
+      $isSecure = true;
+   }
+   $isSecure = ($isSecure == true) ? 'https://' : 'http://';
+   return $isSecure;
+}
+
+/**
+ * Función is_countable
+ * @link https://www.php.net/manual/es/function.is-countable.php
+ * NOTA:
+ * Si no puede actualizar a PHP 7.3, puede usar este polyfill simple:
+*/
+if (!function_exists('is_countable')) {
+   function is_countable($var) {
+      return (is_array($var) || $var instanceof Countable);
+   }
+}

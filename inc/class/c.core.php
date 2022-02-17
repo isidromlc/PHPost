@@ -14,13 +14,17 @@ class tsCore {
 	function __construct() {
 		// CARGANDO CONFIGURACIONES
 		$this->settings = $this->getSettings();
-		$this->settings['domain'] = str_replace(['http://', 'https://'], ['', ''], $this->settings['url']);
+		$this->settings['domain'] = str_replace(getSSL(), '', $this->settings['url']);
 		$this->settings['categorias'] = $this->getCategorias();
       $this->settings['default'] = $this->settings['url'].'/themes/default';
 		$this->settings['tema'] = $this->getTema();
+		#
 		$this->settings['images'] = $this->settings['tema']['t_url'].'/images';
       $this->settings['css'] = $this->settings['tema']['t_url'].'/css';
 		$this->settings['js'] = $this->settings['tema']['t_url'].'/js';
+		#
+		$this->settings['smiles'] = $this->settings['url'].'/files/images/smiles';
+		$this->settings['flags'] = $this->settings['url'].'/files/images/flags';
       //
       if($_GET['do'] == 'portal' || $_GET['do'] == 'posts') $this->settings['news'] = $this->getNews();
 		# Mensaje del instalador y pendientes de moderación #
@@ -34,11 +38,22 @@ class tsCore {
 		getSettings() :: CARGA DESDE LA DB LAS CONFIGURACIONES DEL SITIO
 	*/
 	function getSettings() {
-		return db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM w_configuracion'));
+		$query = db_exec('fetch_assoc', db_exec([__FILE__, __LINE__], 'query', 'SELECT * FROM w_configuracion'));
+		$query["providers"] = join(', ', json_decode($query["providers"], true));
+		return $query;
 	}
 	
 	function getNovemods() {
-      $datos = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT (SELECT count(post_id) FROM p_posts WHERE post_status = \'3\') as revposts, (SELECT count(cid) FROM p_comentarios WHERE c_status = \'1\' ) as revcomentarios, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'1\') as repposts, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'2\') as repmps, (SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'3\') as repusers, (SELECT count(DISTINCT obj_id) FROM w_denuncias  WHERE d_type = \'4\') as repfotos, (SELECT count(susp_id) FROM u_suspension) as suspusers, (SELECT count(post_id) FROM p_posts WHERE post_status = \'2\') as pospelera, (SELECT count(foto_id) FROM f_fotos WHERE f_status = \'2\') as fospelera'));
+      $datos = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT 
+      	(SELECT count(post_id) FROM p_posts WHERE post_status = \'3\') as revposts, 
+      	(SELECT count(cid) FROM p_comentarios WHERE c_status = \'1\' ) as revcomentarios, 
+      	(SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'1\') as repposts, 
+      	(SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'2\') as repmps, 
+      	(SELECT count(DISTINCT obj_id) FROM w_denuncias WHERE d_type = \'3\') as repusers, 
+      	(SELECT count(DISTINCT obj_id) FROM w_denuncias  WHERE d_type = \'4\') as repfotos, 
+      	(SELECT count(susp_id) FROM u_suspension) as suspusers, 
+      	(SELECT count(post_id) FROM p_posts WHERE post_status = \'2\') as pospelera, 
+      	(SELECT count(foto_id) FROM f_fotos WHERE f_status = \'2\') as fospelera'));
 		$datos['total'] = $datos['repposts'] + $datos['repfotos'] + $datos['repmps'] + $datos['repusers'] + $datos['revposts'] + $datos['revcomentarios'];
 		return $datos;  
 	}
@@ -53,7 +68,7 @@ class tsCore {
 	*/
 	function getTema() {
 		$data = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', "SELECT * FROM w_temas WHERE tid = {$this->settings['tema_id']} LIMIT 1"));
-      $data['t_url'] = "{$this->settings['url']}/themes/{$data['t_path']}";
+      $data['t_url'] = $this->settings['url'] . '/themes/' . $data['t_path'];
 		return $data;
 	}
 	/*
@@ -137,6 +152,7 @@ class tsCore {
 		header("Location: " . urldecode($tsDir));
 		exit();
 	}
+
 	# Obtenemos el dominio
    function getDomain(){
       $domain = explode('/', str_replace(getSSL(), '', $this->settings['url']));
@@ -304,7 +320,7 @@ class tsCore {
 	# Seguridad
 	function setSecure($var, $xss = FALSE) {
 		$var = db_exec('real_escape_string', 
-			(version_compare(PHP_VERSION, "7.4.0", ">=")) 
+			(version_compare(PHP_VERSION, "7.2.0", ">=")) 
 			? stripslashes($var) 
 			: function_exists('magic_quotes_gpc' ? stripslashes($var) : $var)
 		);
@@ -358,7 +374,6 @@ class tsCore {
       switch ($type) {
          // NORMAL
          case 'normal':
-         case 'comentario':
          case 'smiles':
             // BBCodes permitidos
             $parser->setRestriction(array('url', 'code', 'quote', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler', 'swf', 'video', 'goear', 'hr', 'sub', 'sup', 'table', 'td', 'tr', 'ul', 'li', 'ol', 'notice', 'info', 'warning', 'error', 'success'));
@@ -369,6 +384,7 @@ class tsCore {
          break;
          // FIRMA
          case 'firma':
+         case 'comentario':
            	// BBCodes permitidos
            	$parser->setRestriction(array('url', 'font', 'size', 'color', 'img', 'b', 'i', 'u', 's', 'align', 'spoiler'));
          break;
@@ -472,52 +488,58 @@ class tsCore {
 	function getUrlContent($tsUrl){
 	   // USAMOS CURL O FILE
 	   if(function_exists('curl_init')){
-    		// User agent
-    		$useragent = 'Mozilla/5.0 (Windows; U; Windows NT 5.1; es-ES; rv:1.9) Gecko/2008052906 Firefox/3.0';
     		//Abrir conexion  
     		$ch = curl_init();  
-    		curl_setopt($ch, CURLOPT_USERAGENT, $useragent);
-    		curl_setopt($ch,CURLOPT_URL,$tsUrl);
-    		curl_setopt ($ch, CURLOPT_TIMEOUT, 60);
-    		curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+    		curl_setopt($ch, CURLOPT_USERAGENT, 		$_SERVER['HTTP_USER_AGENT']);
+    		curl_setopt($ch, CURLOPT_URL,		 			$tsUrl);
+    		curl_setopt($ch, CURLOPT_TIMEOUT, 		  	60);
+    		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 	1);
     		$result = curl_exec($ch);
     		curl_close($ch); 
-        } else {
-            $result = @file_get_contents($tsUrl);
-        }
+      } else $result = @file_get_contents($tsUrl);
 		return $result;
 	}
-
-    /*
-        getIP
-    */
-    function getIP(){
-	   if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) $ip = getenv('HTTP_CLIENT_IP');	
-	   elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) $ip = getenv('HTTP_X_FORWARDED_FOR');
-	   elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) $ip = getenv('REMOTE_ADDR');
-	   elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) $ip = $_SERVER['REMOTE_ADDR'];
-	   else $ip = 'unknown';
-	   return $this->setSecure($ip);
-    }
+	# Función para comprobar reCaptcha v3
+	public function reCaptcha(string $publico = '') {
+	   // call curl to POST request
+	   $http = http_build_query([
+	   	'secret' => $this->settings["skey"], 
+	   	'response' => $publico, 
+	   	'remoteip' => $this->getIP()
+	   ]);
+	   $init = curl_init();
+      curl_setopt($init, CURLOPT_URL, "https://www.google.com/recaptcha/api/siteverify");
+      curl_setopt($init, CURLOPT_POST, 1);
+      curl_setopt($init, CURLOPT_POSTFIELDS, $http);
+      curl_setopt($init, CURLOPT_RETURNTRANSFER, true);
+      $response = curl_exec($init);
+      curl_close($init);
+      return json_decode($response, true);
+	}
+   /*
+       getIP
+   */
+   function getIP(){
+		if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) $ip = getenv('HTTP_CLIENT_IP');	
+	  	elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) $ip = getenv('HTTP_X_FORWARDED_FOR');
+	  	elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) $ip = getenv('REMOTE_ADDR');
+	  	elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) $ip = $_SERVER['REMOTE_ADDR'];
+	  	else $ip = 'unknown';
+	  	return $this->setSecure($ip);
+   }
 
 	/* 
 		getIUP()
 	*/
-	function getIUP($array, $prefix = ''){
-		// NOMBRE DE LOS CAMPOS
+	function getIUP(array $array = [], string $prefix = ''){
 		$fields = array_keys($array);
-		// VALOR PARA LAS TABLAS
 		$valores = array_values($array);
-		// NUMERICOS Y CARACTERES
 		foreach($valores as $i => $val) {
-		  $sets[$i] = $prefix.$fields[$i]." = '".$this->setSecure($val)."'"; // Version: 1.1.500.8
+			$va_ = is_numeric($val) ? intval($val) : "'{$this->setSecure($val)}'";
+		  	$sets[$i] = $prefix.$fields[$i]." = $va_";
 		}
 		$values = implode(', ',$sets);
-		//
 		return $values;
 	}
-	
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	
 	
 }

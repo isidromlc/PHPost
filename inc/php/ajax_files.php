@@ -55,8 +55,6 @@
 \*********************************/
 
 if(empty($tsAjax)) {	// SI LA PETICION SE HIZO POR AJAX DETENER EL SCRIPT Y NO MOSTRAR PLANTILLA, SI NO ENTONCES MOSTRARLA.
-
-    $smarty->template_ts = false;   // SMARTY SETTINGS
 	$smarty->assign("tsTitle",$tsTitle);	// AGREGAR EL TITULO DE LA PAGINA ACTUAL
 
 	/*++++++++ = ++++++++*/

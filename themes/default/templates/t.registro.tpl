@@ -1,60 +1,73 @@
 {include file='sections/main_header.tpl'}
-            <style>
-            /* {literal} */
-            .reg-login {
-            	margin-top: 15px;
-            }
-            	.registro {
-            		float: left;
-            		width: 300px;
-            	}
-            	.login-panel {
-            		float: left;
-            		padding-left: 25px;
-            	}
-            	
-            	.login-panel label {
-            		font-weight: bold;
-            		display: block;
-            		margin: 5px 0;
-            	}
-            	
-            	.login-panel .mBtn {
-            		margin-top: 10px;
-            	}
-                /*{/literal}*/
-            </style>
-<div class="post-deleted post-privado clearbeta">
-	<div class="content-splash">
-		<h3>{if $tsType == 'post'}Este post es privado, s&oacute;lo los usuarios registrados de {$tsConfig.titulo} pueden acceder.{else}Registrate en {$tsConfig.titulo}{/if}</h3>
-        {if $tsType == 'post'}Pero no te preocupes, tambi&eacute;n puedes formar parte de nuestra gran familia. <a title="Reg&iacute;strate!" onclick="registro_load_form(); return false" href=""><b>Reg&iacute;strate!</b></a>{/if}
-				<div class="reg-login">
-			<div class="login-panel">
-				<h4>...O identif&iacute;cate</h4>
-				<div class="login_cuerpo"  style="float:left;">
-					<span class="gif_cargando floatR" id="login_cargando"></span>
-					<div id="login_error"></div>
-					<form action="javascript:login_ajax('registro-logueo')" id="login-registro-logueo" method="POST">
-						<input type="hidden" value="/registro" name="redirect">
-						<label>Usuario</label>
-						<input type="text" tabindex="20" class="ilogin" id="nickname" name="nick" maxlength="64"/>
-						<label>Contrase&ntilde;a</label>
-						<input type="password" tabindex="21" class="ilogin" id="password" name="pass" maxlength="64"/>
-						<input type="submit" tabindex="22" title="Entrar" value="Entrar" class="mBtn btnOk"/>
-						<div style="color: #666; padding:5px;font-weight: normal; display:none" class="floatR">
-							<input type="checkbox"> Recordarme?
-						</div>
-					</form>
-					<div class="login_footer">
-						<a tabindex="23" href="#" onclick="remind_password();">&iquest;Olvidaste tu contrase&ntilde;a?</a> o <a tabindex="23" href="#" onclick="resend_validation();">&iquest;Quieres activar tu cuenta?</a>
-					</div>
-				</div>
-				<div style="float:right;width:210px;font-size:13px;border: 5px solid rgb(195, 0, 20); background: none repeat scroll 0% 0% rgb(247, 228, 221); color: rgb(195, 0, 20); padding: 8px; margin: 10px 0;">
-					<strong>&iexcl;Atenci&oacute;n!</strong>
-					<br>Antes de ingresar tus datos asegurate que la URL de esta p&aacute;gina pertenece a <strong>{$tsConfig.titulo}</strong>
-				</div>
+
+<div id="error"></div>
+<div class="registro--main">
+
+	<div class="registro--box" id="dualRegister">
+
+		{if $tsAbierto}
+			<div class="registro--box__head">
+				<h4>Crear una cuenta</h4>
 			</div>
-		</div>
+			<form class="registro--box__form" id="RegistroForm" autocomplete="OFF" name="formulario">
+
+				<div class="form--input">
+					<label for="register_nick">Ingresa tu usuario</label>
+					<input type="text" id="register_nick" class="field-input" name="nick" placeholder="Ingrese un nombre de usuario &uacute;nico">
+					<small id="helper"></small>
+				</div>
+
+				<div class="form--input">
+					<label for="register_password">Contrase&ntilde;a deseada</label>
+					<input type="password" id="register_password" class="field-input" name="password" placeholder="Ingresa una contrase&ntilde;a segura">
+					<small id="helper"></small>
+				</div>
+
+				<div class="form--input">
+					<label for="register_password2">Confirmar contrase&ntilde;a</label>
+					<input type="password" id="register_password2" class="field-input" name="password2" placeholder="Vuelve a ingresar la contrase&ntilde;a">
+					<small id="helper"></small>
+				</div>
+
+				<div class="form--input">
+					<label for="register_email">E-mail</label>
+					<input type="email" id="register_email" class="field-input" name="email" placeholder="Ingresa tu direcci&oacute;n de email">
+					<small id="helper"></small>
+				</div>
+
+				<div class="form--input">
+					<label for="register_sexo">Sexo</label>
+					<div class="switch-field">
+						<input type="radio" id="sexo_m" name="sexo" value="1" checked/>
+						<label for="sexo_m">Masculino</label>
+						<input type="radio" id="sexo_f" name="sexo" value="0" />
+						<label for="sexo_f">Femenino</label>
+					</div>
+					<small id="helper"></small>
+				</div>
+
+				<div class="form--input" id="mantener">
+					<label for="terminos">
+						<input type="checkbox" class="field-checkbox" name="terminos" id="terminos" tabindex="7">
+						Acepto los <a href="{$tsConfig.url}/pages/terminos-y-condiciones/" style="text-decoration: underline;">términos y condiciones</a>
+					</label>
+				</div>
+
+				<div class="buttons">
+			  		<input type="hidden" name="response" id="response" class="g-recaptcha">
+			  		<button class="mBtn btnOk disabled" disabled data-sitekey="{$public_key}" id="registrarme" disabled type="submit">Crear cuenta</button>
+			  	</div>
+			</form>
+			<script>public_key = '{$public_key}';</script>
+			<script src="{$api_google}"></script>
+			<script src="{$tsConfig.js}/registro.js?{$smarty.now}"></script>
+		{else}
+			<div class="box-end">
+				<p>El registro se encuentra cerrado por el momento...</p>
+			</div>
+		{/if}
 	</div>
+
 </div>
+
 {include file='sections/main_footer.tpl'}

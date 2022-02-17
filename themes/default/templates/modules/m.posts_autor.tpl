@@ -26,10 +26,10 @@
                             <img src="{$tsConfig.default}/images/icons/ran/{$tsAutor.rango.r_image}" title="{$tsAutor.rango.r_name}" />
                             <img src="{$tsConfig.default}/images/icons/{if $tsAutor.user_sexo == 0}female{else}male{/if}.png" title="{if $tsAutor.user_sexo == 0}Mujer{else}Hombre{/if}" />
                             <img src="{$tsConfig.default}/images/flags/{$tsAutor.pais.icon}.png" style="padding:2px" title="{$tsAutor.pais.name}" />
-                            {if $tsAutor.user_id != $tsUser->uid}<a href="#" onclick="{if !$tsUser->is_member}registro_load_form();{else}mensaje.nuevo('{$tsAutor.user_name}','','','');{/if}return false"><img title="Enviar mensaje privado" src="{$tsConfig.images}/icon-mensajes-recibidos.gif"/></a>{/if}
+                            {if $tsAutor.user_id != $tsUser->uid}<a href="{if !$tsUser->is_member}{$tsConfig.url}/registro/{else}javascript:mensaje.nuevo('{$tsAutor.user_name}','','','');{/if}"><img title="Enviar mensaje privado" src="{$tsConfig.images}/icon-mensajes-recibidos.gif"/></a>{/if}
                             {if !$tsUser->is_member}
                             <hr class="divider"/>
-                            <a class="btn_g follow_user_post" href="#" onclick="registro_load_form(); return false"><span class="icons follow">Seguir Usuario</span></a>
+                            <a class="btn_g follow_user_post" href="{$tsConfig.url}/registro/"><span class="icons follow">Seguir Usuario</span></a>
                             {elseif $tsAutor.user_id != $tsUser->uid}
                             <hr class="divider"/>
                             <a class="btn_g unfollow_user_post" onclick="notifica.unfollow('user', {$tsAutor.user_id}, notifica.userInPostHandle, $(this).children('span'))" {if !$tsAutor.follow}style="display: none;"{/if}><span class="icons unfollow">Dejar de seguir</span></a>
@@ -70,7 +70,7 @@
                          {if $tsPost.medallas}
 						<ul style="margin-left:11px;">
 							{foreach from=$tsPost.medallas item=m}
-        			<img src="{$tsConfig.tema.t_url}/images/icons/med/{$m.m_image}_16.png" style="margin-left:1px;margin-bottom:2px;" class="qtip" title="{$m.m_title} - {$m.m_description}"/>
+        			<img src="{$tsConfig.images}/icons/med/{$m.m_image}_16.png" style="margin-left:1px;margin-bottom:2px;" class="qtip" title="{$m.m_title} - {$m.m_description}"/>
                             {/foreach}
                         </ul>
 						{else}

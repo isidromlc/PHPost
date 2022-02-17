@@ -219,15 +219,15 @@ $(function(){
         }
     });
     // AUTOGROW
-    $('.autorow').css('max-height', '140px').autogrow();
+    $('.autorow').css('max-height', '140px');
 	// QUITAR LOS ERRORES
-	$('.required').bind('keyup change',function(){
+	$('.required').on('keyup change',function(){
 		if ($.trim($(this).val())) {
 			hideError(this);
 		}
 	});
 	// CHECAR EL TITULO
-	$('input[name=titulo]').bind('keyup',function(){
+	$('input[name=titulo]').on('keyup',function(){
 		if ($(this).val().length >= 5 && countUpperCase($(this).val()) > 90) {
 			showError(this, 'El t&iacute;tulo no debe estar en may&uacute;sculas');
 		}

@@ -163,7 +163,7 @@ var favoritos = {
 																		'alt': 'reactivar'
 																	});
 						$(obj).parent().parent().css('opacity', '0.5');
-						$(obj).removeAttr('onclick').unbind('click').bind('click', function(){ favoritos.reactivar(fav_id, this); return false; });
+						$(obj).removeAttr('onclick').off('click').on('click', function(){ favoritos.reactivar(fav_id, this); return false; });
 /*
 						//Quedaba solo un borrador
 						if(borradores_data.length==1)
@@ -232,7 +232,7 @@ var favoritos = {
 																		'alt': 'Borrar'
 																	});
 						$(obj).parent().parent().css('opacity', '1');
-						$(obj).unbind('click').bind('click', function(){ favoritos.eliminar(fav_id, this); return false; });
+						$(obj).off('click').on('click', function(){ favoritos.eliminar(fav_id, this); return false; });
 /*
 						//Quedaba solo un borrador
 						if(borradores_data.length==1)

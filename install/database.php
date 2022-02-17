@@ -1,8 +1,8 @@
 <?php
 /**
  * @name database.php
- * @author PHPost Team
- * @copyright 2011-2018
+ * @author PHPost Team & Miguel92
+ * @copyright 2011-2022
  */
 
 $phpos_sql['f_comentarios'] = "CREATE TABLE IF NOT EXISTS `f_comentarios` (
@@ -22,7 +22,8 @@ $phpos_sql['w_visitas'] = "CREATE TABLE IF NOT EXISTS `w_visitas` (
   `type` int(1) NOT NULL,
   `date` int(11) NOT NULL,
   `ip` varchar(15) NOT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  INDEX (`for`, `type`, `user`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;";
 
 $phpos_sql['f_fotos'] = "
@@ -167,12 +168,13 @@ CREATE TABLE IF NOT EXISTS `p_posts` (
   `post_smileys` int(1) NOT NULL,
   `post_visitantes` int(1) NOT NULL DEFAULT '0',
   `post_status` int(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`post_id`)
+  PRIMARY KEY (`post_id`),
+  FULLTEXT `Search` (`post_title`, `post_body`, `post_tags`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;";
 
 $phpos_sql['pv_posts'] = "
 INSERT INTO `p_posts` (`post_id`, `post_user`, `post_category`, `post_title`, `post_body`, `post_date`, `post_tags`, `post_puntos`, `post_hits`,  `post_private`, `post_block_comments`, `post_sponsored`, `post_sticky`, `post_status`) VALUES
-(1, 1, 30, 'Bienvenido a PHPost Risus', '[align=center][size=18]Este es el primer post de los miles que tendrá tu web  ;)  \r\n\r\nGracias por elegir a [url=http://www.phpost.net]PHPost[/url] como tu Link Sharing System.[/size][/align]', 0, 'PHPost, Risus, 1.3.0.0, Taringa!', 0, 0, 0, 0, 0, 0, 0);";
+(1, 1, 30, 'Bienvenido a PHPost Risus', '[align=center][size=18]Este es el primer post de los miles que tendrá tu web  ;)  \r\n\r\nGracias por elegir a [url=http://www.phpost.net]PHPost[/url] como tu Link Sharing System.[/size][/align]', 0, 'PHPost, Risus, 1.3.0, Taringa!', 0, 0, 0, 0, 0, 0, 0);";
 
 $phpos_sql['p_votos'] = "
 CREATE TABLE IF NOT EXISTS `p_votos` (
@@ -484,6 +486,7 @@ CREATE TABLE IF NOT EXISTS `w_configuracion` (
   `titulo` varchar(24) NOT NULL,
   `slogan` varchar(32) NOT NULL,
   `url` tinytext NOT NULL,
+  `providers` text,
   `email` varchar(60) NOT NULL,
   `banner` varchar(100) NOT NULL,
   `tema_id` int(11) NOT NULL,
@@ -530,8 +533,8 @@ CREATE TABLE IF NOT EXISTS `w_configuracion` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 
 $phpos_sql['wv_configuracion'] = "
-INSERT INTO `w_configuracion` (`tscript_id`, `titulo`, `slogan`, `url`, `email`, `banner`, `tema_id`, `ads_300`, `ads_468`, `ads_160`, `ads_728`, `ads_search`, `chat_id`, `xat_id`, `c_last_active`, `c_allow_sess_ip`, `c_count_guests`, `c_reg_active`, `c_reg_activate`, `c_reg_rango`, `c_met_welcome`, `c_message_welcome`, `c_fotos_private`, `c_hits_guest`, `c_keep_points`, `c_allow_points`, `c_allow_edad`, `c_max_posts`, `c_max_com`, `c_max_nots`, `c_max_acts`, `c_newr_type`, `c_allow_sump`, `c_allow_firma`, `c_allow_upload`, `c_allow_portal`, `c_allow_live`, `c_see_mod`, `c_stats_cache`, `c_desapprove_post`, `offline`, `offline_message`, `pkey`, `skey`, `version`, `version_code`) VALUES
-(1, 'Taringa!', 'Inteligencia Recargada', '', '', 'http://i.imgur.com/2nEr3s.png?1', 1, '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad300.gif\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad468.png\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad160.gif\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad728.gif\"/></a>', 'partner-pub-5535725517227860:7900040286', '', 0, 15, 1, 0, 1, 1, 3, 0, 'Hola [usuario], [welcome] a [b][web][/b].', 0, 0, 0, 0, 18, 50, 50, 99, 99, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'Estamos en mantenimiento', '', '', 'Risus 1.3.0.000', 'risus_1_3_0_000');";
+INSERT INTO `w_configuracion` (`tscript_id`, `titulo`, `slogan`, `url`, `providers`, `email`, `banner`, `tema_id`, `ads_300`, `ads_468`, `ads_160`, `ads_728`, `ads_search`, `chat_id`, `xat_id`, `c_last_active`, `c_allow_sess_ip`, `c_count_guests`, `c_reg_active`, `c_reg_activate`, `c_reg_rango`, `c_met_welcome`, `c_message_welcome`, `c_fotos_private`, `c_hits_guest`, `c_keep_points`, `c_allow_points`, `c_allow_edad`, `c_max_posts`, `c_max_com`, `c_max_nots`, `c_max_acts`, `c_newr_type`, `c_allow_sump`, `c_allow_firma`, `c_allow_upload`, `c_allow_portal`, `c_allow_live`, `c_see_mod`, `c_stats_cache`, `c_desapprove_post`, `offline`, `offline_message`, `pkey`, `skey`, `version`, `version_code`) VALUES
+(1, 'Taringa!', 'Inteligencia Recargada', '', '', '', 'http://i.imgur.com/2nEr3s.png?1', 1, '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad300.gif\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad468.png\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad160.gif\"/></a>', '<a href=\"http://www.phpost.net/\" target=\"_blank\"><img src=\"/themes/default/images/ad728.gif\"/></a>', 'partner-pub-5535725517227860:7900040286', '', 0, 15, 1, 0, 1, 1, 3, 0, 'Hola [usuario], [welcome] a [b][web][/b].', 0, 0, 0, 0, 18, 50, 50, 99, 99, 0, 0, 1, 0, 1, 1, 0, 0, 0, 0, 'Estamos en mantenimiento', '', '', 'Risus 1.3.0', 'risus_1_3_0');";
 
 $phpos_sql['w_denuncias'] = "
 CREATE TABLE IF NOT EXISTS `w_denuncias` (

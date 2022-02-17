@@ -1800,7 +1800,6 @@ span.fecha-p {
 
 
 /***** login box *****/
-/* login noscript */
 .menu_centro input.ilogin{
 	font-size: 10px;
 	width: 65px;
@@ -1808,40 +1807,29 @@ span.fecha-p {
 
 #login_box {
 	position:absolute;
-  right:12px;
-  top:87px;
-  width:240px;
-  z-index:3000;
-  display:none;
-}
-/*
-#login_box .login_header{
-	left: 230px;
-	width: 30px;
-	height: 14px;
-	z-index: 2;
-	position: absolute;
-	background: url('images/logindia.png') no-repeat left bottom;
+  	right:12px;
+  	top:87px;
+  	width:240px;
+  	z-index:3000;
+  	display:none;
 }
 
-
-*/
 #login_box .login_cuerpo label {
   font-size: 12px;
   text-transform: uppercase;
   text-shadow: 0 1px 0 #FFF;
 }   
 
-#login_box .login_cuerpo{
-  -moz-border-radius-bottomleft:10px;
-  -moz-border-radius-bottomright:10px;
+#login_box .login_cuerpo {
+  border-radius-bottom-left:10px;
+  border-radius-bottom-right:10px;
   background:#FFFFCC;
   color:#272727;
   margin-top:13px;
   padding:15px 20px;
   text-align:left;
   white-space:normal;
-  *margin-top:-1px;
+  position: relative;
 }   
 
 .login_cuerpo #login_error{
@@ -1871,22 +1859,15 @@ span.fecha-p {
 }
 
 .login_cuerpo input.ilogin{
-	width: 180px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
+	width: 100%;
+	border-radius: 5px;
 	border:1px solid #999 ;
-  background:#FFF;
-  margin: 0 0 10px 0;
-  padding: 8px;
+  	background:#FFF;
+ 	margin: 0 0 10px 0;
+  	padding: 6px 8px;
+  	box-sizing: border-box;
 }
-
-.login_cuerpo input.login{
-	margin-left: 132px;
-	width: 132px;
-	font-size: 10px;
-}
-
-.login_cuerpo form{
+.login_cuerpo form {
 	font-weight:bold;
 	margin: 0px;
 }
@@ -1902,19 +1883,27 @@ span.fecha-p {
 }
 
 .login_cuerpo #login_cargando{
-  display:none;
+	display:none;
 	position:absolute;
-	width:16px;
-  height:16px;
-  right:20px;
-  top:20px;
-  border:0px;
+	width:100%;
+  	height:100%;
+  	z-index: 99;
+  	background-color: rgba(255,255,255,.9);
+  	left:0;
+  	top:0;
+  	display: flex;
+  	justify-content: center;
+  	align-items: center;
 }
 
-#login_box .login_footer{
-	text-align:left;
-  margin-top:15px;
-  font-weight: normal;
+#login_box .login_footer {
+	text-align:center;
+	margin-top:15px;
+  	font-weight: normal;
+}
+#login_box .login_footer a {
+	display: block;
+	margin-bottom: 6px;
 }
 #login_box .login_footer hr {
   background: #CCC;

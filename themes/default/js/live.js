@@ -162,7 +162,7 @@ jQuery.cookie = function(name, value, options) {
 // READY
 $(document).ready(function(){
     //
-    $('.beeper_x').live("click",function(){
+    $('.beeper_x').on("click",function(){
         var bid = $(this).attr('bid');
         //
         $('#beep_' + bid).fadeOut().remove();
@@ -172,7 +172,7 @@ $(document).ready(function(){
     //
     live.inicializar();
     // NOS DICE SI MOSTRAR O NO :D
-    $(window).focus(function(){
+    $(window).on('focus', function(){
         live.focus = true;
         //live.hide();
     }).blur(function(){

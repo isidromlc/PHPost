@@ -1,0 +1,165 @@
+/**
+ * Principal
+*/
+.registro--main {
+	width: 500px;
+	margin: 0 auto;
+}
+/**
+ * Boxs
+*/
+.registro--main .registro--box {
+	padding: 0 12px;
+	position: relative;
+}
+.registro--main .registro--box .registro--box__head {
+	text-align: center;
+	background-color: #EEE6;
+	border-bottom: 1px solid #CCC6;
+}
+.registro--main .registro--box .registro--box__head > h4 {
+	padding: 12px 0;
+	font-size: 18px;
+	font-weight: 600;
+	margin: 0;
+}
+/**
+ * Loading
+*/
+.registro--box__loading {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: #FFFC;
+	z-index: 99;
+}
+.registro--box__loading .loading {
+	border: 4px solid teal;
+	display: block;
+	width: 50px;
+	height: 50px;
+	border-radius: 10em;
+	border-left-color: transparent;
+	animation: spinner .9s infinite linear;
+}
+@keyframes spinner {
+	0% {
+		transform: rotate(0)
+	}
+	100% {
+		transform: rotate(360deg)
+	}
+}
+/**
+ * Form
+*/
+.registro--box__form {
+	margin: 10px auto;
+}
+.registro--box__form .form--input {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 10px;
+	padding: 4px;
+	position: relative;
+}
+.registro--box__form .form--input label {
+	font-size: 14px;
+	margin: 4px 0;
+}
+.registro--box__form .form--input .field-input {
+	background: transparent;
+	border: 1px solid #CCC6;
+	border-radius: .4rem;
+	padding: 8px;
+	box-shadow: 0 0 5px #2221;
+}
+.box-end {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 22px;
+}
+.box-end p {
+	display: block;
+	text-align: center;
+	line-height: 1.6em;
+}
+.box--footer {
+	margin-top: 10px;
+	text-align: center;
+}
+.box--footer a {
+	display: block;
+	padding: 10px 0;
+}
+/**
+ * BTN
+*/
+.mBtn.disabled {
+	opacity: .6;
+	cursor: no-drop;
+	pointer-events: none;
+}
+/**
+ * Input radio
+*/
+.switch-field {
+	display: flex;
+	overflow: hidden;
+}
+.switch-field input {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	height: 1px;
+	width: 1px;
+	border: 0;
+	overflow: hidden;
+}
+.switch-field label {
+	background-color: #CCC;
+	font-weight: 500;
+	color: #fff;
+	font-size: 14px;
+	line-height: 1;
+	text-align: center;
+	padding: 8px 16px;
+	transition: all 0.1s ease-in-out;
+}
+.switch-field label:hover {
+	cursor: pointer;
+}
+.switch-field input:checked + label {
+	background-color: teal;
+	box-shadow: none;
+}
+.switch-field label:first-of-type {
+	border-radius: 4px 0 0 4px;
+}
+.switch-field label:last-of-type {
+	border-radius: 0 4px 4px 0;
+}
+/**
+ * Helper
+*/
+#helper {
+	position: absolute;
+	font-size: 12px;
+	top: 6px;
+	right: 2px;
+	font-style: italic;
+}
+.valid #helper {
+	color: green;
+}
+.invalid #helper {
+	color: red;
+}
+.text-muted{
+	color: #777;
+}

@@ -50,7 +50,7 @@
                     </div>
                     <div id="template-result-borrador" style="display:none">
                         <li id="borrador_id___id__">
-                            <a title="__categoria_name__" class="categoriaPost __categoria__ __tipo__" href="__url__" onclick="__onclick__" style="background-image:url({$tsConfig.tema.t_url}/images/icons/cat/__imagen__)">__titulo__</a>
+                            <a title="__categoria_name__" class="categoriaPost __categoria__ __tipo__" href="__url__" onclick="__onclick__" style="background-image:url({$tsConfig.images}/icons/cat/__imagen__)">__titulo__</a>
                             <span class="causa">Causa: __causa__</span>
                             <span class="gray">&Uacute;ltima vez guardado el __fecha_guardado__</span> <a style="float:right" href="" onclick="borradores.eliminar(__borrador_id__, true); return false;"><img src="http://o2.t26.net/images/borrar.png" alt="eliminar" title="Eliminar Borrador" /></a>
                     

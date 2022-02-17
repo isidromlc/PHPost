@@ -23,7 +23,7 @@
                             <div class="post-acciones">
                             	<ul>
                                     {if !$tsUser->is_member}
-                                    <li><a class="btn_g follow_user_post" href="#" onclick="registro_load_form(); return false"><span class="icons follow_post follow">Seguir Post</span></a></li>
+                                    <li><a class="btn_g follow_user_post" href="{$tsConfig.url}/registro/"><span class="icons follow_post follow">Seguir Post</span></a></li>
                                     {elseif $tsPost.post_user != $tsUser->uid}
                                     <li{if !$tsPost.follow} style="display: none;"{/if}>
                                     <a class="btn_g unfollow_post" onclick="notifica.unfollow('post', {$tsPost.post_id}, notifica.inPostHandle, $(this).children('span'))"><span class="icons follow_post unfollow">Dejar de seguir</span></a>
@@ -31,7 +31,7 @@
                                     <li{if $tsPost.follow > 0} style="display: none;"{/if}>
                                     <a class="btn_g follow_post" onclick="notifica.follow('post', {$tsPost.post_id}, notifica.inPostHandle, $(this).children('span'))"><span class="icons follow_post follow">Seguir Post</span></a>
                                     </li>
-									<li><a href="#" onclick="{if !$tsUser->is_member}registro_load_form(){else}add_favoritos(){/if}; return false" class="btn_g"><span class="icons agregar_favoritos">Agregar a Favoritos</span></a></li>
+									<li><a href="{if !$tsUser->is_member}{$tsConfig.url}/registro/{else}javascript:add_favoritos(){/if}" class="btn_g"><span class="icons agregar_favoritos">Agregar a Favoritos</span></a></li>
 									<li><a href="#" onclick="denuncia.nueva('post',{$tsPost.post_id}, '{$tsPost.post_title}', '{$tsPost.user_name}'); return false;" class="btn_g"><span class="icons denunciar_post">Denunciar</span></a></li>
                                     {/if}
                                     </ul>

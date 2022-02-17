@@ -25,7 +25,7 @@ var portal = {
 		var inputs = $('#config_inputs :input');
         var cat_ids = '';        
 		inputs.each(function(){
-            if($(this).attr('checked')) cat_ids += $(this).val() + ',';
+            if($(this).prop('checked')) cat_ids += $(this).val() + ',';
 		});
         //
         $('#loading').fadeIn(250);

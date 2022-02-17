@@ -9,7 +9,7 @@
         <li class="clearfix">
         	<div class="listado-content clearfix">
         		<div class="listado-avatar">
-        			<img src="{$tsConfig.tema.t_url}/images/icons/med/{$m.m_image}_32.png" class="qtip" title="{$m.medal_date|hace:true}" width="32" height="32"/>
+        			<img src="{$tsConfig.images}/icons/med/{$m.m_image}_32.png" class="qtip" title="{$m.medal_date|hace:true}" width="32" height="32"/>
 
         		</div>
         		<div class="txt">

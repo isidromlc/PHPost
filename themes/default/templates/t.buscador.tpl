@@ -117,16 +117,16 @@
                     <tbody>
                     {foreach from=$tsResults.data item=r}
                     <tr id="div_{$r.post_id}">
-                        <td title="{$r.c_nombre}" style="background:url({$tsConfig.tema.t_url}/images/icons/cat/{$r.c_img}) no-repeat center center;">&nbsp;</td>
+                        <td title="{$r.c_nombre}" style="background:url({$tsConfig.images}/icons/cat/{$r.c_img}) no-repeat center center;">&nbsp;</td>
                         <td style="text-align: left;">
                             <a class="titlePost" href="{$tsConfig.url}/posts/{$r.c_seo}/{$r.post_id}/{$r.post_title|seo}.html">{$r.post_title}</a>
                             <div class="info" style="background-color:#FFF">
-                                <img alt="Creado hace" src="{$tsConfig.tema.t_url}/images/icons/clock.png"/> <strong>{$r.post_date|hace:true}</strong> -
-                                <img alt="Posts relacionados" src="{$tsConfig.tema.t_url}/images/icons/relacionados.png"/> <a href="{$tsConfig.url}/buscador/?q={$r.post_title}&e={$tsEngine}&cat={$tsCategory}&autor={$tsAutor}">Post Relacionados</a> -
-                                <img alt="Creado por" src="{$tsConfig.tema.t_url}/images/icons/autor.png"/> <a href="{$tsConfig.url}/perfil/{$r.user_name}">{$r.user_name}</a> |
-                                <img alt="0 puntos" src="{$tsConfig.tema.t_url}/images/icons/puntos.png"/> Puntos <strong>{$r.post_puntos}</strong> -
-                                <img alt="0 puntos" src="{$tsConfig.tema.t_url}/images/icons/favoritos.gif"/> <strong>{$r.post_favoritos}</strong> Favoritos -
-                                <img alt="0 puntos" src="{$tsConfig.tema.t_url}/images/icons/comentarios.gif"/> <strong>{$r.post_comments}</strong> Comentarios
+                                <img alt="Creado hace" src="{$tsConfig.images}/icons/clock.png"/> <strong>{$r.post_date|hace:true}</strong> -
+                                <img alt="Posts relacionados" src="{$tsConfig.images}/icons/relacionados.png"/> <a href="{$tsConfig.url}/buscador/?q={$r.post_title}&e={$tsEngine}&cat={$tsCategory}&autor={$tsAutor}">Post Relacionados</a> -
+                                <img alt="Creado por" src="{$tsConfig.images}/icons/autor.png"/> <a href="{$tsConfig.url}/perfil/{$r.user_name}">{$r.user_name}</a> |
+                                <img alt="0 puntos" src="{$tsConfig.images}/icons/puntos.png"/> Puntos <strong>{$r.post_puntos}</strong> -
+                                <img alt="0 puntos" src="{$tsConfig.images}/icons/favoritos.gif"/> <strong>{$r.post_favoritos}</strong> Favoritos -
+                                <img alt="0 puntos" src="{$tsConfig.images}/icons/comentarios.gif"/> <strong>{$r.post_comments}</strong> Comentarios
                             </div>
                         </td>
                     </tr>

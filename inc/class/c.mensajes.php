@@ -283,9 +283,9 @@ class tsMensajes {
 			
 			$data['texto']= $_GET['qm'];
 		}
-        // ORDENAR Y RETORNAR
-        krsort($data['data']);
-        return $data;
+      // ORDENAR Y RETORNAR
+      is_array($data['data']) ?? krsort($data['data']);
+      return $data;
     }
     /*
         readMensaje()

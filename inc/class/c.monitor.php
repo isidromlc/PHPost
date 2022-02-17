@@ -307,7 +307,7 @@ public function setNotificacion($type, $user_id, $obj_user, $obj_uno = 0, $obj_d
 		// ARMAR TEXTOS Y LINKS :)
 		$dataDos['data'] = $this->armNotificaciones($data);
         // TOTAL DE NOTIDICACIONES
-        $dataDos['total'] = count($dataDos['data']);
+        $dataDos['total'] = empty($dataDos['data']) ? 0 : count($dataDos['data']);
 		//
 		return $dataDos;
 	}
@@ -317,29 +317,30 @@ public function setNotificacion($type, $user_id, $obj_user, $obj_uno = 0, $obj_d
      * @param array, int
      * @return array
      * @info CREA LAS NOTIFICACIONES
+     * Obtenido de Cerberus
 	*/
 	private function armNotificaciones($array){
         # ARMAMOS LAS ORACIONES
         $this->makeMonitor();
-		# PARA CADA VALOR CREAR UNA CONSULTA
-		foreach($array as $key => $val){
-			// CREAR CONSULTA
-			$sql = $this->makeConsulta($val);
-			// CONSULTAMOS
-			if(is_array($sql)){
-				$dato = $sql;
-			}else {
-				$query = db_exec(array(__FILE__, __LINE__), 'query', $sql);
-				$dato = db_exec('fetch_assoc', $query);
-				
-			}
-			$dato = array_merge($dato, $val);
-            // SI AUN EXISTE LO QUE VAMOS A NOTIFICAR..
-            if($dato) $data[] = $this->makeOracion($dato);
-		}
-		//
-		return $data;
-	}
+      $dato = array();
+      # PARA CADA VALOR CREAR UNA CONSULTA
+      foreach($array as $key => $val){
+         // CREAR CONSULTA
+         $sql = $this->makeConsulta($val);
+         // CONSULTAMOS
+         if(is_array($sql)) $dato = $sql;
+         else {
+            $query = db_exec(array(__FILE__, __LINE__), 'query', $sql);
+            if($query)
+            $dato = db_exec('fetch_assoc', $query);
+         }
+         $dato = array_merge($dato, $val);
+         // SI AUN EXISTE LO QUE VAMOS A NOTIFICAR..
+         if($dato) $data[] = $this->makeOracion($dato);
+      }
+      //
+      return $data;
+   }
 	/**
      * @name makeConsulta
      * @access private

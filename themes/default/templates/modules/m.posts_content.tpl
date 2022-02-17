@@ -6,7 +6,7 @@
                             
 							<a title="Post Anterior (m&aacute;s viejo)" class="icons anterior" href="{$tsConfig.url}/posts/prev?id={$tsPost.post_id}"></a>
                             
-							<a class="fortuitare" href="{$tsConfig.url}/posts/fortuitae"><img class="qtip" title="Post aleatorio" src="{$tsConfig.tema.t_url}/images/arrow-join.png"/></a>
+							<a class="fortuitare" href="{$tsConfig.url}/posts/fortuitae"><img class="qtip" title="Post aleatorio" src="{$tsConfig.images}/arrow-join.png"/></a>
 							
 							<a title="Post Siguiente (m&aacute;s nuevo)" class="icons siguiente" href="{$tsConfig.url}/posts/next?id={$tsPost.post_id}"></a>
                         
@@ -121,7 +121,7 @@
 									 	
 										<span class="share-t-count">{$tsPost.post_shared}</span>
 										
-										<a href="{if !$tsUser->is_member}javascript:registro_load_form(); return false{else}javascript:notifica.sharePost({$tsPost.post_id}){/if}" class="share-t"></a>
+										<a href="{if !$tsUser->is_member}{$tsConfig.url}/registro/{else}javascript:notifica.sharePost({$tsPost.post_id}){/if}" class="share-t"></a>
 									
 									</li>
                                     

@@ -4,7 +4,7 @@
 <script type="text/javascript">
 /* {literal} */
 $(function(){
-    $('#wall, #attaDesc').css('max-height', '300px').autogrow();
+    $('#wall, #attaDesc').css('max-height', '300px');
     setTimeout("$('#wall, #attaDesc').blur().css('height', '14px')",0);
     setTimeout("$('#attaContent input').blur().css('height', '14px')",0);
     // WALL

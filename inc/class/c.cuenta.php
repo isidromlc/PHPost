@@ -7,6 +7,14 @@
  */
 class tsCuenta {
 
+	# Redes sociales disponibles
+	var $redes = [
+		'facebook' => 'Facebook', 
+		'twitter' => 'Twitter', 
+		'instagram' => 'Instagram',
+		'youtube' => 'Youtube',
+		'twitch' => 'Twitch'
+	];
     /**
      * @name loadPerfil()
      * @access public
@@ -39,9 +47,9 @@ class tsCuenta {
 		$data['p_tengo'] = unserialize($data['p_tengo']);
 		$data['p_idiomas'] = unserialize($data['p_idiomas']);
         //
-		$data['p_socials'] = unserialize($data['p_socials']);
-		$data['p_socials']['f'] = $data['p_socials'][0];
-		$data['p_socials']['t'] = $data['p_socials'][1];
+   	$data["redes"] = $this->redes;
+		$data['p_socials'] = json_decode($data['p_socials'], true);
+		foreach ($this->redes as $name => $valor) $data['p_socials'][$name];
         //
         $data['p_configs'] = unserialize($data['p_configs']);
         //
@@ -59,9 +67,8 @@ class tsCuenta {
         //
         $data['p_nombre'] = $tsCore->setSecure($tsCore->parseBadWords($data['p_nombre']), true);
         $data['p_mensaje'] = $tsCore->setSecure($tsCore->parseBadWords($data['p_mensaje']), true);
-		$data['p_socials'] = unserialize($data['p_socials']);
-		$data['p_socials']['f'] = $data['p_socials'][0];
-		$data['p_socials']['t'] = $data['p_socials'][1];
+		$data['p_socials'] = json_decode($data['p_socials'], true);
+		foreach ($this->redes as $name => $valor) $data['p_socials'][$name];
 		$data['p_configs'] = unserialize($data['p_configs']);
 
 		
@@ -277,16 +284,16 @@ class tsCuenta {
                 // INTERNOS
                 $sitio = trim($_POST['sitio']);
                 if(!empty($sitio)) $sitio = substr($sitio, 0, 4) == 'http' ? $sitio : 'http://'.$sitio;
-				// EXTERNAS
-				$facebook = $tsCore->setSecure($tsCore->parseBadWords($_POST['facebook']), true);
-				$twitter = $tsCore->setSecure($tsCore->parseBadWords($_POST['twitter']), true);
+				# Redes sociales
+				$red__social = [];
+				foreach ($_POST["red"] as $llave => $id) $red__social[$llave] = $tsCore->setSecure($tsCore->parseBadWords($id), true);
 				for($i = 0; $i < 5; $i++) $gustos[$i] = $tsCore->setSecure($tsCore->parseBadWords($_POST['g_'.$i]), true);
 				// IN DB
 				$perfilData = array(
 					'nombre' => $tsCore->setSecure($tsCore->parseBadWords($_POST['nombrez']), true),
 					'mensaje' => $tsCore->setSecure($tsCore->parseBadWords($_POST['mensaje']), true),
 					'sitio' => $tsCore->setSecure($tsCore->parseBadWords($sitio), true),
-					'socials' => serialize(array($facebook,$twitter)),
+					'socials' => json_encode($red__social),
 					'gustos' => serialize($gustos),
 					'estado' => $tsCore->setSecure($_POST['estado']),
 					'hijos' => $tsCore->setSecure($_POST['hijos']),

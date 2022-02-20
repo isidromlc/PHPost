@@ -87,6 +87,7 @@
     $tsInfo['yfollow'] = $tsCuenta->yFollow($usuario['user_id']);
     // MANDAR A PLANTILLA
 	$smarty->assign("tsInfo",$tsInfo);
+	$smarty->assign("tsRedes", $tsCuenta->redes);
 	$smarty->assign("tsGeneral",$tsGeneral);
     // MURO
     include("../class/c.muro.php");

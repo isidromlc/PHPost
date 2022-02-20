@@ -35,6 +35,7 @@ RewriteRule ^$ index.php?do=home [QSA,L]
 RewriteRule ^pagina([0-9]+)$ index.php?page=$1 [QSA,L]
 RewriteRule ^index.php$ index.php?do=home [QSA,L]
 RewriteRule ^cuenta.php$ inc/php/cuenta.php [QSA,L]
+RewriteRule ^cuenta/([A-Za-z0-9_-]+)$ inc/php/cuenta.php?accion=$1 [QSA,L]
 RewriteRule ^agregar.php$ inc/php/agregar.php [QSA,L]
 #PERFIL
 RewriteRule ^perfil/([A-Za-z0-9_-]+)$ inc/php/perfil.php?user=$1 [QSA,L]

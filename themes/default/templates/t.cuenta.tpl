@@ -1,45 +1,31 @@
 {include file='sections/main_header.tpl'}
-				
-				<script type="text/javascript" src="{$tsConfig.js}/cuenta.js"></script>
-                {literal}
-				<script type="text/javascript">
-                $(document).ready(function(){
-                    //document.domain = global_data.domain;
-                	// {/literal}
-                    avatar.uid = '{$tsUser->uid}';
-                    avatar.current = '{$tsConfig.url}/files/avatar/{if $tsPerfil.p_avatar}{$tsPerfil.user_id}{else}avatar{/if}.jpg';
-                	// {literal}                
-                    if (typeof location.href.split('#')[1] != 'undefined') {
-                        $('ul.menu-tab > li > a:contains('+location.href.split('#')[1]+')').click();
-                    }
-                
-                });
-                </script>
-                {/literal}
-                <div class="tabbed-d">
-                	<div class="floatL">
-                        <ul class="menu-tab">
-                            <li class="active"><a onclick="cuenta.chgtab(this)">Cuenta</a></li>
-                            <li><a onclick="cuenta.chgtab(this)">Perfil</a></li>    
-                            <li><a onclick="cuenta.chgtab(this)">Bloqueados</a></li>
-                            <li><a onclick="cuenta.chgtab(this)">Cambiar Clave</a></li>
-							<li><a onclick="cuenta.chgtab(this)">Cambiar Nick</a></li>
-                            <li class="privacy"><a onclick="cuenta.chgtab(this)">Privacidad</a></li>
-                        </ul>
-                        <a name="alert-cuenta"></a>
-                        <form class="horizontal" method="post" action="" name="editarcuenta">
-                        	{include file='modules/m.cuenta_cuenta.tpl'}
-                            {include file='modules/m.cuenta_perfil.tpl'}
-                            {include file='modules/m.cuenta_block.tpl'}
-                            {include file='modules/m.cuenta_clave.tpl'}
-							{include file='modules/m.cuenta_nick.tpl'}
-                            {include file='modules/m.cuenta_config.tpl'}
-                        </form>
-                    </div>
-                    <div class="floatR">
-	                    {include file='modules/m.cuenta_sidebar.tpl'}
-                    </div>
-                </div>
-                <div style="clear:both"></div>
-                
+<script src="{$tsConfig.js}/cuenta.js"></script>
+<script>
+   $(document).ready(() => {
+      avatar.uid = '{$tsUser->uid}';
+      avatar.current = '{$tsConfig.url}/files/avatar/{if $tsPerfil.p_avatar}{$tsPerfil.user_id}{else}avatar{/if}.jpg';
+   });
+</script>
+<div class="tabbed-d">
+   <div class="floatL">
+      <div id="alerta_guarda"></div>
+      <ul class="menu-tab">
+         <li{if $tsAccion == ''} class="active"{/if}><a href="{$tsConfig.url}/cuenta/">Cuenta</a></li>
+         <li{if $tsAccion == 'perfil'} class="active"{/if}><a href="{$tsConfig.url}/cuenta/perfil">Perfil</a></li>    
+         <li{if $tsAccion == 'block'} class="active"{/if}><a href="{$tsConfig.url}/cuenta/block">Bloqueados</a></li>
+         <li{if $tsAccion == 'clave'} class="active"{/if}><a href="{$tsConfig.url}/cuenta/clave">Cambiar Clave</a></li>
+         <li{if $tsAccion == 'nick'} class="active"{/if}><a href="{$tsConfig.url}/cuenta/nick">Cambiar Nick</a></li>
+         <li{if $tsAccion == 'config'} class="active"{/if}><a href="{$tsConfig.url}/cuenta/config">Privacidad</a></li>
+      </ul>
+      <a name="alert-cuenta"></a>
+      <form class="horizontal" method="post" name="editarcuenta">
+         <input type="hidden" name="pagina" value="{$tsAccion}">
+         {include file="modules/m.cuenta_$tsAccion.tpl"}
+      </form>
+   </div>
+   <div class="floatR">
+	   {include file='modules/m.cuenta_sidebar.tpl'}
+   </div>
+</div>
+<div style="clear:both"></div>           
 {include file='sections/main_footer.tpl'}

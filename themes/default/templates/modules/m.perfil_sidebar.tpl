@@ -1,3 +1,15 @@
+{if $tsInfo.p_socials != '' || $tsInfo.p_sitio != ''}
+   <div class="perfil-redes">
+      {if $tsInfo.p_sitio}
+        <a class="sitio" target="_blank" href="{$tsInfo.p_sitio}" title="Mi sitio"><i class="socials social-web"></i></a>
+      {/if}
+      {foreach $tsRedes key=name item=red}
+         {if $tsInfo.p_socials.$name !== ''}
+            <a class="sitio {$name}" target="_blank" href="https://{$name}.{if $name == 'twitch'}tv{else}com{/if}/{$tsInfo.p_socials.$name}" title="{$red}"><img height="14" width="14" alt="{$name}" src="{$tsConfig.images}/icons/{$name}.png"/></a>
+         {/if}
+      {/foreach}
+   </div>
+{/if}
                         <div style="margin-bottom: 10px">
                         	{$tsConfig.ads_300}
                         </div>

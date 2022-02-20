@@ -99,7 +99,7 @@ $("#terminos").on('click', () => {
 })
 $('form[name=formulario]').on('submit', e => {
    e.preventDefault();
-   $("#dualRegister").append('<div class="dual--box__loading"><div class="loading"></div></div>')
+   $("#dualRegister").append('<div class="registro--box__loading"><div class="loading"></div></div>')
    if(Approved.nick && Approved.password && Approved.email && document.formulario.terminos.checked) {
       $.post(`${global_data.url}/registro-nuevo.php`, $('form[name=formulario]').serialize(), h => {
 

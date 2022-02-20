@@ -1,4 +1,4 @@
-							<div class="content-tabs bloqueados" style="display:none">
+							<div class="content-tabs bloqueados">
                             	<fieldset>
                                     <div class="field">
                                         {if $tsBlocks}

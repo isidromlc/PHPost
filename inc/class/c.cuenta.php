@@ -216,11 +216,11 @@ class tsCuenta {
 	function savePerfil(){
 		global $tsCore, $tsUser;
 		//
-		$save = $_POST['save'];
+		$save = $_POST['pagina'];
 		$maxsize = 1000;	// LIMITE DE TEXTO
 		// GUARDAR...
 		switch($save){
-			case 1:
+			case '':
                 // NUEVOS DATOS
 				$perfilData = array(
 					'email' => $tsCore->setSecure($_POST['email'], true),
@@ -280,7 +280,7 @@ class tsCuenta {
 					else $msg_return = array('error' => 'Los cambios fueron aceptados y ser&aacute;n aplicados en los pr&oacute;ximos minutos. NO OBSTANTE, la nueva direcci&oacute;n de correo electr&oacute;nico especificada debe ser comprobada. '.$tsCore->settings['titulo'].' envi&oacute; un mensaje de correo electr&oacute;nico con las instrucciones necesarias');
 				}
 			break;
-			case 2:
+			case 'perfil':
                 // INTERNOS
                 $sitio = trim($_POST['sitio']);
                 if(!empty($sitio)) $sitio = substr($sitio, 0, 4) == 'http' ? $sitio : 'http://'.$sitio;
@@ -302,50 +302,8 @@ class tsCuenta {
                 // COMPROBACIONES
                 if(!empty($perfilData['sitio']) && !filter_var($perfilData['sitio'], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) return array('error' => 'El sitio web introducido no es correcto.');
 			break;
-			case 3:
-				// EXTRAS
-				$tengo = array($tsCore->setSecure($_POST['t_0']),$tsCore->setSecure($_POST['t_1']));
-				$perfilData = array(
-					'altura' => $tsCore->setSecure($_POST['altura']),
-					'peso' => $tsCore->setSecure($_POST['peso']),
-					'pelo' => $tsCore->setSecure($_POST['pelo_color']),
-					'ojos' => $tsCore->setSecure($_POST['ojos_color']),
-					'fisico' => $tsCore->setSecure($_POST['fisico']),
-					'dieta' => $tsCore->setSecure($_POST['dieta']),
-					'tengo' => serialize($tengo),
-					'fumo' => $tsCore->setSecure($_POST['fumo']),
-					'tomo' => $tsCore->setSecure($_POST['tomo_alcohol']),
-				);
-			break;
-			case 4:
-				// EXTRAS
-				for($i = 0; $i<7;$i++) $idiomas[$i] = $tsCore->setSecure($_POST['idioma_'.$i]);
-				$perfilData = array(
-					'estudios' => $tsCore->setSecure($_POST['estudios']),
-					'idiomas' => serialize($idiomas),
-					'profesion' => $tsCore->setSecure($tsCore->parseBadWords($_POST['profesion'], true)),
-					'empresa' => $tsCore->setSecure($tsCore->parseBadWords($_POST['empresa'],true)),
-					'sector' => $tsCore->setSecure($_POST['sector']),
-					'ingresos' => $tsCore->setSecure($_POST['ingresos']),
-					'int_prof' => $tsCore->setSecure(substr($_POST['intereses_profesionales'],0,$maxsize), true),
-					'hab_prof' => $tsCore->setSecure(substr($_POST['habilidades_profesionales'],0,$maxsize), true),
-				);
-			break;
-			case 5:
-				$perfilData = array(
-					'intereses' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['intereses'],0,$maxsize)), true),
-					'hobbies' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['hobbies'],0,$maxsize)), true),
-					'tv' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['tv'],0,$maxsize)), true),
-					'musica' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['musica'],0,$maxsize)), true),
-					'deportes' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['deportes'],0,$maxsize)), true),
-					'libros' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['libros'],0,$maxsize)), true),
-					'peliculas' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['peliculas'],0,$maxsize)), true),
-					'comida' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['comida'],0,$maxsize)), true),
-					'heroes' => $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['heroes'],0,$maxsize)), true),
-				);
-			break;
             // NEW PASSWORD
-            case 6:
+            case 'clave':
                 $passwd = $_POST['passwd'];
                 $new_passwd = $_POST['new_passwd'];
                 $confirm_passwd = $_POST['confirm_passwd'];
@@ -361,7 +319,7 @@ class tsCuenta {
                     }
                 }
             break;
-            case 7:
+            case 'config':
                 $muro_firm = ($_POST['muro_firm'] > 4) ? 5 : $_POST['muro_firm'];
 				$rec_mps = ($_POST['rec_mps'] > 6) ? 5 : $_POST['rec_mps'];
 				$see_hits = ($_POST['last_hits'] == 1 || $_POST['last_hits'] == 2) ? 0 : $_POST['last_hits'];
@@ -369,7 +327,7 @@ class tsCuenta {
                 //
                 $perfilData['configs'] = serialize($array);
             break;
-			case 8: //2678400 es un mes :)
+			case 'nick': //2678400 es un mes :)
 				$nuevo_nick = htmlspecialchars($_POST['new_nick']);
                 if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id FROM w_blacklist WHERE type = \'4\' && LOWER(value) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nick no permitido');
                 if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_id FROM u_miembros WHERE LOWER(user_name) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nombre en uso');
@@ -391,32 +349,17 @@ class tsCuenta {
 				}
             break;
 		}
-		// COMPROBAR PORCENTAJE
-		$total = array(5,8,9,8,9); // CAMPOS EN CADA CATEGORIA
-		$tid = $save - 1;
-        if($save > 1 && $save < 6){
-    		$total[$tid] = $this->getPorcentTotal($perfilData, $total[$tid]);
-    		if($save == 1) $total[$tid] = $total[$tid] - 2;
-			$porcen = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT p_total FROM u_perfil WHERE user_id = \''.$tsUser->uid.'\' LIMIT 1'));
-    		$porcen = unserialize($porcen['p_total']);
-    		$porcen[$tid] = $total[$tid];
-    		$porcenNow = $this->getPorcentVal($porcen);
-    		$porcen = serialize($porcen);
-			db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_perfil SET p_total = \''.$porcen.'\' WHERE user_id = \''.$tsUser->uid.'\'');
-        }
 		// ACTUALIZAR
-		if($save == 1) {
-		    db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_email = \''.$tsCore->setSecure($perfilData['email'], true).'\' WHERE user_id = \''.$tsUser->uid.'\'');
-            array_splice($perfilData, 0, 1); // HACK
-            $updates = $tsCore->getIUP($perfilData, 'user_');
-			if(!db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_perfil SET '.$updates.' WHERE user_id = \''.$tsUser->uid.'\'')) return array('error' => show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db'));
-		} else {
-			$updates = $tsCore->getIUP($perfilData, 'p_');
-			if(!db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_perfil SET '.$updates.' WHERE user_id = \''.$tsUser->uid.'\'')) return array('error' => show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'db')); 
+		if($save === '' or $save === 'perfil' or $save === 'config') {
+			if($save === '') {
+				db_exec([__FILE__, __LINE__], "query", "UPDATE u_miembros SET user_email = '{$perfilData['email']}' WHERE user_id = " . $tsUser->uid);	
+				array_splice($perfilData, 0, 1);			
+			}
+			$updates = $tsCore->getIUP($perfilData, ($save == '' ? 'user_' : 'p_'));
+		   $msg_return = (db_exec([__FILE__, __LINE__], "query", "UPDATE u_perfil SET {$updates} WHERE user_id = " . $tsUser->uid)) ? array('error' => 'Los cambios fueron aceptados y ser&aacute;n aplicados.') : die(show_error('Error al ejecutar la consulta de la l&iacute;nea '.__LINE__.' de '.__FILE__.'.', 'Base de datos'));
 		}
 		//
-		if(is_array($msg_return)) return $msg_return;
-		else return array('porc' => $porcenNow);
+		return $msg_return;
 	}
 	/*
 		checkEmail()

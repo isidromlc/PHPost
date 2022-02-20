@@ -23,124 +23,39 @@ function desactivate(few) {
 }
 
 var cuenta = {
-	ciudad_id: '',
-	ciudad_text: '',
-	no_requerido: new Array(),
-
-	alert: function (secc, title, body) {
-		$('div.alert-cuenta.cuenta-'+secc).html('<h2>'+title+'</h2>');
-		$('div.alert-cuenta.cuenta-'+secc).slideDown(100);
+	alerta: (alerta) => {
+		$(".alert-cuenta").show();
+		$("#alerta_guarda").html(`<div style="background:#FFFFCC;text-align:center;margin-bottom: 10px;"><p style="display: block;font-size: 16px;padding: 10px 0;">${alerta}</p></div>`)
+		window.scrollTo(0, 0)
+		// Despues de 5s quitamos el alerta
+		setTimeout(() => $("#alerta_guarda").html(''), 5000)
 	},
-
-	alert_close: function (secc) {
-		$('div.alert-cuenta.cuenta-'+secc).html('');
-		$('div.alert-cuenta.cuenta-'+secc).slideUp(100);
-	},
-
-	chgtab: function (obj) {
-		$('div.tabbed-d > div.floatL > ul.menu-tab > li.active').removeClass('active');
-		$(obj).parent().addClass('active');
-		var active = $(obj).html().toLowerCase().replace(' ', '-');
-		$('div.content-tabs').hide();
-		$('div.content-tabs.'+active).show();
-	},
-
-	chgsec: function (obj) {
-		$('div.content-tabs.perfil > h3').removeClass('active');
-		$('div.content-tabs.perfil > fieldset').slideUp(100);
-		if ($(obj).next().css('display') == 'none') {
-			$(obj).addClass('active');
-			$(obj).next().slideDown(100).addClass('active');
-		}
-	},
-
-	chgpais: function(){
-		var pais = $('form[name=editarcuenta] select[name=pais]').val();
-		var el_estado = $('form[name=editarcuenta] .content-tabs.cuenta select[name=estado]');
-
-		//No se selecciono ningun pais.
-		if(empty(pais)){
-			$('form[name=editarcuenta] select[name=estado]').addClass('disabled').attr('disabled', 'disabled').val('');
-		}else{
+	chgpais: () => {
+		// Campo pais
+		const pais = $("select[name=pais]").val();
+		const estado = $("select[name=estado]");
+		if(empty(pais)) estado.addClass('disabled').attr('disabled', 'disabled').val('');
+		else {
 			//Obtengo las estados
-			$(el_estado).html('');
-            $('#loading').fadeIn(250); 
-			$.ajax({
-				type: 'GET',
-				url: global_data.url + '/registro-geo.php',
-				data: 'pais_code=' + pais,
-				success: function(h){
-					switch(h.charAt(0)){
-						case '0': //Error
-							break;
-						case '1': //OK
-							cuenta.no_requerido['estado'] = false;
-							$(el_estado).append(h.substring(3)).removeAttr('disabled').val('').focus();
-							break;
-					}
-                    $('#loading').fadeOut(250); 
-				},
-				error: function(){
-
-				}
-			});
-		}
+			$(estado).html('');
+         $('#loading').fadeIn(250); 
+         $.get(global_data.url + '/registro-geo.php', 'pais_code=' + pais, h => {
+         	if(h.charAt(0) === '1') estado.append(h.substring(3)).removeAttr('disabled').val('').focus();
+         	$('#loading').fadeOut(250); 
+         })
+      }
 	},
-	
-
-	error: function(obj, str){
-		var container = $(obj).next();
-		if($(container).hasClass('errorstr')){
-			$(container).show();
-			$(container).html(str);
-		}
-	},
-
-	next: function (isprofile) {
-		if (typeof isprofile == 'undefined') var isprofile = false;
-		if (isprofile) $('div.content-tabs.perfil > h3.active').next().next().click();
-		else $('div.tabbed-d > div.floatL > ul.menu-tab > li.active').next().children().click();
-	},
-
-	save: function (secc, next) {
-
-		$('.ac_input, .cuenta-save-'+secc).removeClass('input-incorrect');
-
-		if (typeof next == 'undefined') var next = false;
-		params = Array();
-		params.push('save='+secc);
-
-		$('.cuenta-save-'+secc).each(function(){
-			if (($(this).attr('type') != 'checkbox' && $(this).attr('type') != 'radio') || $(this).prop('checked')) params.push($(this).attr('name')+'='+encodeURIComponent($(this).val()));
-		});
-
-		var cuenta_url = global_data.url + '/cuenta.php?action=save&ajax=true';
-
-        $('#loading').slideDown(250); 
+	guardar_datos: () => {
+		$('#loading').slideDown(250);
 		$.ajax({
 			type: 'post', 
-			url: cuenta_url, 
-			data: params.join('&'), 
+			url: global_data.url + '/cuenta-guardar.php', 
+			data: $("form[name=editarcuenta]").serialize(), 
 			dataType: 'json',
-			success: function (r) {
-				if (r.error) {
-					if (r.field) $('input[name='+r.field+']').focus().addClass('input-incorrect');
-					cuenta.alert(secc, r.error)
-				} else {
-					if (next) cuenta.next(secc > 1 && secc < 5);
-					cuenta.alert(secc, 'Los cambios fueron aceptados y ser&aacute;n aplicados.');
-					if(r.porc != null) {
-						$('#porc-completado-label').html('Perfil completo al ' + r.porc + '%');
-						$('#porc-completado-barra').css('width', r.porc + '%');
-					}
-				}
-				window.location.hash = 'alert-cuenta';
-                $('#loading').slideUp(250); 
-			}
+			success: response => cuenta.alerta(response.error)
 		});
 	}
 }
-
 var avatar = {
 	uid: false,
 	key: false,

@@ -7,7 +7,7 @@
                                             <td class="main_col">
                                                 <a href="{$tsConfig.url}/mensajes/avisos/?aid={$av.av_id}">
                                                     <div class="mpContent clearBoth">
-                                                        <img src="{$tsConfig.default}/images/icons/avtype_{$av.av_type}.png" style="width:48px;height:48px;margin-top:2px;" />
+                                                        <img src="{$tsConfig.images}/icons/avtype_{$av.av_type}.png" style="width:48px;height:48px;margin-top:2px;" />
                                                         <div class="mp_time">{$av.av_date|fecha}</div>
                                                         <div class="mp_desc">
                                                             <div class="autor"><strong>{$tsConfig.titulo}</strong></div>
@@ -37,7 +37,7 @@
                                 <ul class="mpHistory" id="historial">
                                     <li>
                                         <div class="main clearBoth">
-                                            <div class="autor-image"><img src="{$tsConfig.default}/images/icons/avtype_{$tsMensaje.av_type}.png" /></div>
+                                            <div class="autor-image"><img src="{$tsConfig.images}/icons/avtype_{$tsMensaje.av_type}.png" /></div>
                                             <div class="mensaje">
                                                 <div><a href="{$tsConfig.url}/perfil/{$mp.user_name}" class="autor-name">{$mp.user_name}</a> </div>
                                                 <div>{$tsMensaje.av_body|nl2br}</div>

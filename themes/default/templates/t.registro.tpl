@@ -45,7 +45,7 @@
 					</div>
 					<small id="helper"></small>
 				</div>
-
+				
 				<div class="form--input" id="mantener">
 					<label for="terminos">
 						<input type="checkbox" class="field-checkbox" name="terminos" id="terminos" tabindex="7">
@@ -59,7 +59,7 @@
 			  	</div>
 			</form>
 			<script>public_key = '{$public_key}';</script>
-			<script src="{$api_google}"></script>
+			<script src="{$tsRecaptcha}?render={$public_key}"></script>
 			<script src="{$tsConfig.js}/registro.js?{$smarty.now}"></script>
 		{else}
 			<div class="box-end">

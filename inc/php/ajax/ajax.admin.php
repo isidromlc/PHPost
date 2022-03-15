@@ -24,9 +24,9 @@
 		'admin-noticias-setInActive' => array('n' => 4, 'p' => ''),
 		'admin-sesiones-borrar' => array('n' => 4, 'p' => ''),
 		'admin-nicks-change' => array('n' => 4, 'p' => ''),
-        'admin-blacklist-delete' => array('n' => 4, 'p' => ''),
-        'admin-badwords-delete' => array('n' => 4, 'p' => ''),
-		
+      'admin-blacklist-delete' => array('n' => 4, 'p' => ''),
+      'admin-badwords-delete' => array('n' => 4, 'p' => ''),
+		'admin-ordenar-categorias' => array('n' => 4, 'p' => ''),
 	);
 
 /**********************************\
@@ -49,12 +49,13 @@
 	// DEPENDE EL NIVEL
 	$tsLevelMsg = $tsCore->setLevel($tsLevel, true);
 	if($tsLevelMsg != 1) { echo '0: '.$tsLevelMsg['mensaje']; die();}
-    // CLASES
-    include("../class/c.medals.php");
-    $tsMedal = new tsMedal();
+   // CLASES
+   include("../class/c.medals.php");
+   $tsMedal = new tsMedal();
+
 	include("../class/c.admin.php");
-    $tsAdmin = new tsAdmin();
-    //
+   $tsAdmin = new tsAdmin();
+
 	// CODIGO
 	switch($action){
 		case 'admin-medalla-borrar':
@@ -122,7 +123,12 @@
             echo $tsAdmin->deleteBadWord();
 			//--->
 		break;
-        default:
-            die('0: Este archivo no existe.');
-        break;
+		case 'admin-ordenar-categorias':
+			//<---
+		      echo $tsAdmin->saveOrden();
+			//--->
+		break;
+      default:
+         die('0: Este archivo no existe.');
+      break;
 	}

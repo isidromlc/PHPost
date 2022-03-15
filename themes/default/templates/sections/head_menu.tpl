@@ -2,7 +2,7 @@
    <!--LEFT MENU-->
 	<ul class="menuTabs">
       {if $tsConfig.c_allow_portal && $tsUser->is_member == true}
-         <li class="tabbed {if $tsPage != 'home' && $tsPage != 'posts' && $tsPage != 'tops' && $tsPage != 'admin' && $tsPage != 'fotos'}here{/if}">
+         <li class="tabbed {if $tsPage != 'home' && $tsPage != 'posts' && $tsPage != 'tops' && $tsPage != 'admin' && $tsPage != 'fotos'}here{/if}" id="tabbedhome">
             <a title="Ir a Inicio" href="{$tsConfig.url}/mi/"><span>&nbsp;</span></a>
          </li>
       {/if}
@@ -57,7 +57,7 @@
                </li>
                {if $tsAvisos}
                   <li style="position:relative;">
-                     <a title="Avisos" href="{$tsConfig.url}/mensajes/avisos/"><img src="{$tsConfig.default}/images/icons/megaphone.png" /></a>
+                     <a title="Avisos" href="{$tsConfig.url}/mensajes/avisos/"><img src="{$tsConfig.images}/icons/megaphone.png" /></a>
                      <div id="alerta_avs" class="alertas" style="top: -6px;"><a title="{$tsAvisos} aviso{if $tsAvisos != 1}s{/if}"><span>{$tsAvisos}</span></a></div>
                   </li>
                {/if}

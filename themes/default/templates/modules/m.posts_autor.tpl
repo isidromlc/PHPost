@@ -22,10 +22,10 @@
                             <br />
                             <span class="title">{$tsAutor.rango.r_name}</span>
                             <br />
-                            <img src="{$tsConfig.default}/images/space.gif" class="status {$tsAutor.status.css}" title="{$tsAutor.status.t}"/>
-                            <img src="{$tsConfig.default}/images/icons/ran/{$tsAutor.rango.r_image}" title="{$tsAutor.rango.r_name}" />
-                            <img src="{$tsConfig.default}/images/icons/{if $tsAutor.user_sexo == 0}female{else}male{/if}.png" title="{if $tsAutor.user_sexo == 0}Mujer{else}Hombre{/if}" />
-                            <img src="{$tsConfig.default}/images/flags/{$tsAutor.pais.icon}.png" style="padding:2px" title="{$tsAutor.pais.name}" />
+                            <img src="{$tsConfig.images}/space.gif" class="status {$tsAutor.status.css}" title="{$tsAutor.status.t}"/>
+                            <img src="{$tsConfig.images}/icons/ran/{$tsAutor.rango.r_image}" title="{$tsAutor.rango.r_name}" />
+                            <img src="{$tsConfig.images}/icons/{if $tsAutor.user_sexo == 0}female{else}male{/if}.png" title="{if $tsAutor.user_sexo == 0}Mujer{else}Hombre{/if}" />
+                            <img src="{$tsConfig.images}/flags/{$tsAutor.pais.icon}.png" style="padding:2px" title="{$tsAutor.pais.name}" />
                             {if $tsAutor.user_id != $tsUser->uid}<a href="{if !$tsUser->is_member}{$tsConfig.url}/registro/{else}javascript:mensaje.nuevo('{$tsAutor.user_name}','','','');{/if}"><img title="Enviar mensaje privado" src="{$tsConfig.images}/icon-mensajes-recibidos.gif"/></a>{/if}
                             {if !$tsUser->is_member}
                             <hr class="divider"/>

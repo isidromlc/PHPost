@@ -23,8 +23,12 @@ class tsCore {
       $this->settings['css'] = $this->settings['tema']['t_url'].'/css';
 		$this->settings['js'] = $this->settings['tema']['t_url'].'/js';
 		#
+		$this->settings['avatar'] = $this->settings['url'].'/files/avatar';
 		$this->settings['smiles'] = $this->settings['url'].'/files/images/smiles';
 		$this->settings['flags'] = $this->settings['url'].'/files/images/flags';
+		$this->settings['med'] = $this->settings['url'].'/files/images/med';
+		$this->settings['ran'] = $this->settings['url'].'/files/images/ran';
+		$this->settings['cat'] = $this->settings['url'].'/files/images/cat';
       //
       if($_GET['do'] == 'portal' || $_GET['do'] == 'posts') $this->settings['news'] = $this->getNews();
 		# Mensaje del instalador y pendientes de moderación #
@@ -63,6 +67,7 @@ class tsCore {
 	function getCategorias() {
 		return result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT cid, c_orden, c_nombre, c_seo, c_img FROM p_categorias ORDER BY c_orden'));
 	}
+
 	/*
 		getTema()
 	*/
@@ -76,7 +81,7 @@ class tsCore {
   	*/
    function getNews() {
       //
-		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT not_body FROM w_noticias WHERE not_active = \'1\' ORDER by RAND()');
+		$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT not_body FROM w_noticias WHERE not_active = 1 ORDER by RAND()');
 		while($row = db_exec('fetch_assoc', $query)){
 		  	$row['not_body'] = $this->parseBBCode($row['not_body'],'news');
          $data[] = $row;
@@ -96,7 +101,7 @@ class tsCore {
 	function parseBadWords($c, $s = FALSE) {
       $q = result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT word, swop, method, type FROM w_badwords '.($s == true ? '' : ' WHERE type = \'0\'')));
       foreach($q AS $badword) {
-      	$c = str_ireplace((empty($badword['method']) ? $badword['word'] : $badword['word'].' '),($badword['type'] == 1 ? '<img class="qtip" title="'.$badword['word'].'" src="'.$badword['swop'].'" align="absmiddle"/>' : $badword['swop'].' '),$c);
+      	$c = str_ireplace((empty($badword['method']) ? $badword['word'] : $badword['word'].' '),($badword['type'] == 1 ? '<img title="'.$badword['word'].'" src="'.$badword['swop'].'" />' : $badword['swop'].' '),$c);
       }
       return $c;
 	}        
@@ -116,25 +121,22 @@ class tsCore {
 				if($msg) $mensaje = 'Esta pagina solo es vista por los visitantes.';
 				else $this->redirectTo('/');
 			}
-		}
 		// SOLO MIEMBROS
-		elseif($tsLevel == 2){
+		} elseif($tsLevel == 2){
 			if($tsUser->is_member == 1) return true;
 			else {
 				if($msg) $mensaje = 'Para poder ver esta pagina debes iniciar sesi&oacute;n.';
 				else $this->redirectTo('/login/?r='.$this->currentUrl());
 			}
-		}
 		// SOLO MODERADORES
-		elseif($tsLevel == 3){
+		} elseif($tsLevel == 3){
 			if($tsUser->is_admod || $tsUser->permisos['moacp']) return true;
 			else {
 				if($msg) $mensaje = 'Estas en un area restringida solo para moderadores.';
 				else $this->redirectTo('/login/?r='.$this->currentUrl());
 			}
-		}
 		// SOLO ADMIN
-		elseif($tsLevel == 4) {
+		} elseif($tsLevel == 4) {
 			if($tsUser->is_admod == 1) return true;
 			else {
 				if($msg) $mensaje = 'Estas intentando algo no permitido.';
@@ -173,7 +175,7 @@ class tsCore {
 	 * con TRUE nos devolverá un array(arreglo)
 	 * @link https://www.php.net/manual/es/function.json-decode.php
 	*/
-	function setJSON(string $data, string $type = 'encode', bool $force = false){
+	function setJSON(string $data = '', string $type = 'encode', bool $force = false){
       return ($type == 'encode') ? json_encode($data) : ($force ? json_decode($data, true) : json_decode($data));
 	}
 	/*
@@ -184,26 +186,25 @@ class tsCore {
 		$tsStart = empty($_GET['page']) ? 0 : (int) (($_GET['page'] - 1) * $tsLimit);
 		else {
     		$tsStart = (int) $_GET['s'];
-            $continue = $this->setMaximos($tsLimit, $tsMax);
-            if($continue == true) $tsStart = 0;
-        }
+         $continue = $this->setMaximos($tsLimit, $tsMax);
+         if($continue == true) $tsStart = 0;
+      }
 		//
 		return $tsStart.','.$tsLimit;
 	}
-    /*
-        setMaximos()
-        :: MAXIMOS EN LAS PAGINAS
-    */
-    function setMaximos($tsLimit, $tsMax){
-        // MAXIMOS || PARA NO EXEDER EL NUMERO DE PAGINAS
-        $ban1 = ($_GET['page'] * $tsLimit);
-        if($tsMax < $ban1){
-            $ban2 = $ban1 - $tsLimit;
-            if($tsMax < $ban2) return true;
-        } 
-        //
-        return false;
-    }
+   /*
+      setMaximos() :: MAXIMOS EN LAS PAGINAS
+   */
+   function setMaximos($tsLimit, $tsMax){
+       // MAXIMOS || PARA NO EXEDER EL NUMERO DE PAGINAS
+       $ban1 = ($_GET['page'] * $tsLimit);
+       if($tsMax < $ban1){
+           $ban2 = $ban1 - $tsLimit;
+           if($tsMax < $ban2) return true;
+       } 
+       //
+       return false;
+   }
 	/*
 		getPages($tsTotal, $tsLimit)
 		: PAGINACION

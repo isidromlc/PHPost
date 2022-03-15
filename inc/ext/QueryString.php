@@ -25,47 +25,41 @@ function cleanRequest()
 
 	// Same goes for numeric keys.
 	foreach (array_merge(array_keys($_POST), array_keys($_GET), array_keys($_FILES)) as $key)
-		if (is_numeric($key))
-			die('Numeric request keys are invalid.');
+		if (is_numeric($key)) die('Numeric request keys are invalid.');
 
 	// Numeric keys in cookies are less of a problem. Just unset those.
 	foreach ($_COOKIE as $key => $value)
-		if (is_numeric($key))
-			unset($_COOKIE[$key]);
+		if (is_numeric($key)) unset($_COOKIE[$key]);
 
 	// Get the correct query string.  It may be in an environment variable...
-	if (!isset($_SERVER['QUERY_STRING']))
-		$_SERVER['QUERY_STRING'] = getenv('QUERY_STRING');
+	if (!isset($_SERVER['QUERY_STRING'])) $_SERVER['QUERY_STRING'] = getenv('QUERY_STRING');
 
 	// It seems that sticking a URL after the query string is mighty common, well, it's evil - don't.
-	if (strpos($_SERVER['QUERY_STRING'], 'http') === 0)
-	{
+	if (strpos($_SERVER['QUERY_STRING'], 'http') === 0) {
 		header('HTTP/1.1 400 Bad Request');
 		die;
 	}
 
 	// If magic quotes is on we have some work...
-	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0)
-	{
+	if (function_exists('get_magic_quotes_gpc') && @get_magic_quotes_gpc() != 0) {
 		$_ENV = $removeMagicQuoteFunction($_ENV);
 		$_POST = $removeMagicQuoteFunction($_POST);
 		$_COOKIE = $removeMagicQuoteFunction($_COOKIE);
 		foreach ($_FILES as $k => $dummy)
-			if (isset($_FILES[$k]['name']))
-				$_FILES[$k]['name'] = $removeMagicQuoteFunction($_FILES[$k]['name']);
+			if (isset($_FILES[$k]['name'])) $_FILES[$k]['name'] = $removeMagicQuoteFunction($_FILES[$k]['name']);
 	}
 
 	// Add entities to GET.  This is kinda like the slashes on everything else.
 	$_GET = htmlspecialchars__recursive($_GET);
-    $_POST = htmlspecialchars__recursive($_POST);
-    $_COOKIE = htmlspecialchars__recursive($_COOKIE);
+   $_POST = htmlspecialchars__recursive($_POST);
+   $_COOKIE = htmlspecialchars__recursive($_COOKIE);
 
 	// Let's not depend on the ini settings... why even have COOKIE in there, anyway?
 	$_REQUEST = $_POST + $_GET;
 
-    // Check if the request comes from this site
-    $IsMySite = strpos(preg_replace("/https?:\/\/|www\./", "", $_SERVER["HTTP_REFERER"]), preg_replace("/https?:\/\/|www\./", "", $_SERVER["HTTP_HOST"])) === 0;
-    if((!empty($_SERVER["HTTP_REFERER"]) && (in_array($tsPage, array('admin', 'moderacion', 'cuenta')) || $_SERVER['QUERY_STRING'] == 'action=login-salir') && !$IsMySite) || $_SERVER["REQUEST_METHOD"] === "POST" && !$IsMySite) { die("Invalid request"); }
+   // Check if the request comes from this site
+   $IsMySite = strpos(preg_replace("/https?:\/\/|www\./", "", $_SERVER["HTTP_REFERER"]), preg_replace("/https?:\/\/|www\./", "", $_SERVER["HTTP_HOST"])) === 0;
+   if((!empty($_SERVER["HTTP_REFERER"]) && (in_array($tsPage, array('admin', 'moderacion', 'cuenta')) || $_SERVER['QUERY_STRING'] == 'action=login-salir') && !$IsMySite) || $_SERVER["REQUEST_METHOD"] === "POST" && !$IsMySite) { die("Invalid request"); }
 }
 
 

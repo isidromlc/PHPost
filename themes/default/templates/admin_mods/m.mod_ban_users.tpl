@@ -24,7 +24,7 @@
                                                 <td><a href="#" class="hovercard" uid="{$s.susp_mod}">{$tsUser->getUserName($s.susp_mod)}</a></td>
                                                 {if $tsUser->is_admod || $tsUser->permisos.modu}
 												<td class="admin_actions">
-                                                    <a href="#" onclick="mod.reboot({$s.user_id}, 'users', 'unban', false); return false;"><img src="{$tsConfig.default}/images/icons/power_on.png" title="Reactivar usuario" /></a>
+                                                    <a href="#" onclick="mod.reboot({$s.user_id}, 'users', 'unban', false); return false;"><img src="{$tsConfig.images}/icons/power_on.png" title="Reactivar usuario" /></a>
                                                 </td>
 												{/if}
                                             </tr>

@@ -25,7 +25,7 @@
 											<td>{$f.date|hace:true}</td>                
    										    <td>{$f.mod_ip}</td>
 											<td class="admin_actions">
-                                                    <a href="#" onclick="mod.reboot({$f.foto_id}, 'fotos', 'reboot', false); return false;"><img src="{$tsConfig.default}/images/icons/reboot.png" title="Reactivar Foto" /></a>
+                                                    <a href="#" onclick="mod.reboot({$f.foto_id}, 'fotos', 'reboot', false); return false;"><img src="{$tsConfig.images}/icons/reboot.png" title="Reactivar Foto" /></a>
 											</td>
 										</tr>
 										{/foreach}

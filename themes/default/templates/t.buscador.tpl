@@ -53,8 +53,8 @@
         			<div class="searchFil">
         				<div style="margin-bottom: 5px;">
         					<img{if $tsEngine != 'google'}style="display: none;"{/if} alt="google-search-engine" src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" id="buscador-logo-google"/>
-        					<img{if $tsEngine != 'web'}style="display: none;"{/if} alt="web-search-engine" src="{$tsConfig.default}/images/phpostmin.gif" id="buscador-logo-web"/>
-        					<img{if $tsEngine != 'tags'} style="display: none;"{/if} alt="tags-search-engine" src="{$tsConfig.default}/images/phpostmin.gif" id="buscador-logo-tags"/>
+        					<img{if $tsEngine != 'web'}style="display: none;"{/if} alt="web-search-engine" src="{$tsConfig.images}/phpostmin.gif" id="buscador-logo-web"/>
+        					<img{if $tsEngine != 'tags'} style="display: none;"{/if} alt="tags-search-engine" src="{$tsConfig.images}/phpostmin.gif" id="buscador-logo-tags"/>
         					<label style="float: right;" class="searchWith">
                             <a href="javascript:buscador.select('google')" id="select_google"{if $tsEngine == 'google'} class="here"{/if}>Google</a><span class="sep">|</span>
         					<a href="javascript:buscador.select('web')" id="select_web"{if !$tsEngine || $tsEngine == 'web'} class="here"{/if}>{$tsConfig.titulo}</a><span class="sep">|</span>
@@ -158,8 +158,8 @@
         				<div style="margin-bottom: 5px;">
         					<div class="logoMotorSearch">
         						<img style="height: 16px; display: none;" alt="google-search-engine" src="http://www.google.com/images/poweredby_transparent/poweredby_FFFFFF.gif" id="buscador-logo-google"/>
-        						<img alt="web-search-engine" src="{$tsConfig.default}/images/phpostmin.gif" id="buscador-logo-web"/>
-        						<img style="display: none;" alt="tags-search-engine" src="{$tsConfig.default}/images/phpostmin.gif" id="buscador-logo-tags"/>
+        						<img alt="web-search-engine" src="{$tsConfig.images}/phpostmin.gif" id="buscador-logo-web"/>
+        						<img style="display: none;" alt="tags-search-engine" src="{$tsConfig.images}/phpostmin.gif" id="buscador-logo-tags"/>
         					</div>
         
         					<label class="searchWith">

@@ -524,7 +524,7 @@ var mensaje = {
       // DATOS
       this.vars['to'] = $('#msg_to').val();
       this.vars['sub'] = encodeURIComponent($('#msg_subject').val()); 
-      this.vars['msg'] = encodeURIComponent($('#msg_body').val()); 
+      this.vars['msg'] = encodeURIComponent($('#msg_body').bbcode()); 
       // COMPROBAR
       if(enviar == 0){ // VERIFICAR...
          if(this.vars['to'] == '')
@@ -608,48 +608,34 @@ var mensaje = {
 var denuncia = {
    nueva: function(type, obj_id, obj_title, obj_user){
       // PLANTILLA
+      var params = ['obj_id=' + obj_id, 'obj_title=' + obj_title, 'obj_user=' + obj_user].join('&')
 		$('#loading').fadeIn(250); 
-      $.ajax({
-			type: 'POST',
-			url: global_data.url + '/denuncia-' + type + '.php',
-			data: 'obj_id=' + obj_id + '&obj_title=' + obj_title + '&obj_user=' + obj_user,
-			success: function(h){
-            denuncia.set_dialog(h, obj_id, type);
-            $('#loading').fadeOut(350);                                 
-			}
+      $.post(global_data.url + '/denuncia-' + type + '.php', params, h => {
+         denuncia.set_dialog(h, obj_id, type);
+         $('#loading').fadeOut(350);
 		});
    },
    set_dialog: function(html, obj_id, type){
-      var d_title = 'Denunciar ' + type;
       // MYDIALOG
       mydialog.mask_close = false;
       mydialog.close_button = true;		                                        
 		mydialog.show();
-      mydialog.title(d_title);
+      mydialog.title('Denunciar ' + type);
 		mydialog.body(html);
 		mydialog.buttons(true, true, 'Enviar', "denuncia.enviar(" + obj_id + ", '" + type + "')", true, true, true, 'Cancelar', 'close', true, false);
 		mydialog.center();
    },
    enviar: function(obj_id, type){
-      var razon = $('select[name=razon]').val();
-      var extras = $('textarea[name=extras]').val();
+      var params = [
+      	'obj_id=' + obj_id, 
+      	'razon=' + $('select[name=razon]').val(), 
+      	'extras=' + $('textarea[name=extras]').val()
+      ].join('&');
       //
       $('#loading').fadeIn(250);                         
-		$.ajax({
-			type: 'POST',
-			url: global_data.url + '/denuncia-' + type + '.php',
-			data: 'obj_id=' + obj_id + '&razon=' + razon + '&extras=' + extras,
-			success: function(h){
-            switch(h.charAt(0)){
-               case '0':
-                  mydialog.alert("Error",'<div class="emptyData">' + h.substring(3) +  '</div>');
-               break;
-               case '1':
-                  mydialog.alert("Bien", '<div class="emptyData">' + h.substring(3) + '</div>');
-               break;
-            }
-            $('#loading').fadeOut(350);                                                 
-			}
+		$.post(global_data.url + '/denuncia-' + type + '.php', params, h => {
+         mydialog.alert((h.charAt(0) === '0' ? "Error" : "Bien"),'<div class="emptyData">' + h.substring(3) +  '</div>');
+         $('#loading').fadeOut(350);
 		});
    }
 }
@@ -683,14 +669,11 @@ function remind_resend(gew, type) {
 		mydialog.center();
 	} else {
 		page = type === 'password' ? 'pass' : 'validation'
-		$.post(
-			global_data.url + '/recover-'+page+'.php', 
-			'r_email=' + $('#r_email').val(), 
+		$.post(global_data.url + '/recover-'+page+'.php', 'r_email=' + $('#r_email').val(), 
 			a => mydialog.alert((a.charAt(0) == '0' ? 'Opps!' : 'Hecho'), a.substring(3), false)
 		);
 		mydialog.center();
 	}
-
 }
 remind_password = gew => remind_resend(gew, 'password')
 resend_validation = gew => remind_resend(gew, 'validation')
@@ -815,53 +798,42 @@ var afiliado = {
 
 /* IMAGENES */
 var imagenes = {
-    total: 0,
-    move: '-250px',
-    presentacion: function(){
-        $('#imContent').animate({top: '0px'}, 1000, 'easeOutQuad', 
-        function(){
-            // MOSTRAMOS
-            // MOVEMOS
-            $('#imContent').css({top: imagenes.move})
-            // ULTIMO
-            var slm = $('#img_' + imagenes.total).html();
-            //
-            for(var i = imagenes.total; i >= 0; i--){
-                $('#img_' + i).html($('#img_' + (i - 1)).html());
-            }
-            //
-            $('#img_0').html(slm);
-            // INFINITO :D
-            setTimeout("imagenes.presentacion()",5000);
-        });
-
-    }
+   total: 0,
+   move: '-250px',
+   presentacion: function(){
+      $('#imContent').animate({top: '0px'}, 1000, 'easeOutQuad', function(){
+         $('#imContent').css({top: imagenes.move})
+         for(var i = imagenes.total; i >= 0; i--) $('#img_' + i).html($('#img_' + (i - 1)).html());
+         //
+         $('#img_0').html($('#img_' + imagenes.total).html());
+         // INFINITO :D
+         setTimeout("imagenes.presentacion()",5000);
+      });
+   }
 }
 
 // NEWS
 var news = {
-    total: 0,
-    count: 1,
-    slider: function(){
-        if(news.total > 1){
-            if(news.count < news.total) news.count++;
-            else news.count = 1;
-            //
-            $('#top_news > li').hide();
-            $('#new_' + news.count).fadeIn();
-            // INFINITO :D
-            setTimeout("news.slider()",7000);
-        }
-    }       
+   total: 0,
+   count: 1,
+   slider: function(){
+      if(news.total > 1){
+         if(news.count < news.total) news.count++;
+         else news.count = 1;
+         //
+         $('#top_news > li').hide();
+         $('#new_' + news.count).fadeIn();
+         // INFINITO :D
+         setTimeout("news.slider()",7000);
+      }
+   }       
 }
 
 // READY
 $(document).ready(function(){
-    /* NOTICIAS */
-    news.total = $('#top_news > li').length;
-    news.slider();
-    /* IMAGENES */
-    imagenes.presentacion();
-
-
+   /* NOTICIAS */
+   news.total = $('#top_news > li').length;
+   news.slider();
+   /* IMAGENES */
+   imagenes.presentacion();
 });

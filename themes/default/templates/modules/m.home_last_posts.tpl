@@ -3,7 +3,7 @@
                 	<div class="header">
                     	<div class="box_txt ultimos_posts">Posts importantes en {$tsConfig.titulo}</div>
                         <div class="box_rss">
-                            <img src="{$tsConfig.default}/images/icons/note.png" />
+                            <img src="{$tsConfig.images}/icons/note.png" />
                         </div>
                         <div class="clearBoth"></div>
                     </div>

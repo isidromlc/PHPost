@@ -51,7 +51,7 @@ class tsCuenta {
 		$data['p_socials'] = json_decode($data['p_socials'], true);
 		foreach ($this->redes as $name => $valor) $data['p_socials'][$name];
         //
-        $data['p_configs'] = unserialize($data['p_configs']);
+        $data['p_configs'] = json_decode($data['p_configs'], true);
         //
         return $data;
     }
@@ -69,7 +69,7 @@ class tsCuenta {
         $data['p_mensaje'] = $tsCore->setSecure($tsCore->parseBadWords($data['p_mensaje']), true);
 		$data['p_socials'] = json_decode($data['p_socials'], true);
 		foreach ($this->redes as $name => $valor) $data['p_socials'][$name];
-		$data['p_configs'] = unserialize($data['p_configs']);
+		$data['p_configs'] = json_decode($data['p_configs'], true);
 
 		
 		if($data['p_configs']['hits'] == 0){
@@ -221,7 +221,7 @@ class tsCuenta {
 		// GUARDAR...
 		switch($save){
 			case '':
-                // NUEVOS DATOS
+            // NUEVOS DATOS
 				$perfilData = array(
 					'email' => $tsCore->setSecure($_POST['email'], true),
 					'pais' => $tsCore->setSecure($_POST['pais']),
@@ -232,15 +232,14 @@ class tsCuenta {
 					'ano' => (int)$_POST['ano'],
 					'firma' => $tsCore->setSecure($tsCore->parseBadWords($_POST['firma']), true),
 				);
-                //
-                $year = date("Y",time());
-                // ANTIGUOS DATOS
+            //
+            $year = date("Y",time());
+            // ANTIGUOS DATOS
 				$query = db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_dia, user_mes, user_ano, user_pais, user_estado, user_sexo, user_firma FROM U_perfil WHERE user_id = \''.$tsUser->uid.'\' LIMIT 1');
-                $info = db_exec('fetch_assoc', $query);
-                
-                //
-                $email_ok = $this->isEmail($perfilData['email']);
-                // CORRECCIONES
+            $info = db_exec('fetch_assoc', $query);
+            //
+            $email_ok = $this->isEmail($perfilData['email']);
+            // CORRECCIONES
 				if(!$email_ok){
 					$msg_return = array('field' => 'email', 'error' => 'El formato de email ingresado no es v&aacute;lido.');
 					// EL ANTERIOR
@@ -281,9 +280,9 @@ class tsCuenta {
 				}
 			break;
 			case 'perfil':
-                // INTERNOS
-                $sitio = trim($_POST['sitio']);
-                if(!empty($sitio)) $sitio = substr($sitio, 0, 4) == 'http' ? $sitio : 'http://'.$sitio;
+            // INTERNOS
+            $sitio = trim($_POST['sitio']);
+            if(!empty($sitio)) $sitio = substr($sitio, 0, 4) == 'http' ? $sitio : 'http://'.$sitio;
 				# Redes sociales
 				$red__social = [];
 				foreach ($_POST["red"] as $llave => $id) $red__social[$llave] = $tsCore->setSecure($tsCore->parseBadWords($id), true);
@@ -299,38 +298,39 @@ class tsCuenta {
 					'hijos' => $tsCore->setSecure($_POST['hijos']),
 					'vivo' => $tsCore->setSecure($_POST['vivo']),
 				);
-                // COMPROBACIONES
-                if(!empty($perfilData['sitio']) && !filter_var($perfilData['sitio'], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) return array('error' => 'El sitio web introducido no es correcto.');
+				// COMPROBACIONES
+            if(!empty($perfilData['sitio']) && !filter_var($perfilData['sitio'], FILTER_VALIDATE_URL, FILTER_FLAG_HOST_REQUIRED)) return array('error' => 'El sitio web introducido no es correcto.');
 			break;
-            // NEW PASSWORD
-            case 'clave':
-                $passwd = $_POST['passwd'];
-                $new_passwd = $_POST['new_passwd'];
-                $confirm_passwd = $_POST['confirm_passwd'];
-                if(empty($new_passwd) || empty($confirm_passwd)) return array('error' => 'Debes ingresar una contrase&ntilde;a.');
-                elseif(strlen($new_passwd) < 5) return array('error' => 'Contrase&ntilde;a no v&aacute;lida.');
-                elseif($new_passwd != $confirm_passwd) return array('error' => 'Tu nueva contrase&ntilde;a debe ser igual a la confirmaci&oacute;n de la misma.');
-                else {
-                    $key = md5(md5($passwd).strtolower($tsUser->nick));
-                    if($key != $tsUser->info['user_password']) return array('error' => 'Tu contrase&ntilde;a actual no es correcta.');
-                    else {
-                        $new_key = md5(md5($new_passwd).strtolower($tsUser->nick));
-						if(db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_password = \''.$tsCore->setSecure($new_key).'\' WHERE user_id = \''.$tsUser->uid.'\'')) return true;
-                    }
-                }
-            break;
-            case 'config':
-                $muro_firm = ($_POST['muro_firm'] > 4) ? 5 : $_POST['muro_firm'];
-				$rec_mps = ($_POST['rec_mps'] > 6) ? 5 : $_POST['rec_mps'];
-				$see_hits = ($_POST['last_hits'] == 1 || $_POST['last_hits'] == 2) ? 0 : $_POST['last_hits'];
-                $array = array('m' => $_POST['muro'], 'mf' => $muro_firm, 'rmp' => $rec_mps, 'hits' => $see_hits);
-                //
-                $perfilData['configs'] = serialize($array);
-            break;
+         // NEW PASSWORD
+         case 'clave':
+             $passwd = $_POST['passwd'];
+             $new_passwd = $_POST['new_passwd'];
+             $confirm_passwd = $_POST['confirm_passwd'];
+             if(empty($new_passwd) || empty($confirm_passwd)) return array('error' => 'Debes ingresar una contrase&ntilde;a.');
+             elseif(strlen($new_passwd) < 5) return array('error' => 'Contrase&ntilde;a no v&aacute;lida.');
+             elseif($new_passwd != $confirm_passwd) return array('error' => 'Tu nueva contrase&ntilde;a debe ser igual a la confirmaci&oacute;n de la misma.');
+             else {
+                 $key = md5(md5($passwd).strtolower($tsUser->nick));
+                 if($key != $tsUser->info['user_password']) return array('error' => 'Tu contrase&ntilde;a actual no es correcta.');
+                 else {
+                     $new_key = md5(md5($new_passwd).strtolower($tsUser->nick));
+					if(db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_password = \''.$tsCore->setSecure($new_key).'\' WHERE user_id = \''.$tsUser->uid.'\'')) return true;
+                 }
+             }
+         break;
+         case 'config':
+	         $array = [
+	         	'm' => $_POST['muro'], 
+	         	'mf' => ($_POST['muro_firm'] > 4) ? 5 : $_POST['muro_firm'], 
+	         	'rmp' => ($_POST['rec_mps'] > 6) ? 5 : $_POST['rec_mps'], 
+	         	'hits' => ($_POST['last_hits'] == 1 || $_POST['last_hits'] == 2) ? 0 : $_POST['last_hits']
+	         ];
+            $perfilData['configs'] = json_encode($array);
+         break;
 			case 'nick': //2678400 es un mes :)
 				$nuevo_nick = htmlspecialchars($_POST['new_nick']);
-                if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id FROM w_blacklist WHERE type = \'4\' && LOWER(value) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nick no permitido');
-                if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_id FROM u_miembros WHERE LOWER(user_name) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nombre en uso');
+            if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id FROM w_blacklist WHERE type = \'4\' && LOWER(value) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nick no permitido');
+            if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT user_id FROM u_miembros WHERE LOWER(user_name) = \''.$tsCore->setSecure($nuevo_nick).'\' LIMIT 1'))) return array('error' => 'Nombre en uso');
 				$data = db_exec('fetch_assoc', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id, user_id, time FROM u_nicks WHERE user_id = \''.$tsUser->uid.'\' AND estado = 0 LIMIT 1'));
 				if(!empty($data['id'])) return array('error' => 'Ya tiene una petici&oacute;n  de cambio en curso');
 				elseif(time() - $data['time'] >= 31536000) db_exec(array(__FILE__, __LINE__), 'query', 'UPDATE u_miembros SET user_name_changes = \'3\' WHERE user_id = \''.$data['user_id'].'\'');
@@ -347,7 +347,7 @@ class tsCuenta {
                 if(!filter_var($_SERVER['REMOTE_ADDR'], FILTER_VALIDATE_IP)) return array('error' => 'Su IP no se pudo validar');
 				if(db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO `u_nicks` (`user_id`, `user_email`, `name_1`, `name_2`, `hash`, `time`, `ip`) VALUES (\''.$tsUser->uid.'\', \''.$tsCore->setSecure($email).'\', \''.$tsUser->nick.'\', \''.$tsCore->setSecure($nuevo_nick).'\', \''.$key.'\', \''.time().'\', \''.$tsCore->setSecure($_SERVER['REMOTE_ADDR']).'\')')) return array('error' => 'Proceso iniciado, recibir&aacute; la respuesta en el correo indicado cuando valoremos el cambio.');
 				}
-            break;
+         break;
 		}
 		// ACTUALIZAR
 		if($save === '' or $save === 'perfil' or $save === 'config') {
@@ -399,45 +399,7 @@ class tsCuenta {
 	 $tsCore->redirectTo($tsCore->settings['url'].'/login-salir.php');
 	 return 1;
 	}
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-							// MANEJAR IMAGES \\
-	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-	/*
-		loadImages($user_id)
-	*/
-	function loadImages($user_id = 0){
-		global $tsUser;
-		//
-		if(empty($user_id)) $user_id = $tsUser->uid;
-		$images = result_array(db_exec(array(__FILE__, __LINE__), 'query', 'SELECT * FROM u_fotos WHERE f_user = \''.(int)$user_id.'\''));
-		//
-		return $images;
-	}
-	/*
-		addImagen()
-	*/
-	function addImagen(){
-		global $tsCore, $tsUser;
-		//
-		$img_url = $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['url'],0,255)), true);
-		$img_cap = $tsCore->setSecure($tsCore->parseBadWords(substr($_POST['caption'],0,50)), true);
-		// INSERTAMOS
-		if(empty($img_url) || $img_url == 'http://') return array('field' => 'url', 'error' => 'Ingresa la URL de la imagen.');
-		else {
-		    db_exec(array(__FILE__, __LINE__), 'query', 'INSERT INTO u_fotos (f_user, f_url, f_caption) VALUES (\''.$tsUser->uid.'\', \''.$img_url.'\', \''.$img_cap.'\')');
-			return array('id' => db_exec('insert_id'), 'field' => '', 'error' => '');
-		}
-	}
-	/*
-		delImagen()
-	*/
-	function delImagen(){
-		global $tsCore, $tsUser;
-		//
-		$img_id = $tsCore->setSecure($_POST['id']);
-		// BORRANDO
-		db_exec(array(__FILE__, __LINE__), 'query', 'DELETE FROM u_fotos WHERE foto_id = \''.(int)$img_id.'\' AND f_user = \''.$tsUser->uid.'\'');
-	}
+
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 							// MANEJAR BLOQUEOS \\
 	/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

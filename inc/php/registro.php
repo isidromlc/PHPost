@@ -2,8 +2,8 @@
 /**
  * Registro
  * -------------------------------------------------------------
- * File:     registr.php
- * Name:     registr
+ * File:     registro.php
+ * Name:     registro
  * Purpose:  Control del registro
  * @link:    https://phpost.net/foro/
  * @link:    https://phpost.es/
@@ -63,7 +63,7 @@ if ($tsContinue) {
    $smarty->assign("api_google", $api_google);
    $smarty->assign("public_key", $pkey);
    $smarty->assign("tsAbierto", $tsCore->settings["c_reg_active"]);
-   
+      
 }
 
 

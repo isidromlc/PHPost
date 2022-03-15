@@ -7,7 +7,7 @@
         <div class="options">
             {if $tsComment.3 == $tsUser->uid}
             <a href="#" onclick="fotos.borrar({$tsComment.0}, 'com'); return false" class="floatR" style="margin: 8px 5px">
-			  <img title="Borrar Comentario" alt="borrar" src="{$tsConfig.default}/images/borrar.png"/>
+			  <img title="Borrar Comentario" alt="borrar" src="{$tsConfig.images}/borrar.png"/>
             </a>
             {/if}
         </div>

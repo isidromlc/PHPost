@@ -15,12 +15,12 @@
                                         		<td width="150"><img src="{$tema.t_url}/screenshot.png" width="150" height="100" /></td>
                                                 <td><b><u>{$tema.t_name}</u></b></td>
                                                 <td class="admin_actions">
-                                                	<a href="?act=editar&tid={$tema.tid}"><img src="{$tsConfig.url}/themes/default/images/icons/editar.png" title="Editar este tema"/></a>
+                                                	<a href="?act=editar&tid={$tema.tid}"><img src="{$tsConfig.images}/icons/editar.png" title="Editar este tema"/></a>
                                                 {if $tsConfig.tema_id == $tema.tid}
-                                                	<a onclick="return false;"><img src="{$tsConfig.url}/themes/default/images/icons/yes.png" title="Este tema est&aacute; en uso" /></a>
+                                                	<a onclick="return false;"><img src="{$tsConfig.images}/icons/yes.png" title="Este tema est&aacute; en uso" /></a>
                                                 {else}
-                                                	<a href="?act=usar&tid={$tema.tid}&tt={$tema.t_name}"><img src="{$tsConfig.url}/themes/default/images/icons/theme.png" title="Usar este tema" /></a>
-                                                    {if $tema.tid != 1}<a href="?act=borrar&tid={$tema.tid}&tt={$tema.t_name}"><img src="{$tsConfig.url}/themes/default/images/icons/close.png" title="Borrar este tema" /></a>{/if}
+                                                	<a href="?act=usar&tid={$tema.tid}&tt={$tema.t_name}"><img src="{$tsConfig.images}/icons/theme.png" title="Usar este tema" /></a>
+                                                    {if $tema.tid != 1}<a href="?act=borrar&tid={$tema.tid}&tt={$tema.t_name}"><img src="{$tsConfig.images}/icons/close.png" title="Borrar este tema" /></a>{/if}
                                                 {/if}
                                                 </td>
                                             </tr>{/foreach}

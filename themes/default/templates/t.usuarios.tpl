@@ -26,7 +26,7 @@
                             {if $tsUsers}
                                 {foreach from=$tsUsers item=u}
                                 <li class="resultBox clearfix">
-                        			<h4 style="padding:0"><span class="rango qtip" style="background-image:url({$tsConfig.default}/images/icons/ran/{$u.rango.image});" title="{$u.rango.title}">&nbsp;</span> <a href="{$tsConfig.url}/perfil/{$u.user_name}" style="color:#{$u.rango.color}" >{$u.user_name}</a></h4>
+                        			<h4 style="padding:0"><span class="rango qtip" style="background-image:url({$tsConfig.images}/icons/ran/{$u.rango.image});" title="{$u.rango.title}">&nbsp;</span> <a href="{$tsConfig.url}/perfil/{$u.user_name}" style="color:#{$u.rango.color}" >{$u.user_name}</a></h4>
                         			<div class="floatL avatarBox" style="padding:0">
                         				<a href="{$tsConfig.url}/perfil/{$u.user_name}"><img width="75" height="75" src="{$tsConfig.url}/files/avatar/{$u.user_id}_120.jpg" class="av"/></a>
                         			</div>

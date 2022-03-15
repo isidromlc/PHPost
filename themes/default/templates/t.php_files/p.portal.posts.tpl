@@ -2,7 +2,7 @@
                     	<ul>
                             {if $tsPosts}
                             {foreach from=$tsPosts item=p}
-                            <li class="categoriaPost" style="background-image:url({$tsConfig.default}/images/icons/cat/{$p.c_img})">
+                            <li class="categoriaPost" style="background-image:url({$tsConfig.images}/icons/cat/{$p.c_img})">
                                 <a class="title {if $p.post_private}categoria privado{/if}" title="{$p.post_title}" target="_self" href="{$tsConfig.url}/posts/{$p.c_seo}/{$p.post_id}/{$p.post_title|seo}.html">{$p.post_title|truncate:55}</a>
                                 <span>{$p.post_date|hace} &raquo; <a href="{$tsConfig.url}/perfil/{$p.user_name}"><strong>{$p.user_name}</strong></a> &middot; Puntos <strong>{$p.post_puntos}</strong> &middot; Comentarios <strong>{$p.post_comments}</strong></span>
                                 <span class="floatR"><a href="{$tsConfig.url}/posts/{$p.c_seo}/">{$p.c_nombre}</a></span>

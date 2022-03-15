@@ -7,7 +7,7 @@
  */
 class tsEmail {
 	
-	var $email_info = array();		// REFERENCIA PARA ENVIAR UN EMAIL
+	var $email_info = [];		// REFERENCIA PARA ENVIAR UN EMAIL
 	var $emailSubject;
 	var $emailHeaders;
 	var $emailBody;
@@ -18,11 +18,11 @@ class tsEmail {
 		$tsEmailRef : tipo de email
 		$tsEmailData: datos del email
 	*/
-	function __construct($tsEmailData,$tsEmailRef){
-		$this->email_info = array(
+	function __construct($tsEmailData, $tsEmailRef){
+		$this->email_info = [
 			'ref' => $tsEmailRef,
 			'data' => $tsEmailData
-			);
+		];
 	}
 	/*
 		setEmailInfo()
@@ -33,12 +33,36 @@ class tsEmail {
 		$this->emailBody = $this->setEmailBody();
 		$this->emailTo = $this->email_info['user_email'];
 	}
+	/**
+	 * Reemplazamos el contenido
+	*/
+	function replaceHTML($body) {
+		global $tsCore;
+		$emailBody = file_get_contents(TS_EXTRA . "emails/basic.html");
+		$emailBody = str_replace(
+		   ["_WEBSITE_", "_CONTENTBODY_", "_LOGOWEB_", "_TERMS_", "_PRIV_"], 
+		   [
+		      $tsCore->settings['titulo'],
+		      $body,
+		      $tsCore->settings['images'] . '/phpostmin.gif',
+		      $tsCore->settings['url'] . "/pages/terminos-y-condiciones/",
+		      $tsCore->settings['url'] . "/pages/privacidad/"
+		   ],
+		   $emailBody
+		);
+		return $emailBody;
+	}
 	/*
 		sendEmail()
 	*/
-	function sendEmail(){
-		if(mail($this->emailTo,$this->emailSubject,$this->emailBody,$this->emailHeaders)) return true;
-		else return false;
+	function sendEmail() {
+		$mail = mail(
+			$this->emailTo,
+			$this->emailSubject,
+			$this->replaceHTML($this->emailBody),
+			$this->emailHeaders
+		);	
+		return ($mail) ? true : false;
 	}
 	/*
 		setEmailSubject()
@@ -61,12 +85,13 @@ class tsEmail {
 		// SET HEADERS
 		$sender = $tsCore->settings['titulo']." <no-reply@".$tsCore->settings['domain'].">";
 		//
-		$headers = "MIME-Version: 1.0"."\n";
-		$headers .= "Content-type: text/html; charset=utf-8"."\n";
-		$headers .= "Content-Transfer-Encoding: 8bit"."\n";
-		$headers .= "From: $sender"."\n";
-		$headers .= "Return-Path: $sender"."\n";
-		$headers .= "Reply-To: $sender\n";
+		$headers = "MIME-Version: 1.0\r\n";
+		$headers .= "Content-type: text/html; charset=iso-8859-1\r\n";
+		$headers .= "Content-Transfer-Encoding: 8bit\r\n";
+    	$headers .= "X-Priority: 1\n"; // Urgent message!
+		$headers .= "From: {$sender}\r\n";
+		$headers .= "Return-Path: {$sender}\r\n";
+		$headers .= "Reply-To: {$sender}\r\n";
 		//
 		return $headers;
 	}

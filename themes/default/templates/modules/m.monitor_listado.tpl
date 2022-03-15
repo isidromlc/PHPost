@@ -9,7 +9,7 @@
                             </div>
                             <div class="txt">
                                 <a href="{$tsConfig.url}/perfil/{$u.user_name}">{$u.user_name}</a><br />
-                                <img src="{$tsConfig.default}/images/flags/{$u.user_pais|lower}.png"/> <span class="grey">{$u.p_mensaje}</span>
+                                <img src="{$tsConfig.images}/flags/{$u.user_pais|lower}.png"/> <span class="grey">{$u.p_mensaje}</span>
                             </div>
                         </div>
                         <div class="action">

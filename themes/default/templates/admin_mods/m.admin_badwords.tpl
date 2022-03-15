@@ -31,8 +31,8 @@
                                                 <td><a href="{$tsConfig.url}/perfil/{$b.user_name}" class="hovercard" uid="{$b.user_id}">{$b.user_name}</a></td>
                                                 <td>{$b.date|hace}</td>
 												<td class="admin_actions">
-                                                    <a href="{$tsConfig.url}/admin/badwords?act=editar&id={$b.wid}"><img src="{$tsConfig.default}/images/icons/editar.png" title="Editar" /></a>
-                                                    <a href="#" onclick="admin.badwords.borrar({$b.wid}); return false"><img src="{$tsConfig.url}/themes/default/images/icons/close.png" title="Eliminar"/></a>
+                                                    <a href="{$tsConfig.url}/admin/badwords?act=editar&id={$b.wid}"><img src="{$tsConfig.images}/icons/editar.png" title="Editar" /></a>
+                                                    <a href="#" onclick="admin.badwords.borrar({$b.wid}); return false"><img src="{$tsConfig.images}/icons/close.png" title="Eliminar"/></a>
                                                 </td>
                                             </tr>{/foreach}
                                         </tbody>

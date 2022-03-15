@@ -5,7 +5,7 @@
                     </div>
                     <form name="add_foto" method="post" action="" enctype="multipart/form-data" id="foto_form" class="form-add-post" autocomplete="off">
                     <div class="loader">
-                        <img src="{$tsConfig.default}/images/loading_bar.gif" /><br />
+                        <img src="{$tsConfig.images}/loading_bar.gif" /><br />
                         <h2>Cargando foto, espere por favor....</h2>
                     </div>
                     <div class="fade_out">

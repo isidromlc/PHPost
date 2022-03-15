@@ -25,10 +25,10 @@
 											<td>{$p.date|hace:true}</td> 
 											<td>{$p.mod_ip}</td>                					
 											<td class="admin_actions">
-													<a href="#" onclick="mod.posts.view({$p.post_id}); return false;"><img src="{$tsConfig.default}/images/icons/find.png" title="Ver Post" /></a>
-													<a href="#" onclick="mod.reboot({$p.post_id}, 'posts', 'reboot', false); return false;"><img src="{$tsConfig.default}/images/icons/reboot.png" title="Reactivar Post" /></a>
-													<a href="{$tsConfig.url}/posts/editar/{$p.post_id}" target="_blank"><img src="{$tsConfig.default}/images/icons/edit.png" title="Editar Post" /></a>
-													<a href="#" onclick="mod.posts.borrar({$p.post_id}, false); return false"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar Post" /></a>
+													<a href="#" onclick="mod.posts.view({$p.post_id}); return false;"><img src="{$tsConfig.images}/icons/find.png" title="Ver Post" /></a>
+													<a href="#" onclick="mod.reboot({$p.post_id}, 'posts', 'reboot', false); return false;"><img src="{$tsConfig.images}/icons/reboot.png" title="Reactivar Post" /></a>
+													<a href="{$tsConfig.url}/posts/editar/{$p.post_id}" target="_blank"><img src="{$tsConfig.images}/icons/edit.png" title="Editar Post" /></a>
+													<a href="#" onclick="mod.posts.borrar({$p.post_id}, false); return false"><img src="{$tsConfig.images}/icons/close.png" title="Borrar Post" /></a>
 											</td>
 										</tr>
 										{/foreach}

@@ -122,6 +122,10 @@ function db_exec()
     {
         return mysqli_error($db_link);
     }
+    elseif($type === 'multi_query')
+    {
+        return mysqli_multi_query($db_link, $data);
+    }
 }
 
 /**

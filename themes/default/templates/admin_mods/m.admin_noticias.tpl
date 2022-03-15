@@ -25,9 +25,9 @@
 												<td>{$n.not_date|hace:true}</td>
 												<td id="status_noticia_{$n.not_id}">{if $n.not_active == 0}<font color="purple">Inactiva</font>{else}<font color="green">Activa</font>{/if}</td>
 												<td class="admin_actions">
-													<a href="{$tsConfig.url}/admin/news/editar/{$n.not_id}"><img src="{$tsConfig.default}/images/icons/editar.png" title="Editar" /></a>
-													<a onclick="admin.news.accion({$n.not_id}); return false"><img src="{$tsConfig.default}/images/reactivar.png" title="Activar/Desactivar Noticia" /></a>
-													<a href="{$tsConfig.url}/admin/news?act=borrar&nid={$n.not_id}"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar" /></a>
+													<a href="{$tsConfig.url}/admin/news/editar/{$n.not_id}"><img src="{$tsConfig.images}/icons/editar.png" title="Editar" /></a>
+													<a onclick="admin.news.accion({$n.not_id}); return false"><img src="{$tsConfig.images}/reactivar.png" title="Activar/Desactivar Noticia" /></a>
+													<a href="{$tsConfig.url}/admin/news?act=borrar&nid={$n.not_id}"><img src="{$tsConfig.images}/icons/close.png" title="Borrar" /></a>
 												</td>
 											</tr>
 											{/foreach}

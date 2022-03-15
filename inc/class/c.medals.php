@@ -256,7 +256,6 @@ class tsMedal {
      * @return text
      */
 	public function DelAssign(){
-	    
 		$asignacion = $_POST['aid'];
 		$medalla = $_POST['mid'];
 	    if(db_exec('num_rows', db_exec(array(__FILE__, __LINE__), 'query', 'SELECT id FROM w_medallas_assign WHERE id = \''.(int)$asignacion.'\' AND medal_id = \''.(int)$medalla.'\' LIMIT 1'))) {

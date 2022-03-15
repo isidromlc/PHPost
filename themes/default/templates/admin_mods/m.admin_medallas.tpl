@@ -1,117 +1,114 @@
-                                <div class="boxy-title">
-									<h3>Medallas</h3>
-								</div>
-								<div id="res" class="boxy-content">
-									{if $tsSave}<div class="mensajes ok">Tus cambios han sido guardados.</div>{/if}
-									{if $tsError}<div class="mensajes error">{$tsError}</div>{/if}
-									{if !$tsAct}
-                                    {if !$tsMedals.medallas}
-                                    <div class="phpostAlfa">No hay medallas.</div>
-                                    <input type="button"  onclick="location.href = '{$tsConfig.url}/admin/medals?act=nueva'" value="Agregar nueva medalla" class="mBtn btnOk"/>
-                                    {else}
-									<table cellpadding="0" cellspacing="0" border="0" class="admin_table" width="550" align="center">
-										<thead>
-											<th>ID</th>
-											<th>Imagen</th>
-											<th>Tipo</th>
-											<th>T&iacute;tulo</th>
-											<th>Descripci&oacute;n</th>
-											<th>Creada por</th>
-											<th>Fecha</th>
-											<th>Total</th>
-											<th>Acciones</th>
-										</thead>
-										<tbody>
-										{foreach from=$tsMedals.medallas item=m}
-											<tr id="medal_id_{$m.medal_id}">
-												<td>{$m.medal_id}</td>
-												<td><img src="{$tsConfig.default}/images/icons/med/{$m.m_image}_16.png" /></td>
-												<td>{if $m.m_type == 1}Usuario{elseif $m.m_type == 2}Post{else}Foto{/if}</td>
-												<td>{$m.m_title}</td>
-												<td>{$m.m_description}</td>
-												<td>{if $m.m_autor == 0}Sistema{else}<a href="{$tsConfig.url}/perfil/{$m.user_name}" class="hovercard" uid="{$m.user_id}">{$m.user_name}</a>{/if}</td>
-												<td>{$m.m_date|date_format:"%d/%m/%Y"}</td>
-												<td id="total_med_assig_{$m.medal_id}">{$m.m_total}</td>
-												<td class="admin_actions">
-												<a onclick="admin.medallas.asignar({$m.medal_id}); return false"><img src="{$tsConfig.default}/images/icons/plus.png" title="Asignar Medalla"/></a>
-												<a href="{$tsConfig.url}/admin/medals/editar/{$m.medal_id}"><img src="{$tsConfig.default}/images/icons/editar.png" title="Editar Medalla"/></a>
-												<a onclick="admin.medallas.borrar({$m.medal_id}); return false"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar Medalla" /></a>
-												</td>
-											</tr>
-										{/foreach}
-										</tbody>
-										<tfoot>
-										<td colspan="9">P&aacute;ginas: {$tsMedals.pages}</td>
-										</tfoot>
-									</table><hr />
-									<input type="button"  onclick="location.href = '{$tsConfig.url}/admin/medals?act=nueva'" value="Agregar nueva medalla" class="mBtn btnOk" style="margin-left:200px;"/>
-									<input type="button"  onclick="location.href = '{$tsConfig.url}/admin/medals?act=showassign'" value="Ver medallas asignadas" class="mBtn btnOk" />
-                                    {/if}
-									{elseif $tsAct == 'showassign'}
-									<table cellpadding="0" cellspacing="0" border="0" class="admin_table" width="550" align="center">
-										<thead>
-											<th>ID</th>
-											<th>Medalla</th>
-											<th>Tipo</th>
-											<th>Asignada a</th>
-											<th>Fecha</th>
-											<th>IP</th>
-											<th>Acciones</th>
-										</thead>
-										<tbody>
-										{foreach from=$tsAsignaciones.asignaciones item=m}
-											<tr id="assign_id_{$m.id}">
-												<td>{$m.id}</td>
-												<td><img src="{$tsConfig.default}/images/icons/med/{$m.m_image}_16.png" class="qtip" title="{$m.m_title}"/></td>
-												<td>{if $m.m_type == 1}Usuario{elseif $m.m_type == 2}Post{else}Foto{/if}</td>
-												<td>{if $m.m_type == 1}<a href="{$tsConfig.url}/perfil/{$m.user_name}" class="hovercard" uid="{$m.user_id}">@{$m.user_name}</a>{elseif $m.m_type == 2}<a href="{$tsConfig.url}/posts/{$m.c_seo}/{$m.post_id}/{$m.post_title|seo}.html" target="_blank">{$m.post_title}</a>{else}<a href="{$tsConfig.url}/fotos/autor/{$m.foto_id}/{$m.f_title}.html" target="_blank">{$m.f_title}</a>{/if}</td>
-												<td>{$m.m_date|hace:true}</td>{*date_format:"%d/%m/%Y"*}
-												<td>{$m.medal_ip}</td>
-												<td class="admin_actions">
-												<a onclick="admin.medallas.borrar_asignacion({$m.id}, {$m.medal_id}); return false"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar Asignaci&oacute;n" /></a>
-												</td>
-											</tr>
-										{/foreach}
-										</tbody>
-										<tfoot>
-										<td colspan="7">P&aacute;ginas: {$tsAsignaciones.pages}</td>
-										</tfoot>
-									</table>
-									{elseif $tsAct == 'nueva' || $tsAct == 'editar'}
-									<script type="text/javascript">
-										// {literal}
-										$(function(){
-											$('#med_img').change(function(){
-												var cssi = $("#med_img option:selected").css('background');
-												$('#c_icon').css({"background" : cssi});
-											});
-											//
-										});
-										//{/literal}
-									</script>
-										<form action="" method="post" autocomplete="off">
-										<fieldset>
-											<legend>{if $tsAct == 'nueva'}Nueva{else}Editar{/if} medalla</legend>
-											<dl>
-												<dt><label for="med_name">T&iacute;tulo de la medalla:</label></dt>
-												<dd><input type="text" id="med_name" name="med_title" value="{$tsMed.m_title}" /></dd>
-											</dl>
-											<dl>
-												<dt><label for="ai_desc">Descripci&oacute;n:</label><br /><span>Describe el motivo por el cual el contenido gana esta medalla.</span></dt>
-												<dd><textarea name="med_desc" id="ai_desc" rows="3" cols="40">{$tsMed.m_description}</textarea></dd>
-											</dl>
-                                            <dl>
-												<dt><label for="cat_img">Icono de la categor&iacute;a:</label></dt>
-												<dd>
-													<img src="{$tsConfig.images}/space.gif" style="background:url({$tsConfig.default}/images/icons/med/{if $tsMed.m_image}{$tsMed.m_image}{else}{$tsIcons.0}{/if}_16.png) no-repeat left center;" width="16" height="16" id="c_icon"/>
-													<select name="med_img" id="med_img" style="width:164px">
-													{foreach from=$tsIcons key=i item=img}
-														<option value="{$img}" style="padding:2px 20px 0; background:#FFF url({$tsConfig.url}/themes/default/images/icons/med/{$img}_16.png) no-repeat left center;" {if $tsMed.m_image == $img}selected="selected"{/if}>{$img}</option>
-													{/foreach}
-													</select>
-												</dd>
-											</dl>
-											<dl>
+<div class="boxy-title">
+	<h3>Medallas</h3>
+</div>
+<div id="res" class="boxy-content">
+	{if $tsSave}<div class="mensajes ok">Tus cambios han sido guardados.</div>{/if}
+	{if $tsError}<div class="mensajes error">{$tsError}</div>{/if}
+	{if !$tsAct}
+		{if !$tsMedals.medallas}
+			<div class="phpostAlfa">No hay medallas.</div>
+         <a href="{$tsConfig.url}/admin/medals?act=nueva" class="mBtn btnOk">Agregar nueva medalla</a>
+      {else}
+			<table cellpadding="0" cellspacing="0" border="0" class="admin_table" width="550" align="center">
+				<thead>
+					<th>ID</th>
+					<th>Imagen</th>
+					<th>Tipo</th>
+					<th>T&iacute;tulo</th>
+					<th>Descripci&oacute;n</th>
+					<th>Creada por</th>
+					<th>Fecha</th>
+					<th>Total</th>
+					<th>Acciones</th>
+				</thead>
+				<tbody>
+					{foreach from=$tsMedals.medallas item=m}
+						<tr id="medal_id_{$m.medal_id}">
+							<td>{$m.medal_id}</td>
+							<td><img src="{$tsConfig.med}/{$m.m_image}_32.png" /></td>
+							<td>{if $m.m_type == 1}Usuario{elseif $m.m_type == 2}Post{else}Foto{/if}</td>
+							<td>{$m.m_title}</td>
+							<td>{$m.m_description}</td>
+							<td>{if $m.m_autor == 0}Sistema{else}<a href="{$tsConfig.url}/perfil/{$m.user_name}" class="hovercard" uid="{$m.user_id}">{$m.user_name}</a>{/if}</td>
+							<td>{$m.m_date|date_format:"%d/%m/%Y"}</td>
+							<td id="total_med_assig_{$m.medal_id}">{$m.m_total}</td>
+							<td class="admin_actions">
+								<a onclick="admin.medallas.asignar({$m.medal_id}); return false"><img src="{$tsConfig.images}/icons/plus.png" title="Asignar Medalla"/></a>
+								<a href="{$tsConfig.url}/admin/medals/editar/{$m.medal_id}"><img src="{$tsConfig.images}/icons/editar.png" title="Editar Medalla"/></a>
+								<a onclick="admin.medallas.borrar({$m.medal_id}); return false"><img src="{$tsConfig.images}/icons/close.png" title="Borrar Medalla" /></a>
+							</td>
+						</tr>
+					{/foreach}
+				</tbody>
+				<tfoot>
+					<td colspan="9">P&aacute;ginas: {$tsMedals.pages}</td>
+				</tfoot>
+			</table>
+			<hr />
+			<a href="{$tsConfig.url}/admin/medals?act=nueva" class="mBtn btnOk" style="margin-left:200px;">Agregar nueva medalla</a>
+			<a href="{$tsConfig.url}/admin/medals?act=showassign" class="mBtn btnOk">Ver medallas asignadas</a>
+		{/if}
+	{elseif $tsAct == 'showassign'}
+		<table cellpadding="0" cellspacing="0" border="0" class="admin_table" width="550" align="center">
+			<thead>
+				<th>ID</th>
+				<th>Medalla</th>
+				<th>Tipo</th>
+				<th>Asignada a</th>
+				<th>Fecha</th>
+				<th>IP</th>
+				<th>Acciones</th>
+			</thead>
+			<tbody>
+				{foreach from=$tsAsignaciones.asignaciones item=m}
+					<tr id="assign_id_{$m.id}">
+						<td>{$m.id}</td>
+						<td><img src="{$tsConfig.med}/{$m.m_image}_32.png" title="{$m.m_title}"/></td>
+						<td>{if $m.m_type == 1}Usuario{elseif $m.m_type == 2}Post{else}Foto{/if}</td>
+						<td>{if $m.m_type == 1}<a href="{$tsConfig.url}/perfil/{$m.user_name}" class="hovercard" uid="{$m.user_id}">@{$m.user_name}</a>{elseif $m.m_type == 2}<a href="{$tsConfig.url}/posts/{$m.c_seo}/{$m.post_id}/{$m.post_title|seo}.html" target="_blank">{$m.post_title}</a>{else}<a href="{$tsConfig.url}/fotos/autor/{$m.foto_id}/{$m.f_title}.html" target="_blank">{$m.f_title}</a>{/if}</td>
+						<td>{$m.m_date|hace:true}</td>{*date_format:"%d/%m/%Y"*}
+						<td>{$m.medal_ip}</td>
+						<td class="admin_actions">
+							<a onclick="admin.medallas.borrar_asignacion({$m.id}, {$m.medal_id}); return false"><img src="{$tsConfig.images}/icons/close.png" title="Borrar Asignaci&oacute;n" /></a>
+						</td>
+					</tr>
+				{/foreach}
+			</tbody>
+			<tfoot>
+				<td colspan="7">P&aacute;ginas: {$tsAsignaciones.pages}</td>
+			</tfoot>
+		</table>
+	{elseif $tsAct == 'nueva' || $tsAct == 'editar'}
+		<script>
+			$(() => $('#med_img').on('change', () => {
+				var icono = $("#med_img option:selected").val();
+				$('#c_icon').css({
+					"background": 'url(\'{$tsConfig.med}/'+icono+'_32.png\') no-repeat center',
+					"background-size": '18px'
+				})
+			}));
+		</script>
+		<form action="" method="post" autocomplete="off">
+			<fieldset>
+				<legend>{if $tsAct == 'nueva'}Nueva{else}Editar{/if} medalla</legend>
+				<dl>
+					<dt><label for="med_name">T&iacute;tulo de la medalla:</label></dt>
+					<dd><input type="text" id="med_name" name="med_title" value="{$tsMed.m_title}" /></dd>
+				</dl>
+				<dl>
+					<dt><label for="ai_desc">Descripci&oacute;n:</label><br /><span>Describe el motivo por el cual el contenido gana esta medalla.</span></dt>
+					<dd><textarea name="med_desc" id="ai_desc" rows="3" cols="40">{$tsMed.m_description}</textarea></dd>
+				</dl>
+				<dl>
+					<dt><label for="cat_img">Icono de la categor&iacute;a:</label></dt>
+					<dd style="display: flex;justify-content: flex-start;align-items: center;">
+						<div style="background:url({$tsConfig.med}/{if $tsMed.m_image}{$tsMed.m_image}{else}{$tsIcons.0}{/if}_32.png) no-repeat center center;background-size:18px;display:block;width: 20px;height: 20px;margin-right: 10px;" id="c_icon"></div>
+						<select name="med_img" id="med_img" style="width:164px">
+							{html_options values=$tsIcons output=$tsIcons selected=$tsMed.m_image}
+						</select>
+					</dd>
+				</dl>
+				<dl>
 										<dt><label for="rSpecial">Condici&oacute;n especial:</label><br /><span>Cuando </span>
 											<label onclick="$('#ai_cond_post').slideUp(); $('#ai_cond_foto').slideUp(); $('#ai_cond_user').slideDown(); $('#ai_cond_user_rango_span').slideDown();"><input name="med_type" type="radio" id="ai_type" value="1" {if $tsMed.m_type == 1}checked{/if} class="radio"/>Usuario</label>
 											<label onclick="$('#ai_cond_user').slideUp(); $('#ai_cond_user_rango').slideUp();  $('#ai_cond_foto').slideUp(); $('#ai_cond_post').slideDown();"><input name="med_type" type="radio" id="ay_type" value="2" {if $tsMed.m_type == 2}checked{/if} class="radio"/>Post</label>

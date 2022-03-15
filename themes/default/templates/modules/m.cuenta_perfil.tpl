@@ -18,7 +18,7 @@
             {foreach $tsPerfil.redes key=name item=red}
                <div style="display:flex;justify-content: flex-start;align-items: center;">
                   <div class="icon">
-                  	<img src="{$tsConfig.images}/icons/{$name}.png" width="16" height="16" />
+                  	<img src="{$tsConfig.images}/redes/{$name}.png" width="24" height="24" />
                   </div>
                   <input type="text" class="text cuenta-save-2" value="{$tsPerfil.p_socials.$name}" placeholder="{$red}" name="red[{$name}]">
                </div>

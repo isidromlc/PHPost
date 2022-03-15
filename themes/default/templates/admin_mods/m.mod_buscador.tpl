@@ -54,7 +54,7 @@
                                                 <td><a href="http://oxi.mx/g/{$u.user_last_ip}" class="geoip" title="Información de IP" target="_blank">{$u.user_last_ip}</a></td>
 												<td>{$u.user_lastlogin|hace:true}</td>
                                                 <td class="admin_actions">
-                                               <a href="#" onclick="mod.users.action({$u.user_id}, 'ban', false); return false;"><img src="{$tsConfig.default}/images/icons/power_off.png" title="Suspender Usuario" /></a>
+                                               <a href="#" onclick="mod.users.action({$u.user_id}, 'ban', false); return false;"><img src="{$tsConfig.images}/icons/power_off.png" title="Suspender Usuario" /></a>
                                                 </td>
                                             </tr>
                                             {/foreach}{else}
@@ -110,7 +110,7 @@
                                                 <td><a href="http://oxi.mx/g/{$p.post_ip}" class="geoip" title="Información de IP" target="_blank">{$p.post_ip}</a></td>
 												<td>{$p.post_date|hace:true}</td>
                                                 <td class="admin_actions">
-													<a href="#" onclick="mod.posts.borrar({$p.post_id}, 'posts'); return false"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar Post" /></a>
+													<a href="#" onclick="mod.posts.borrar({$p.post_id}, 'posts'); return false"><img src="{$tsConfig.images}/icons/close.png" title="Borrar Post" /></a>
                                                 </td>
                                             </tr>
                                             {/foreach}{else}
@@ -140,7 +140,7 @@
                                                 <td><a href="http://oxi.mx/g/{$f.f_ip}" class="geoip" title="Información de IP" target="_blank">{$f.f_ip}</a></td>
 												<td>{$f.f_date|hace:true}</td>
                                                 <td class="admin_actions">
-														<a href="#" onclick="mod.fotos.borrar({$f.foto_id}); return false"><img src="{$tsConfig.default}/images/icons/close.png" title="Borrar Foto" /></a>                                                </td>
+														<a href="#" onclick="mod.fotos.borrar({$f.foto_id}); return false"><img src="{$tsConfig.images}/icons/close.png" title="Borrar Foto" /></a>                                                </td>
                                             </tr>
                                             {/foreach}{else}
                                             <tr>
@@ -169,7 +169,7 @@
                                                 <td><a href="http://oxi.mx/g/{$c.c_ip}" class="geoip" title="Información de IP" target="_blank">{$c.c_ip}</a></td>
 												<td>{$c.c_date|hace:true}</td>
                                                 <td class="admin_actions">
-                                                    <a href="#" onclick="ocultar_com({$c.cid}, {$c.user_id}); return false"><img src="{$tsConfig.default}/images/reactivar.png" title="Mostrar/Ocultar Comentario" /></a>
+                                                    <a href="#" onclick="ocultar_com({$c.cid}, {$c.user_id}); return false"><img src="{$tsConfig.images}/reactivar.png" title="Mostrar/Ocultar Comentario" /></a>
                                                 </td>
                                             </tr>
                                             {/foreach}{else}

@@ -59,7 +59,7 @@
 			  	</div>
 			</form>
 			<script>public_key = '{$public_key}';</script>
-			<script src="{$tsRecaptcha}?render={$public_key}"></script>
+			<script src="{$api_google}{$public_key}"></script>
 			<script src="{$tsConfig.js}/registro.js?{$smarty.now}"></script>
 		{else}
 			<div class="box-end">

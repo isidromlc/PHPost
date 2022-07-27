@@ -56,12 +56,7 @@ if ($tsLevelMsg != 1) {
 */
 if ($tsContinue) {
 
-   $pkey = $tsCore->settings["pkey"];
-	
-	$api_google = "https://www.google.com/recaptcha/api.js?render=" . $pkey;
-
-   $smarty->assign("api_google", $api_google);
-   $smarty->assign("public_key", $pkey);
+   $smarty->assign("public_key", $tsCore->settings["pkey"]);
    $smarty->assign("tsAbierto", $tsCore->settings["c_reg_active"]);
       
 }
